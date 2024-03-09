@@ -9,13 +9,35 @@ export function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('user'); // State for the user's role
+    const [errorMessage, setErrorMessage] = useState(''); // State for storing error message
 
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
+    const handleRoleChange = (e) => setRole(e.target.value); // Handler for role change
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8000/login', {
+        setErrorMessage(''); // Reset error message on new submission
+
+        // Determine the endpoint based on the selected role
+        let endpoint;
+        switch(role) {
+            case 'user':
+                endpoint = 'http://localhost:8000/login';
+                break;
+            case 'peer':
+                endpoint = 'http://localhost:8000/peerlogin';
+                break;
+            case 'counselor':
+                endpoint = 'http://localhost:8000/counselorlogin';
+                break;
+            default:
+                endpoint = 'http://localhost:8000/login'; // Default endpoint or handle error
+                break;
+        }
+
+        const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,7 +49,11 @@ export function Login() {
             login();
             navigate('/main');
         } else {
-            console.error('Login failed');
+            // Here, instead of just logging the error, we also set the error message state
+            const errorData = await response.json();
+            if (errorData.error) {
+                setErrorMessage("Invalid email or password");
+            }
         }
     };
 
@@ -49,9 +75,15 @@ export function Login() {
                     value={password}
                     onChange={handlePasswordChange}
                 />
+                <select value={role} onChange={handleRoleChange}>
+                    <option value="user">User</option>
+                    <option value="peer">Peer</option>
+                    <option value="counselor">Counselor</option>
+                </select>
                 <button type="submit">Login</button>
                 <button type={'button'} onClick={() => navigate('/signup')} className="signup-button">I don't have an account</button>
             </form>
+            {errorMessage && <div style={{color: 'red'}}>{errorMessage}</div>}
         </div>
     );
 }
