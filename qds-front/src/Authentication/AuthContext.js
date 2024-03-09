@@ -8,6 +8,12 @@ const getInitialAuthState = () => {
     return sessionStorage.getItem('isAuthenticated') === 'true';
 };
 
+export const getRole = () => {
+    const role = sessionStorage.getItem('role');
+   console.log(role);
+    return role;
+}
+
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(getInitialAuthState());
 

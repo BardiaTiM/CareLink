@@ -18,10 +18,10 @@ export function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let userData = { username, password, email };
+        let userData = { username, password, email, role: 'USER' };
 
         if (role === 'peer') {
-            userData = { ...userData, description, status: 'IN REVIEW' }; // Include description for 'peer'
+            userData = { ...userData, description, status: 'IN REVIEW', role: 'PEER' }; // Include description for 'peer'
         }
 
         // Determine the endpoint based on the selected role

@@ -37,8 +37,8 @@ function App() {
                     } />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
                     <Route path="/councilorLogin" element={<CouncilorLogin/>}/>
-                    <Route path={"/inReview"} element={
-                        <PrivateRoute>
+                    <Route path="/inReview" element={
+                        <PrivateRoute requiredRole="COUNCILOR">
                             <InReview/>
                         </PrivateRoute>}/>
                         <Route path="/recomPage" element={
