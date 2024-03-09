@@ -6,22 +6,42 @@ export default function Chat({ loggedInUserId }) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    // Fetch user data
     const fetchUsers = async () => {
       try {
+        // Fetch user data
         const response = await fetch("http://localhost:8000/getAllUsers");
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
-        setUserData(data);
+
+        // Check if loggedInUserId exists in the fetched userData
+        const loggedInUserExists = data.some(
+          (user) => user.id === loggedInUserId
+        );
+
+        // Fetch appropriate user list based on loggedInUserId
+        if (loggedInUserExists) {
+          const peerHelperResponse = await fetch(
+            "http://localhost:8000/getAllPeerHelpers"
+          );
+          if (!peerHelperResponse.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const peerHelperData = await peerHelperResponse.json();
+          setUserData(peerHelperData);
+        } else {
+          setUserData(data);
+        }
       } catch (error) {
-        console.error("Error fetching users:", error.message);
-        setErrorMessage("Error fetching users. Please try again later.");
+        console.error("Error fetching data:", error.message);
+        setErrorMessage("Error fetching data. Please try again later.");
       }
     };
     fetchUsers();
-  }, []);
+  }, [loggedInUserId]);
 
   return (
     <div style={{ textAlign: "center" }}>

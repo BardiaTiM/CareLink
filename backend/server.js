@@ -167,6 +167,21 @@ app.get("/getAllUsers", async function (req, res) {
     }
 })
 
+app.get("/getAllPeerHelpers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('peer_helpers').select('*');
+        if (error) {
+            console.error('Error getting peer:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting peer:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
+
 // Endpoint for user login
 app.post('/peerlogin', async function (req, res) {
     const { email, password } = req.body;
@@ -190,8 +205,10 @@ app.post('/peerlogin', async function (req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
+                const username = data.id;
+
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                res.status(200).json({ message: 'Login successful', userID: username });
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -204,7 +221,7 @@ app.post('/peerlogin', async function (req, res) {
 });
 
 // Endpoint to retrieve peer_helpers with status "IN REVIEW"
-app.post('/peer_helpers/inreview', async function(req, res) {
+app.post('/peer_helpers/inreview', async function (req, res) {
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -232,7 +249,7 @@ app.post('/peer_helpers/inreview', async function(req, res) {
 });
 
 // Endpoint to change the status of a peer_helper to "ACTIVE"
-app.post('/peer_helpers/activate', async function(req, res) {
+app.post('/peer_helpers/activate', async function (req, res) {
     try {
         const { id } = req.body; // Assuming the UUID is sent in the request body
 
@@ -256,7 +273,7 @@ app.post('/peer_helpers/activate', async function(req, res) {
 });
 
 // Endpoint to add information into the help_request database table
-app.post('/help_request', async function(req, res) {
+app.post('/help_request', async function (req, res) {
     try {
         const { user_id, description } = req.body; // Assuming user_id and description are sent from the frontend
 
@@ -277,7 +294,7 @@ app.post('/help_request', async function(req, res) {
 });
 
 // Endpoint for councillor login
-app.post('/CouncilorLogin', async function(req, res) {
+app.post('/CouncilorLogin', async function (req, res) {
     const { email, password } = req.body;
 
     try {
