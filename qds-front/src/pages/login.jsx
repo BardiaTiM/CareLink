@@ -52,10 +52,20 @@ export function Login() {
             const { userID, role } = await response.json(); // Assume backend returns role in response
             console.log("signed in userId: ",userID);
             console.log("signed in role: ", role);
+
+
             sessionStorage.setItem('userId', userID);
             sessionStorage.setItem('userRole', role);
             login();
-            navigate('/main');
+
+            if(role === 'USER'){
+                navigate('/main');
+            } else if(role === 'PEER'){
+                navigate('/chat');
+            } else if(role === 'COUNCILOR'){
+                navigate('/inReview');
+            }
+
         } else {
             // Here, instead of just logging the error, we also set the error message state
             const errorData = await response.json();
