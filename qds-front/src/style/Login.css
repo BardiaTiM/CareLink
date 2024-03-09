@@ -50,3 +50,15 @@ button {
 button:hover {
     background-color: #042A2B;
 }
+
+.signup-button {
+    background-color: #ffffff;
+    color: #1A936F;
+    border: 1px solid #1A936F;
+}
+
+.signup-button:hover {
+    background-color: #042A2B;
+    color: #ffffff;
+    border: 1px solid #1A936F;
+}

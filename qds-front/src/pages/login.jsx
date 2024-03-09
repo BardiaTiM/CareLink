@@ -50,7 +50,7 @@ export function Login() {
                     onChange={handlePasswordChange}
                 />
                 <button type="submit">Login</button>
-                <button type={'button'} onClick={() => navigate('/signup')}>Sign Up</button>
+                <button type={'button'} onClick={() => navigate('/signup')} className="signup-button">I don't have an account</button>
             </form>
         </div>
     );
