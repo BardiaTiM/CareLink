@@ -52,7 +52,7 @@ export function SignUp() {
         <div>
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
-                <select value={role} onChange={handleRoleChange}>
+                <select value={role} onChange={handleRoleChange} required>
                     <option value="user">User</option>
                     <option value="peer">Peer</option>
                 </select>
@@ -61,18 +61,21 @@ export function SignUp() {
                     placeholder="Username"
                     value={username}
                     onChange={handleUsernameChange}
+                    required
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={handlePasswordChange}
+                    required
                 />
                 <input
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={handleEmailChange}
+                    required
                 />
                 {role === 'peer' && (
                     <input
@@ -80,6 +83,7 @@ export function SignUp() {
                         placeholder="Description"
                         value={description}
                         onChange={handleDescriptionChange}
+                        required
                     />
                 )}
                 <button type="submit">Sign Up</button>

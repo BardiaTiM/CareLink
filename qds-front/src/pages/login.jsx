@@ -46,6 +46,12 @@ export function Login() {
         });
 
         if (response.ok) {
+            const data = await response.json();
+            const username = data.userID;
+            //place the username in session storage
+            sessionStorage.setItem("username", username);
+      
+            console.log("Login successful on frontend: ", username);
             login();
             navigate('/main');
         } else {
