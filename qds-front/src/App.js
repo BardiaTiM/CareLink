@@ -7,6 +7,7 @@ import { LandingPage } from './pages/index';
 import { Login } from './pages/login';
 import { Main } from './pages/main';
 import { PrivateRoute } from './routing/PrivateRoute';
+import { SignUp } from './pages/signup';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
                 <Navbar/>
                 <Routes>
                     <Route path="/" element={<LandingPage/>}/>
+                    <Route path={"signup"} element={<SignUp />}/>
                     <Route path="/login" element={<Login />}/>
                     <Route path="/main" element={
                         <PrivateRoute>
