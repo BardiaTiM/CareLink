@@ -30,6 +30,7 @@ wss.on('connection', function connection(ws) {
     });
 });
 
+
 // Serve static files from the chat directory
 app.use(express.static(path.join(__dirname, 'chat')));
 
