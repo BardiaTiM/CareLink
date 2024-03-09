@@ -101,14 +101,14 @@ app.use(function (err, req, res, next) {
 
 // Endpoint for user sign-up
 app.post('/signup', async function(req, res) {
-    const { username, password, email } = req.body;
+    const { username, password, email,role } = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('user').insert([{ username, password: hashedPassword, email }]);
+        const { data, error } = await supabase.from('user').insert([{ username, password: hashedPassword, email, role }]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
@@ -125,14 +125,14 @@ app.post('/signup', async function(req, res) {
 // Endpoint for user sign-up
 app.post('/peersignup', async function(req, res) {
 
-    const { username, password, email, description, status} = req.body;
+    const { username, password, email, description, status,role} = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status}]);
+        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status,role}]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
@@ -170,7 +170,9 @@ app.post('/login', async function(req, res) {
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', role: data.role });
+                const username = data.id;
+                const role = data.role;
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
 
             } else {
                 // Passwords do not match
@@ -184,7 +186,7 @@ app.post('/login', async function(req, res) {
 });
 
 // Endpoint for peer login
-app.post('/peerlogin', async function(req, res) {
+app.post('/peerlogin', async function (req, res) {
     const { email, password } = req.body;
 
     try {
@@ -206,9 +208,12 @@ app.post('/peerlogin', async function(req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
-                // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', role: data.role });
+                console.log(data);
+                const username = data.id;
+                const role = data.role;
 
+                // Passwords match, user is authenticated
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -318,8 +323,10 @@ app.post('/CouncilorLogin', async function(req, res) {
         } else {
             // Compare the provided password with the password stored in the database
             if (password === data.password) {
-                // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', role: data.role });
+                const username = data.id;
+                const role = data.role;
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
+
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });

@@ -21,6 +21,8 @@ export function Login() {
         setErrorMessage(''); // Reset error message on new submission
 
         // Determine the endpoint based on the selected role
+
+        console.log("role: ", role);
         let endpoint;
         switch(role) {
             case 'user':
@@ -36,6 +38,7 @@ export function Login() {
                 endpoint = 'http://localhost:8000/login'; // Default endpoint or handle error
                 break;
         }
+        console.log("endpoint: ", endpoint);
 
         const response = await fetch(endpoint, {
             method: 'POST',
@@ -46,9 +49,11 @@ export function Login() {
         });
 
         if (response.ok) {
-            const { role: loggedInRole } = await response.json(); // Assume backend returns role in response
-            console.log("login role: ", loggedInRole);
-            sessionStorage.setItem('userRole', loggedInRole);
+            const { userID, role } = await response.json(); // Assume backend returns role in response
+            console.log("signed in userId: ",userID);
+            console.log("signed in role: ", role);
+            sessionStorage.setItem('userId', userID);
+            sessionStorage.setItem('userRole', role);
             login();
             navigate('/main');
         } else {
