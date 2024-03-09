@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Login } from './login'; // Import the Login component
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -32,6 +33,7 @@ export function LandingPage() {
                             <br></br>
                             Matched by AI, Monitored by Counselors</h3>
                     </div>
+                    <Login /> {/* Place the Login component wherever you want it to appear on the page */}
                 </div>
             </div>
 
