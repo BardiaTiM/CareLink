@@ -170,7 +170,8 @@ app.post('/login', async function(req, res) {
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                res.status(200).json({ message: 'Login successful', role: data.role });
+
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -206,7 +207,8 @@ app.post('/peerlogin', async function(req, res) {
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                res.status(200).json({ message: 'Login successful', role: data.role });
+
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -317,7 +319,7 @@ app.post('/CouncilorLogin', async function(req, res) {
             // Compare the provided password with the password stored in the database
             if (password === data.password) {
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                res.status(200).json({ message: 'Login successful', role: data.role });
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });

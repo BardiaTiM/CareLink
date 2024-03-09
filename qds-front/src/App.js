@@ -26,10 +26,11 @@ function App() {
                         </PrivateRoute>
                     }/>
                     <Route path="/councilorLogin" element={<CouncilorLogin/>}/>
-                    <Route path={"/inReview"} element={
-                        <PrivateRoute>
+                    <Route path="/inReview" element={
+                        <PrivateRoute requiredRole="COUNCILOR">
                             <InReview/>
-                        </PrivateRoute>}/>
+                        </PrivateRoute>
+                    }/>
                     <Route path="*" element={<NotFound/>}/> {/* Catch-all route */}
                 </Routes>
             </Router>

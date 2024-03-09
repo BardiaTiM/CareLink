@@ -46,6 +46,9 @@ export function Login() {
         });
 
         if (response.ok) {
+            const { role: loggedInRole } = await response.json(); // Assume backend returns role in response
+            console.log("login role: ", loggedInRole);
+            sessionStorage.setItem('userRole', loggedInRole);
             login();
             navigate('/main');
         } else {
