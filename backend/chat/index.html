@@ -1,119 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat App</title>
-  </head>
-  <body>
-    <div id="user-status"></div>
-    <!-- Display current user -->
-    <input type="text" id="message" placeholder="Type your message" />
-    <select id="recipient" placeholder="Select recipient">
-      <option value="" disabled selected>Select recipient</option>
-    </select>
-    <button onclick="sendMessage()">Send</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Selection</title>
+</head>
+<body>
+    <h1>Select User to Chat With</h1>
+    <ul id="user-list">
+        <li onclick="selectUser('user1')">User 1</li>
+        <li onclick="selectUser('user2')">User 2</li>
+        <li onclick="selectUser('user3')">User 3</li>
+    </ul>
 
     <script>
-      const ws = new WebSocket("ws://localhost:3000");
-      let username = null;
-      const users = ["user1", "user2", "user3"]; // Placeholder users
-
-      ws.onopen = function () {
-        username = prompt("Enter your username:");
-        if (!users.includes(username)) {
-          alert(
-            "Username not found. Please refresh and enter a valid username."
-          );
-          return;
+        function selectUser(user) {
+            localStorage.setItem('selectedUser', user);
+            window.location.href = 'chat.html';
         }
-        ws.send(JSON.stringify({ type: "join", username: username }));
-        populateRecipientList();
-        displayMessagesFromLocalStorage(); // Load previous messages from local storage
-        displayCurrentUser(); // Display current user
-      };
-
-      ws.onmessage = function (event) {
-        const data = JSON.parse(event.data);
-        if (data.type === "message") {
-          if (data.from !== username) {
-            // Check if the message is from the opponent
-            displayMessage(`${data.from}: ${data.message}`);
-            saveMessageToLocal(data); // Save message to local storage
-          }
-        }
-      };
-
-      function populateRecipientList() {
-        const recipientSelect = document.getElementById("recipient");
-        users.forEach((user) => {
-          if (user !== username) {
-            const option = document.createElement("option");
-            option.text = user;
-            recipientSelect.add(option);
-          }
-        });
-      }
-
-      function sendMessage() {
-        const messageInput = document.getElementById("message");
-        const message = messageInput.value.trim();
-        const recipientSelect = document.getElementById("recipient");
-        const to = recipientSelect.value;
-        if (message !== "" && to !== "") {
-          ws.send(
-            JSON.stringify({
-              type: "message",
-              from: username,
-              to: to,
-              message: message,
-            })
-          );
-          messageInput.value = "";
-          displayMessage(`${username}: ${message}`);
-          saveMessageToLocal({ from: username, to: to, message: message }); // Save sent message to local storage
-        } else {
-          alert("Please select a recipient and enter a message.");
-        }
-      }
-
-      function displayMessage(message) {
-        const chatArea = document.getElementById("chat-area");
-        const messageElement = document.createElement("div");
-        messageElement.textContent = message;
-        chatArea.appendChild(messageElement);
-      }
-
-      function saveMessageToLocal(messageData) {
-        const messages = JSON.parse(localStorage.getItem("messages")) || [];
-        messages.push(messageData);
-        localStorage.setItem("messages", JSON.stringify(messages));
-      }
-
-      function displayMessagesFromLocalStorage() {
-        const messages = JSON.parse(localStorage.getItem("messages")) || [];
-        messages.forEach((messageData) => {
-          if (messageData.from === username || messageData.to === username) {
-            displayMessage(`${messageData.from}: ${messageData.message}`);
-          }
-        });
-      }
-
-      function displayCurrentUser() {
-        const userStatus = document.getElementById("user-status");
-        userStatus.textContent = `Logged in as: ${username}`;
-      }
-
-      // Send message when Enter key is pressed
-      document
-        .getElementById("message")
-        .addEventListener("keydown", function (event) {
-          if (event.key === "Enter") {
-            sendMessage();
-          }
-        });
     </script>
-
-    <div id="chat-area"></div>
-  </body>
+</body>
 </html>
