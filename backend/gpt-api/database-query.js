@@ -8,39 +8,31 @@ const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-/**
- * Function that queries through the Councillor table and returns them for use by format-query.js
- * @returns an array of javascript objects that have each Councillor and their name and bio
- */
-async function getCouncillors() {
+async function getActivePeerHelpers() {
     try {
-        // Query the Supabase database for councillors
+        // Query the Supabase database for active peer helpers
         const { data, error } = await supabase
             .from('peer_helpers')
-            .select('id, username, description');
+            .select('id, description')
+            .eq('status', 'ACTIVE');
 
         if (error) {
-            console.error('Error retrieving peer helpers:', error.message);
-            return []; // Return an empty array if there's an error
+            console.error('Error retrieving active peer helpers:', error.message);
+            return { error }; // Return the error object if there's an error
         } else {
-            // Extract usernames and biographies from the data
-            const peer_helpers = data.map(peer_helper => ({
-                id: peer_helper.id,
-                username: peer_helper.username,
-                biography: peer_helper.description
+            // Extract usernames and descriptions from the data
+            const peerHelpers = data.map(peerHelper => ({
+                id: peerHelper.id,
+                description: peerHelper.description
             }));
-            return peer_helpers;
+            return { data: peerHelpers }; // Return the data object
         }
     } catch (error) {
-        console.error('Error retrieving peer helpers:', error.message);
-        return []; // Return an empty array if there's an error
+        console.error('Error retrieving active peer helpers:', error.message);
+        return { error }; // Return the error object
     }
 }
 
-// Call the getCouncillors function and log the result
-getCouncillors()
-    .then(councillors => console.log('Helpers:', councillors))
-    .catch(error => console.error('Error:', error));
 
-// exporting method to use in other functions
-module.exports = getCouncillors;
+module.exports.getActivePeerHelpers = getActivePeerHelpers;
+

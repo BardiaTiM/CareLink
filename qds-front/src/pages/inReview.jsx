@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import '../style/inReview.css';
 
 export function InReview() {
     const [peerHelpers, setPeerHelpers] = useState([]);
@@ -55,17 +56,17 @@ export function InReview() {
             ) : error ? (
                 <p style={{ color: 'red' }}>{error}</p>
             ) : (
-                <ul>
+                <div className="card-container">
                     {peerHelpers.map(({ id, username, email, description }) => (
-                        <li key={id}>
+                        <div key={id} className="card">
                             <p>Username: {username}</p>
                             <p>Email: {email}</p>
                             <p>Description: {description}</p>
                             <button onClick={() => updateStatus(id, 'ACTIVE')}>Activate</button>
                             <button onClick={() => updateStatus(id, 'DENY')}>Deny</button>
-                        </li>
+                        </div>
                     ))}
-                </ul>
+                </div>
             )}
         </div>
     );

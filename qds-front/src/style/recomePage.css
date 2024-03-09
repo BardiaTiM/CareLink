@@ -1,0 +1,65 @@
+/* recomPage.css */
+
+/* Style for the main container */
+.recom-page-container {
+    margin: 20px;
+}
+
+/* Style for the recommendation card */
+.recommendation-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Style for the person image */
+.recommendation-card img {
+    width: 150px; /* Adjust as needed */
+    height: 150px; /* Adjust as needed */
+    border-radius: 50%; /* Ensure circular shape */
+    margin-bottom: 10px;
+}
+
+/* Style for the person name */
+.recommendation-card p {
+    margin-bottom: 5px;
+}
+
+/* Style for the badges container */
+.badges {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Style for individual badge images */
+.badges img {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    text-align: center; /* Center align the content */
+}
+
+.modal-content img {
+    max-width: 100%; /* Ensure the image fits within the modal content */
+    border-radius: 50%; /* Make the image round */
+    margin-bottom: 20px; /* Add some space below the image */
+}
