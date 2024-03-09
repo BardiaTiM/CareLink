@@ -122,6 +122,30 @@ app.post('/signup', async function(req, res) {
     }
 });
 
+// Endpoint for user sign-up
+app.post('/peersignup', async function(req, res) {
+
+    const { username, password, email, description, status} = req.body;
+
+    try {
+        // Hash the password using bcrypt
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Insert the username, hashed password, and email into the Supabase database
+        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status}]);
+        if (error) {
+            console.error('Error signing up:', error.message);
+            res.status(500).json({ error: 'An error occurred while signing up' });
+        } else {
+            console.log('User signed up successfully:', data);
+            res.status(200).json({ message: 'User signed up successfully' });
+        }
+    } catch (error) {
+        console.error('Error signing up:', error.message);
+        res.status(500).json({ error: 'An error occurred while signing up' });
+    }
+});
+
 // Endpoint for user login
 app.post('/login', async function(req, res) {
     const { email, password } = req.body;
@@ -130,6 +154,42 @@ app.post('/login', async function(req, res) {
         // Query the Supabase database for the user with the provided email
         const { data, error } = await supabase
             .from('user')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        // Check if the user exists and the password matches
+        if (error) {
+            console.error('Error logging in:', error.message);
+            res.status(500).json({ error: 'An error occurred while logging in' });
+        } else if (!data) {
+            // User not found
+            res.status(401).json({ error: 'Invalid credentials' });
+        } else {
+            // Compare the provided password with the hashed password stored in the database
+            const passwordMatch = await bcrypt.compare(password, data.password);
+            if (passwordMatch) {
+                // Passwords match, user is authenticated
+                res.status(200).json({ message: 'Login successful' });
+            } else {
+                // Passwords do not match
+                res.status(401).json({ error: 'Invalid credentials' });
+            }
+        }
+    } catch (error) {
+        console.error('Error logging in:', error.message);
+        res.status(500).json({ error: 'An error occurred while logging in' });
+    }
+});
+
+// Endpoint for user login
+app.post('/peerlogin', async function(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        // Query the Supabase database for the user with the provided email
+        const { data, error } = await supabase
+            .from('peer_helpers')
             .select('*')
             .eq('email', email)
             .single();
