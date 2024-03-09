@@ -19,7 +19,7 @@ export function Navbar() {
                 <li className="nav-item non-highlight"><Link to="/">Home</Link></li>
                 <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>
                 {!isAuthenticated && <li className="nav-item non-highlight"><Link to="/login">Login</Link></li>}
-                <li className="nav-item highlight"><Link to="/signup">Get Started</Link></li>
+                {!isAuthenticated && <li className="nav-item highlight"><Link to="/signup">Get Started</Link></li>}
                 {isAuthenticated && (
                     <li className="nav-item non-highlight">
                         <Link to="/login" onClick={handleLogout}>
