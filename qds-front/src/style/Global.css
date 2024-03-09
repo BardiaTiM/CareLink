@@ -15,15 +15,3 @@ body {
     min-height: 100vh;
     background-color: #f4f4f4;
 }
-
-.header-container {
-    width: 100vw;
-    height: 100vh;
-    background: url('../style/images/beach.jpg') center/cover;
-    padding: 10px;
-    text-align: center;
-    color: white;
-    position: relative;
-    z-index: 1;
-    /* Ensure the header appears above other elements */
-}

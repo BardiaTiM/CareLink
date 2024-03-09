@@ -1,7 +1,7 @@
 .login-page {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 25%;
+    left: 75%;
     transform: translate(-50%, -50%);
 
     margin: 0;
@@ -11,13 +11,13 @@
     align-items: center;
     flex-direction: column;
 
-    width: 300px;
-    background-color: #f4f4f4;
     z-index: 2;
 
     background-color: #f4f4f4;
 
-    border-radius: 15px;
+    border-radius: 20px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -36,7 +36,6 @@ form {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
 

@@ -4,15 +4,18 @@ import '../style/Navbar.css';
 import '../style/Index.css';
 import '../style/Global.css';
 
-import beachImage from '../style/images/beach.jpg'; // Import the beach image
-
 export function LandingPage() {
     return (
         <>
-            <div className="header-container">
-                <h1 className="header-title">Placeholder</h1>
+            <div className="landing-container">
+                <div className="header-container">
+                    <h1 className="header-title">Placeholder</h1>
+                </div>
+                <div className="login-container">
+                    <Login />
+                </div>
             </div>
-            <Login />
+
             <div className="splash-container">
                 <div className="splash-content">
                     <h1>QDS</h1>
