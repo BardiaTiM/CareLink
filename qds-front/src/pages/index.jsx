@@ -27,10 +27,8 @@ export function LandingPage() {
                 <div className="header-image-columns">
                     {/* Left column */}
                     <div className="header-image-column">
-                        <div className="header-text-container">
-                            <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
-                            <h1 className="black-text">CareLink</h1>
-                            <h3 className="lack-text">
+                        <div className="header-motto-container">
+                            <h3>
                                 Find Support Anonymously
                                 <br />
                                 Matched by AI, Monitored by Counselors
@@ -40,7 +38,11 @@ export function LandingPage() {
 
                     {/* Right column */}
                     <div className="header-image-column">
-                        <Login />
+                        <div className="header-text-container">
+                            <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
+                            {/* <h1 className="black-text">CareLink</h1> */}
+                            <Login />
+                        </div>
                     </div>
                 </div>
             </div>

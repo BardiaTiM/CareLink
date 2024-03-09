@@ -6,6 +6,18 @@
     text-align: center;
     color: white;
     z-index: 2;
+    display: flex;
+    /* Enable flexbox */
+    align-items: center;
+    /* Vertical centering */
+    justify-content: center;
+    /* Horizontal centering */
+}
+
+.header-motto-container {
+    font-size: x-large;
+    font-weight: bold;
+    color: white;
 }
 
 .header-image-container {
@@ -24,15 +36,17 @@
 }
 
 .header-text-container {
-    width: 30vw;
+    width: 20vw;
+    height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     margin: 0 auto;
+    /* margin-top: 20vh; */
     margin-bottom: 20px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 1);
     color: black;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
