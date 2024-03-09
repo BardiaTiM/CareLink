@@ -1,3 +1,4 @@
+// RecomPage.jsx
 import React, { useState, useEffect } from 'react';
 import { RecomModal } from './RecomModal';
 import { MoreRecommendations } from './MoreRecommendations';
@@ -43,7 +44,7 @@ export function RecomPage() {
             )}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={toggleModal} />
+                    <RecomModal onClose={toggleModal} recommendation={mainRecommendation} />
                 </div>
             )}
             {!showMore && recommendations.length > 0 && (
@@ -51,7 +52,7 @@ export function RecomPage() {
                     <button onClick={toggleMore}>View More Recommendations</button>
                 </div>
             )}
-            {showMore && <MoreRecommendations recommendations={recommendations} />} {/* Pass recommendations to MoreRecommendations component */}
+            {showMore && <MoreRecommendations recommendations={recommendations} onClose={toggleModal} />} {/* Pass recommendations and toggleModal function to MoreRecommendations component */}
         </div>
     );
 }
