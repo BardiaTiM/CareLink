@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Authentication/AuthContext'; // Adjust the import path as necessary
 
-export function Login() {
+export function CouncilorLogin() {
     const navigate = useNavigate();
     const { login } = useAuth(); // Destructure the login function from useAuth
 
@@ -14,7 +14,7 @@ export function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8000/login', {
+        const response = await fetch('http://localhost:8000/CoucnilorLogin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export function Login() {
 
     return (
         <div>
-            <h1>Login</h1>
+            <h1>Councilor Login</h1>
             <form onSubmit={handleSubmit}>
                 <input
                     name="email"
