@@ -8,6 +8,7 @@ import { Login } from './pages/login';
 import { Main } from './pages/main';
 import { PrivateRoute } from './routing/PrivateRoute';
 import { SignUp } from './pages/signup';
+import { CouncilorLogin } from './pages/councilorLogin';
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                             <Main />
                         </PrivateRoute>
                     }/>
+                    <Route path="/councilorLogin" element={<CouncilorLogin/> } />
                 </Routes>
             </Router>
         </AuthProvider>
