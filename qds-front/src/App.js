@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/navbar';
 import { LandingPage } from './pages/index';
 import { Login } from './pages/login';
-import { MainPage } from './pages/mainPage'; // Import the MainPage component
+import { MainPage } from './pages/mainPage';
 
 function App() {
     return (
@@ -12,7 +12,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/main" element={<MainPage />} /> {/* Add this route for the MainPage */}
+                <Route path="/main" element={<MainPage />} />
             </Routes>
         </Router>
     );
