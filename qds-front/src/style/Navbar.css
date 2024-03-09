@@ -1,3 +1,4 @@
+/* Navbar.css */
 body {
     font-family: 'Nunito Sans', sans-serif;
     margin: 0;
@@ -9,11 +10,13 @@ body {
 .navbar {
     background-color: #1A936F;
     overflow: hidden;
-    width: 100vw;
+    /* width: 100vw; */
     height: 64px;
     line-height: 64px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    /* Distribute space between items */
     position: fixed;
     top: 0;
     left: 0;
@@ -21,6 +24,12 @@ body {
     z-index: 1000;
     padding-left: 40px;
     padding-right: 40px;
+}
+
+.brand {
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .navbar-nav {
@@ -41,6 +50,11 @@ ul {
 ul li {
     display: inline;
     margin-right: 20px;
+}
+
+ul li:last-child {
+    margin-right: 0;
+    /* Remove margin for the last li element */
 }
 
 ul li a {
