@@ -4,7 +4,7 @@ body {
 }
 
 .navbar {
-    background-color: #1A936F;
+    background-color: rgba(26, 147, 111, 0.7); 
     overflow: hidden;
     height: 64px;
     line-height: 64px;
@@ -18,6 +18,9 @@ body {
     z-index: 1000;
     padding-left: 40px;
     padding-right: 40px;
+
+    backdrop-filter: blur(10px);
+    /* filter: brightness(1.2); */
 }
 
 .brand {
