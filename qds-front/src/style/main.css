@@ -1,6 +1,6 @@
 /* main.css */
-.card {
-    max-width: 3000px; /* Increased max-width for a wider card */
+.cards {
+    max-width: 1500px; /* Increased max-width for a wider card */
     width: 100%;
     margin: 40px auto;
     padding: 20px;
@@ -28,7 +28,7 @@ h1 {
 }
 
 textarea {
-    width: 95%; /* Maintain the width to ensure padding and aesthetics */
+    width: 100%; /* Maintain the width to ensure padding and aesthetics */
     padding: 10px;
     margin-bottom: 20px;
     border-radius: 4px;

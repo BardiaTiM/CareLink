@@ -1,15 +1,26 @@
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
+.three-column-grid {
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr); /* Corrected for 3 columns */
     gap: 20px;
 }
 
+.card-container {
+    display: flex;
+    flex-wrap: wrap; /* Changed from nowrap to wrap */
+    gap: 20px;
+    justify-content: center; /* Added for horizontal alignment */
+}
+
 .card {
+    display: flex;
+    flex-direction: column;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 20px;
-    width: 300px;
+    width: 300px; /* Adjust width as needed to fit 3 cards */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
 .card p {

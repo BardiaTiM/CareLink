@@ -64,9 +64,9 @@ export function Main() {
                 <h1 className={animationClass}>Looking for Support? Connect with Peers and Counselors Here.</h1>
             )}
             {currentStep === 3 && (
-                <div className="card">
+                <div className="cards">
                     <div className={animationClass}>
-                        <h1>Share Your BCIT Experience</h1>
+                        <h2>Share Your BCIT Experience</h2>
                         <textarea
                             value={paragraph}
                             onChange={handleInputChange}

@@ -51,12 +51,14 @@ export function InReview() {
     return (
         <div>
             <h1>In Review</h1>
+            <br></br>
             {isLoading ? (
                 <p>Loading...</p>
             ) : error ? (
                 <p style={{ color: 'red' }}>{error}</p>
             ) : (
-                <div className="card-container">
+                // Use "three-column-grid" class for grid layout
+                <div className="three-column-grid">
                     {peerHelpers.map(({ id, username, email, description }) => (
                         <div key={id} className="card">
                             <p>Username: {username}</p>
