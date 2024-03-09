@@ -1,0 +1,11 @@
+{
+  "name": "qdshackathon2024",
+  "version": "1.0.0",
+  "description": "QDS Hackathon app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ravdeep Aulakh",
+  "license": "ISC"
+}
