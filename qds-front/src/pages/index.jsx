@@ -6,6 +6,7 @@ import '../style/Index.css';
 import '../style/Global.css';
 import '../style/Logo.css';
 import logoImageWhite from '../style/images/CareLink v1 - white.png';
+import logoImageColor from '../style/images/CareLink v1 - color.png';
 import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 import headerBackgroundImage from '../style/images/people-2.jpg';
 
@@ -23,14 +24,14 @@ export function LandingPage() {
         <>
             <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
                 <div className="header-container">
-                    <Link to="/" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-                        <img src={logoImageWhite} alt="CareLink Logo" className="logo-image-2" />
-                    </Link>
-                    <h1>CareLink</h1>
-                    <h3 className="header-title">
-                        Find Support Anonymously
-                        <br></br>
-                        Matched by AI, Monitored by Counselors</h3>
+                    <div className="header-text-container">
+                        <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
+                        <h1 className="black-text">CareLink</h1>
+                        <h3 className="lack-text">
+                            Find Support Anonymously
+                            <br></br>
+                            Matched by AI, Monitored by Counselors</h3>
+                    </div>
                 </div>
             </div>
 
