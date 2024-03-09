@@ -47,6 +47,10 @@ export function LandingPage() {
                 </div>
             </div>
 
+            <div className="call-to-action-container">
+                <h1>The Social Support Network</h1>
+            </div>
+
             <div className="grid-container">
                 <div className="four-column-grid">
                     <div className="splash-container">
