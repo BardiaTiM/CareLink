@@ -16,8 +16,6 @@ import PrivateChat from './pages/privateChat';
 import { NotFound } from './pages/404';
 import { RecomPage } from './pages/RecomPage';
 
-// Import the Problem component
-import { Problem } from './pages/problem';
 
 function App() {
     return (
@@ -36,7 +34,6 @@ function App() {
                     <Route path="/inReview" element={<PrivateRoute><InReview /></PrivateRoute>} />
                     <Route path="/recomPage" element={<PrivateRoute><RecomPage /></PrivateRoute>} />
                     {/* Add the route for the Problem component */}
-                    <Route path="/problem" element={<PrivateRoute><Problem /></PrivateRoute>} />
                     <Route path="*" element={<NotFound />} />
 
                 </Routes>
