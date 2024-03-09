@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    padding: 0;
+    /* Ensure body takes up the full viewport height */
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
+    background-color: #333; /* Dark background color */
+    overflow: hidden;
+    width: 100%; /* Ensure navbar takes full width */
+    max-width: 130%;
+    height: 50px;
+    line-height: 50px; /* Center the links vertically */
+}
+
+.navbar-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+ul {
+    height: 50px;
+    line-height: 50px; /* Center the links vertically */
+
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Targeting <li> elements within the <ul> for individual nav items */
+ul li {
+    display: inline; /* Display links in a line */
+    margin-right: 20px; /* Space between links */
+}
+
+/* Styling the <a> elements within the <li> */
+ul li a {
+    text-decoration: none;
+    color: white; /* Light text color */
+    font-size: 16px;
+}
+
+/* Adding hover effects to the <a> elements */
+ul li a:hover {
+    color: black; /* Change text color to black on hover */
+    background-color: cornsilk; /* Change background color on hover */
+    border-radius: 10px; /* Rounded corners for hover effect */
+    padding: 10px 20px; /* Padding for hover effect */
+}
