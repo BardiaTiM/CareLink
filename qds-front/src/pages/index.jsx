@@ -1,4 +1,5 @@
 import "../style/Global.css";
+import "../style/Navbar.css";
 
 export function LandingPage() {
     return (
