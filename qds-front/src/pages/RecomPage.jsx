@@ -1,13 +1,12 @@
-// src/pages/RecomPage.jsx
-
-import React, { useState } from 'react';
-import { RecomModal } from './RecomModal'; // Correct the import statement
-import { MoreRecommendations } from './MoreRecommendations'; // Import the MoreRecommendations component
+import React, { useState, useEffect } from 'react';
+import { RecomModal } from './RecomModal';
+import { MoreRecommendations } from './MoreRecommendations';
 import '../style/recomePage.css';
 
-export function RecomPage() { // Change the component name to start with uppercase
+export function RecomPage() {
     const [showModal, setShowModal] = useState(false);
-    const [showMore, setShowMore] = useState(false); // State to toggle the visibility of more recommendations
+    const [showMore, setShowMore] = useState(false);
+    const [recommendations, setRecommendations] = useState([]);
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -17,37 +16,71 @@ export function RecomPage() { // Change the component name to start with upperca
         setShowMore(!showMore);
     };
 
+    useEffect(() => {
+        // Fetch data when component mounts
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            const response = await fetch('/help_request');
+            if (!response.ok) {
+                throw new Error('Failed to fetch recommendations');
+            }
+            const contentType = response.headers.get('content-type');
+    
+            // Log the content type
+            console.log('Content-Type:', contentType);
+    
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                const users = data.recommendations.map(recommendation => ({
+                    username: recommendation.username,
+                    description: recommendation.description
+                }));
+                console.log(users);
+                setRecommendations(users);
+            } else if (contentType && contentType.includes('text/html')) {
+                // Handle text/html response (e.g., display error message)
+                console.error('Received HTML response instead of JSON');
+            } else {
+                throw new Error('Unexpected response type');
+            }
+        } catch (error) {
+            console.error('Error fetching recommendations:', error);
+        }
+    };
+    
+    
+    
+    
+    
+    
+
     return (
         <div>
             <h1>Main Recommendation</h1>
-            <div className="recommendation-card" onClick={toggleModal}>
-                <div className="person-info">
-                    <img src="https://via.placeholder.com/150" alt="Person" />
-                    <div className="info">
-                        <p>Name: John Doe</p>
-                        <div className="badges">
-                            <img src="https://via.placeholder.com/50" alt="Badge 1" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 2" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 3" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 4" />
+            {recommendations.map((recommendation, index) => (
+                <div key={index} className="recommendation-card" onClick={toggleModal}>
+                    <div className="person-info">
+                        <img src={`https://via.placeholder.com/150?text=${recommendation.username}`} alt="Person" />
+                        <div className="info">
+                            <p>Name: {recommendation.username}</p>
+                            <p>Description: {recommendation.description}</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            ))}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
                     <RecomModal onClose={toggleModal} />
                 </div>
             )}
-
-            {/* Render the "View More Recommendations" button */}
             {!showMore && (
                 <div className="view-more-container">
                     <button onClick={toggleMore}>View More Recommendations</button>
                 </div>
             )}
-
-            {/* Render the MoreRecommendations component if showMore is true */}
             {showMore && <MoreRecommendations />}
         </div>
     );

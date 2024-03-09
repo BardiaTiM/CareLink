@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function Problem() {
     const [paragraph, setParagraph] = useState('');
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
     const handleInputChange = (event) => {
         setParagraph(event.target.value);
@@ -23,6 +25,7 @@ export function Problem() {
             }
             console.log('Paragraph sent successfully');
             setParagraph(''); // Reset the input after sending
+            navigate('/recomPage'); // Redirect to recomPage after successful request using useNavigate
         } catch (error) {
             console.error('Error sending paragraph:', error.message);
         }
