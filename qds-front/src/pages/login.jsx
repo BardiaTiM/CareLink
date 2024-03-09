@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Authentication/AuthContext'; // Adjust the import path as necessary
 
 export function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth(); // Destructure the login function from useAuth
 
-    // Renamed state variables for clarity
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Updated handlers to reflect we're using email now
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
 
@@ -19,14 +19,15 @@ export function Login() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            // Updated to send email instead of username
             body: JSON.stringify({ email, password }),
         });
 
         if (response.ok) {
+            login(); // Call the login function to update isAuthenticated state
             navigate('/main'); // Navigate to /main using React Router
         } else {
             console.error('Login failed');
+            // Optionally, handle login failure (e.g., showing an error message)
         }
     };
 
@@ -38,15 +39,15 @@ export function Login() {
                     name="email"
                     type="email"
                     placeholder="Email"
-                    value={email} // Bind input to email state
-                    onChange={handleEmailChange} // Update email state on change
+                    value={email}
+                    onChange={handleEmailChange}
                 />
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
-                    value={password} // Bind input to password state
-                    onChange={handlePasswordChange} // Update password state on change
+                    value={password}
+                    onChange={handlePasswordChange}
                 />
                 <button type="submit">Login</button>
                 <button type={'button'} onClick={() => navigate('/signup')}>Sign Up</button>
