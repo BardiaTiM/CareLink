@@ -4,7 +4,7 @@ body {
 }
 
 .navbar {
-    background-color: rgba(26, 147, 111, 0.7); 
+    background-color: rgba(26, 147, 111, 1); 
     overflow: hidden;
     height: 64px;
     line-height: 64px;
