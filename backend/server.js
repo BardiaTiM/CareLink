@@ -16,6 +16,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors')
 
+
 //Database Constants
 const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
@@ -62,7 +63,7 @@ app.post('/signup', async function (req, res) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
         } else {
-            console.log('User signed up successfully:', data);
+            console.log('User signed up successfully:', username);
             res.status(200).json({ message: 'User signed up successfully' });
         }
     } catch (error) {
@@ -118,8 +119,9 @@ app.post('/login', async function (req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
+                const username = data.username;
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                res.status(200).json({ message: 'Login successful', userID: username});
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });

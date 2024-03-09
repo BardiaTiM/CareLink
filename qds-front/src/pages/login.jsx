@@ -23,6 +23,12 @@ export function Login() {
     });
 
     if (response.ok) {
+      const data = await response.json();
+      const username = data.userID;
+      //place the username in session storage
+      sessionStorage.setItem("username", username);
+
+      console.log("Login successful on frontend: ", username);
       login(); // Call the login function to update isAuthenticated state
       navigate("/main"); // Navigate to /main using React Router
     } else {

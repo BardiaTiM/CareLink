@@ -27,9 +27,9 @@ function App() {
                     } />
                     <Route path="/councilorLogin" element={<CouncilorLogin />} />
                     <Route path="/chat" element={
-                        <PrivateRoute>
-                            <Chat />
-                        </PrivateRoute>
+
+                            <Chat loggedInUserId={sessionStorage.getItem("username")} />
+
                     } />
                 </Routes>
             </Router>
