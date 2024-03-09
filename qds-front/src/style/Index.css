@@ -15,9 +15,16 @@
 }
 
 .header-motto-container {
-    font-size: x-large;
     font-weight: bold;
     color: white;
+}
+
+.header-motto-container h1 {
+    font-size: 65px;
+}
+
+.header-motto-container h3 {
+    font-size: 50px;
 }
 
 .header-image-container {

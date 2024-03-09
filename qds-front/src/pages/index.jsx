@@ -28,10 +28,14 @@ export function LandingPage() {
                     {/* Left column */}
                     <div className="header-image-column">
                         <div className="header-motto-container">
-                            <h3>
+                            <h1>
                                 Find Support Anonymously
+                            </h1>
+                            <br />
+                            <h3>
+                                Matched by AI,
                                 <br />
-                                Matched by AI, Monitored by Counselors
+                                Monitored by Counselors
                             </h3>
                         </div>
                     </div>
