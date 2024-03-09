@@ -1,3 +1,9 @@
+//imports
+const { createClient } = require('@supabase/supabase-js');
+
+//Requires
+require('dotenv').config();
+
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
@@ -6,9 +12,18 @@ const path = require('path');
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+const bodyParser = require('body-parser');
+
+//Database Constants
+const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Store connected clients
 const clients = new Map();
+
+// Use body-parser middleware to parse incoming JSON payloads
+app.use(bodyParser.json());
 
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
@@ -42,6 +57,28 @@ app.get('/', function (req, res) {
 app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Internal Server Error');
+});
+
+// Endpoint for user sign-up
+app.post('/signup', async function(req, res) {
+    const { username, password, email } = req.body;
+
+    console.log("USERNAME" + username);
+
+    // Insert the username and password into the Supabase database
+    try {
+        const { data, error } = await supabase.from('user').insert([{ username, password, email }]);
+        if (error) {
+            console.error('Error signing up:', error.message);
+            res.status(500).json({ error: 'An error occurred while signing up' });
+        } else {
+            console.log('User signed up successfully:', data);
+            res.status(200).json({ message: 'User signed up successfully' });
+        }
+    } catch (error) {
+        console.error('Error signing up:', error.message);
+        res.status(500).json({ error: 'An error occurred while signing up' });
+    }
 });
 
 server.listen(3000, function listening() {
