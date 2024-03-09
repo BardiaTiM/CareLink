@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Authentication/AuthContext'; // Adjust the import path as necessary
+import { useAuth } from '../Authentication/AuthContext';
+import "../style/Login.css";
 
 export function Login() {
     const navigate = useNavigate();
-    const { login } = useAuth(); // Destructure the login function from useAuth
+    const { login } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,16 +24,15 @@ export function Login() {
         });
 
         if (response.ok) {
-            login(); // Call the login function to update isAuthenticated state
-            navigate('/main'); // Navigate to /main using React Router
+            login();
+            navigate('/main');
         } else {
             console.error('Login failed');
-            // Optionally, handle login failure (e.g., showing an error message)
         }
     };
 
     return (
-        <div>
+        <div className="login-page">
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input
