@@ -16,29 +16,14 @@ body {
     background-color: #f4f4f4;
 }
 
-.splash-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: #f4f4f4;
-}
-
-.splash-content {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+.header-container {
+    width: 100vw;
+    height: 100vh;
+    background: url('../style/images/beach.jpg') center/cover;
+    padding: 10px;
+    text-align: center;
+    color: white;
     position: relative;
-    color: #fff;
-}
-
-.login-page {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f4f4f4;
+    z-index: 1;
+    /* Ensure the header appears above other elements */
 }
