@@ -9,23 +9,13 @@ export function MoreRecommendations() {
     const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
     const [selectedRecommendation, setSelectedRecommendation] = useState(null); // State to store selected recommendation
 
-    // Function to fetch more recommendations
-    const fetchMoreRecommendations = async () => {
-        try {
-            // Implement your logic to fetch more recommendations using AJAX
-            const response = await fetch('your_api_endpoint');
-            if (!response.ok) {
-                throw new Error('Failed to fetch recommendations');
-            }
-            const data = await response.json();
-            setRecommendations(data);
-        } catch (error) {
-            console.error('Error fetching recommendations:', error.message);
-        }
-    };
-
     useEffect(() => {
-        fetchMoreRecommendations();
+        // Retrieve recommendations from local storage
+        const storedRecommendations = localStorage.getItem('recommendations');
+        if (storedRecommendations) {
+            // Parse stored JSON data and set in state
+            setRecommendations(JSON.parse(storedRecommendations));
+        }
     }, []); // Fetch recommendations on component mount
 
     const toggleModal = () => {

@@ -7,6 +7,7 @@ export function RecomPage() {
     const [showModal, setShowModal] = useState(false);
     const [showMore, setShowMore] = useState(false);
     const [recommendations, setRecommendations] = useState([]);
+    const [mainRecommendation, setMainRecommendation] = useState(null);
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -17,71 +18,40 @@ export function RecomPage() {
     };
 
     useEffect(() => {
-        // Fetch data when component mounts
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch('/help_request');
-            if (!response.ok) {
-                throw new Error('Failed to fetch recommendations');
-            }
-            const contentType = response.headers.get('content-type');
-    
-            // Log the content type
-            console.log('Content-Type:', contentType);
-    
-            if (contentType && contentType.includes('application/json')) {
-                const data = await response.json();
-                const users = data.recommendations.map(recommendation => ({
-                    username: recommendation.username,
-                    description: recommendation.description
-                }));
-                console.log(users);
-                setRecommendations(users);
-            } else if (contentType && contentType.includes('text/html')) {
-                // Handle text/html response (e.g., display error message)
-                console.error('Received HTML response instead of JSON');
-            } else {
-                throw new Error('Unexpected response type');
-            }
-        } catch (error) {
-            console.error('Error fetching recommendations:', error);
+        // Retrieve data from local storage when component mounts
+        const storedRecommendations = localStorage.getItem('recommendations');
+        if (storedRecommendations) {
+            const parsedRecommendations = JSON.parse(storedRecommendations);
+            setMainRecommendation(parsedRecommendations[0]); // Display the first item as the main recommendation
+            setRecommendations(parsedRecommendations.slice(1)); // Set the rest of the recommendations for "More Recommendations"
         }
-    };
-    
-    
-    
-    
-    
-    
+    }, []);
 
     return (
         <div>
             <h1>Main Recommendation</h1>
-            {recommendations.map((recommendation, index) => (
-                <div key={index} className="recommendation-card" onClick={toggleModal}>
+            {mainRecommendation && (
+                <div className="recommendation-card" onClick={toggleModal}>
                     <div className="person-info">
-                        <img src={`https://via.placeholder.com/150?text=${recommendation.username}`} alt="Person" />
+                        <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
                         <div className="info">
-                            <p>Name: {recommendation.username}</p>
-                            <p>Description: {recommendation.description}</p>
+                            <p>Name: {mainRecommendation.username}</p>
+                            <p>Description: {mainRecommendation.description}</p>
                         </div>
                     </div>
                 </div>
-            ))}
+            )}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
                     <RecomModal onClose={toggleModal} />
                 </div>
             )}
-            {!showMore && (
+            {!showMore && recommendations.length > 0 && (
                 <div className="view-more-container">
                     <button onClick={toggleMore}>View More Recommendations</button>
                 </div>
             )}
-            {showMore && <MoreRecommendations />}
+            {showMore && <MoreRecommendations recommendations={recommendations} />} {/* Pass recommendations to MoreRecommendations component */}
         </div>
     );
 }

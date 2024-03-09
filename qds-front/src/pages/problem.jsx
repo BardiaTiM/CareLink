@@ -9,23 +9,27 @@ export function Problem() {
         setParagraph(event.target.value);
     };
 
-    const sendParagraph = async () => {
+    const sendParagraph = () => {
         try {
-            const username = sessionStorage.getItem("username"); // Assuming user_id is the same as the username
-    
-            const response = await fetch('http://localhost:8000/help_request', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ user_id: username, description: paragraph }),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to send paragraph');
-            }
-            console.log('Paragraph sent successfully');
-            setParagraph(''); // Reset the input after sending
-            navigate('/recomPage'); // Redirect to recomPage after successful request using useNavigate
+            const username = sessionStorage.getItem("username");
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:8000/help_request');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Parse and save the JSON response from the server in local storage
+                        const responseData = JSON.parse(xhr.responseText);
+                        localStorage.setItem('recommendations', JSON.stringify(responseData.recommendations));
+                        console.log('Paragraph sent successfully');
+                        setParagraph('');
+                        navigate('/recomPage');
+                    } else {
+                        console.error('Failed to send paragraph');
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ user_id: username, description: paragraph }));
         } catch (error) {
             console.error('Error sending paragraph:', error.message);
         }
