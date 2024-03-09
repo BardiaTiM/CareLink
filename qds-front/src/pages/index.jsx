@@ -1,20 +1,22 @@
 import React from 'react';
-import { Login } from './login'; // Import your Login component
-import '../style/Global.css';
+import { Login } from './login';
 import '../style/Navbar.css';
-import '../style/Index.css'; // Create a new CSS file for styling
+import '../style/Index.css';
+import '../style/Global.css';
 
 export function LandingPage() {
-  return (
-    <>
-      <div className="splash-page">
-        {/* Splash page content */}
-        <div className="splash-content">
-          <h1>QDS</h1>
-          <p>HomePage</p>
-        </div>
-      </div>
-      <Login /> {/* Render the Login component */}
-    </>
-  );
+    return (
+        <>
+            <div className="header-container">
+                <h1>Header</h1>
+            </div>
+            <div className="splash-container">
+                <div className="splash-content">
+                    <h1>QDS</h1>
+                    <p>HomePage</p>
+                </div>
+            </div>
+            <Login />
+        </>
+    );
 }
