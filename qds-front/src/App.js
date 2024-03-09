@@ -1,7 +1,7 @@
 // src/App.js
-import React, { useContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider, AuthContext } from './Authentication/AuthContext';
+import { AuthProvider } from './Authentication/AuthContext';
 import { Navbar } from './components/navbar';
 import { LandingPage } from './pages/index';
 import { Login } from './pages/login';
@@ -11,6 +11,7 @@ import Chat from './pages/chat';
 import { CouncilorLogin } from './pages/councilorLogin';
 import { Main } from "./pages/main";
 import PrivateChat from './pages/privateChat';
+import { NotFound } from './pages/404'; // Import the NotFound component
 
 function App() {    
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<LandingPage />} />
                     <Route path={"signup"} element={<SignUp />} />
+                    <Route path="/signup" element={<SignUp />}/>
                     <Route path="/login" element={<Login />} />
                     <Route path="/main" element={
                         <PrivateRoute>
@@ -33,6 +35,8 @@ function App() {
 
                     } />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
+                    <Route path="/councilorLogin" element={<CouncilorLogin />} />
+                    <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
                 </Routes>
             </Router>
         </AuthProvider>
