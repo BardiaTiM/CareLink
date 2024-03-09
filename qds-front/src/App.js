@@ -10,6 +10,7 @@ import {CouncilorLogin} from './pages/councilorLogin';
 import {Main} from "./pages/main";
 import {InReview} from "./pages/inReview";
 import {NotFound} from './pages/404'; // Import the NotFound component
+import {RecomPage} from './pages/RecomPage'; // Import the RecomPage component
 
 function App() {
     return (
@@ -30,6 +31,11 @@ function App() {
                         <PrivateRoute>
                             <InReview/>
                         </PrivateRoute>}/>
+                        <Route path="/recomPage" element={
+                        <PrivateRoute>
+                            <RecomPage /> {/* Use RecomPage here */}
+                        </PrivateRoute>
+                    } />
                     <Route path="*" element={<NotFound/>}/> {/* Catch-all route */}
                 </Routes>
             </Router>
