@@ -1,23 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Selection</title>
-</head>
-<body>
-    <h1>Select User to Chat With</h1>
-    <ul id="user-list">
-        <li onclick="selectUser('user1')">User 1</li>
-        <li onclick="selectUser('user2')">User 2</li>
-        <li onclick="selectUser('user3')">User 3</li>
-    </ul>
+  </head>
+  <body>
+    <h1>Select User to Login With</h1>
+    <input type="text" id="username" placeholder="Enter your username" />
+    <button onclick="selectUser()">Select</button>
 
-    <script>
-        function selectUser(user) {
-            localStorage.setItem('selectedUser', user);
-            window.location.href = 'chat.html';
-        }
-    </script>
-</body>
+    <script src="./selectUser.js"></script>
+  </body>
 </html>

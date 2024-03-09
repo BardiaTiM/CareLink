@@ -23,6 +23,10 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Store connected clients
 const clients = new Map();
+// Store messages
+const messages = [];
+// Track online users
+const onlineUsers = new Set();
 
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
@@ -31,21 +35,52 @@ app.use(bodyParser.json());
 app.use(cors());
 
 wss.on('connection', function connection(ws) {
+    let username = null;
+
     ws.on('message', function incoming(message) {
         try {
             const data = JSON.parse(message);
             if (data.type === 'join') {
-                clients.set(data.username, ws);
+                username = data.username;
+                clients.set(username, ws);
+                onlineUsers.add(username);
             } else if (data.type === 'message') {
-                const recipientSocket = clients.get(data.to);
-                if (recipientSocket) {
-                    recipientSocket.send(JSON.stringify({ type: 'message', from: data.from, message: data.message }));
-                } else {
-                    console.log(`Recipient ${data.to} not found.`);
+                const from = data.from;
+                const to = data.to;
+                const messageContent = data.message;
+
+                // Store message
+                messages.push({ from, to, message: messageContent });
+
+                // Send message to recipient if connected
+                if (to && clients.has(to)) {
+                    clients.get(to).send(JSON.stringify({ type: 'message', from, message: messageContent }));
+                } else if (!to) { // Broadcast to all users
+                    wss.clients.forEach(client => {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send(JSON.stringify({ type: 'message', from, message: messageContent }));
+                        }
+                    });
                 }
             }
         } catch (error) {
             console.error('Error parsing message:', error);
+        }
+    });
+
+    // Send stored messages to the user
+    ws.on('open', function () {
+        if (username) {
+            const userMessages = messages.filter(msg => msg.to === username);
+            userMessages.forEach(msg => {
+                ws.send(JSON.stringify({ type: 'message', from: msg.from, message: msg.message }));
+            });
+        }
+    });
+
+    ws.on('close', function () {
+        if (username) {
+            onlineUsers.delete(username);
         }
     });
 });

@@ -1,80 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chat</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="user-status"></div>
     <!-- Display current user -->
-    <input type="text" id="message" placeholder="Type your message">
+    <input type="text" id="recipient" placeholder="Enter recipient username" />
+    <input type="text" id="message" placeholder="Type your message" />
     <button onclick="sendMessage()">Send</button>
 
-    <script>
-        const ws = new WebSocket("ws://localhost:3000");
-        let username = localStorage.getItem('selectedUser');
-        let recipient = null;
-
-        ws.onopen = function () {
-            if (!username) {
-                alert("Username not found. Please go back and select a user.");
-                return;
-            }
-            ws.send(JSON.stringify({ type: "join", username: username }));
-            displayCurrentUser();
-        };
-
-        ws.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            if (data.type === "message" && (data.from === recipient || data.to === recipient)) {
-                displayMessage(`${data.from}: ${data.message}`);
-            }
-        };
-
-        function sendMessage() {
-            const messageInput = document.getElementById("message");
-            const message = messageInput.value.trim();
-            if (message !== "" && recipient !== null) {
-                ws.send(
-                    JSON.stringify({
-                        type: "message",
-                        from: username,
-                        to: recipient,
-                        message: message,
-                    })
-                );
-                messageInput.value = "";
-                displayMessage(`${username}: ${message}`);
-            } else {
-                alert("Please enter a message.");
-            }
-        }
-
-        function displayMessage(message) {
-            const chatArea = document.getElementById("chat-area");
-            const messageElement = document.createElement("div");
-            messageElement.textContent = message;
-            chatArea.appendChild(messageElement);
-        }
-
-        function displayCurrentUser() {
-            const userStatus = document.getElementById("user-status");
-            userStatus.textContent = `Logged in as: ${username}`;
-        }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            recipient = prompt("Enter recipient username:");
-        });
-
-        // Send message when Enter key is pressed
-        document.getElementById("message").addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        });
-    </script>
-
     <div id="chat-area"></div>
-</body>
+
+    <script src="./chat.js"></script>
+  </body>
 </html>
