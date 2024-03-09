@@ -29,7 +29,9 @@ export function LandingPage() {
                     <div className="header-image-column">
                         <div className="header-motto-container">
                             <h1>
-                                Find Support Anonymously
+                                Find Support Anonymously 
+                                <br></br>
+                                for BCIT Students
                             </h1>
                             <br />
                             <h3>
