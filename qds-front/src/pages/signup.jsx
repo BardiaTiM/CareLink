@@ -83,6 +83,7 @@ export function SignUp() {
                     />
                 )}
                 <button type="submit">Sign Up</button>
+                <button type={'button'} onClick={() => navigate('/login')} className="signup-button">I already have an account</button>
             </form>
         </div>
     );

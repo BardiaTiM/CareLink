@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Authentication/AuthContext'; // Adjust the import path as necessary
+import { useAuth } from '../Authentication/AuthContext';
+import "../style/Login.css";
 
 export function Login() {
     const navigate = useNavigate();
-    const { login } = useAuth(); // Destructure the login function from useAuth
+    const { login } = useAuth();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -57,7 +58,7 @@ export function Login() {
     };
 
     return (
-        <div>
+        <div className="login-page">
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input
@@ -80,7 +81,7 @@ export function Login() {
                     <option value="counselor">Counselor</option>
                 </select>
                 <button type="submit">Login</button>
-                <button type={'button'} onClick={() => navigate('/signup')}>Sign Up</button>
+                <button type={'button'} onClick={() => navigate('/signup')} className="signup-button">I don't have an account</button>
             </form>
             {errorMessage && <div style={{color: 'red'}}>{errorMessage}</div>}
         </div>
