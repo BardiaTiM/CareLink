@@ -1,0 +1,34 @@
+/* Targeting the <ul> directly for the navbar's overall styling */
+ul {
+    width: 100%; /* Set width to 100% of the containing element */
+    box-sizing: border-box;
+    background-color: #333; /* Dark background color */
+    overflow: hidden;
+    height: 50px;
+    line-height: 50px; /* Center the links vertically */
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Targeting <li> elements within the <ul> for individual nav items */
+ul li {
+    display: inline; /* Display links in a line */
+    margin-right: 20px; /* Space between links */
+}
+
+/* Styling the <a> elements within the <li> */
+ul li a {
+    text-decoration: none;
+    color: white; /* Light text color */
+    font-size: 16px;
+}
+
+/* Adding hover effects to the <a> elements */
+ul li a:hover {
+    color: black; /* Change text color to black on hover */
+    background-color: cornsilk; /* Change background color on hover */
+    border-radius: 10px; /* Rounded corners for hover effect */
+    padding: 10px 20px; /* Padding for hover effect */
+}
