@@ -218,8 +218,7 @@ app.post('/peerlogin', async function(req, res) {
     }
 });
 
-// Endpoint to retrieve peer_helpers with status "IN REVIEW"
-app.post('/peer_helpers/inreview', async function(req, res) {
+app.get('/peer_helpers/inreview', async function(req, res) {
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -246,15 +245,19 @@ app.post('/peer_helpers/inreview', async function(req, res) {
     }
 });
 
-// Endpoint to change the status of a peer_helper to "ACTIVE"
-app.post('/peer_helpers/activate', async function(req, res) {
-    try {
-        const { id } = req.body; // Assuming the UUID is sent in the request body
 
-        // Update the status of the peer_helper with the provided UUID to "ACTIVE"
+// Endpoint to change the status of a peer_helper
+app.post('/peer_helpers/update_status', async function(req, res) {
+    const { id, status } = req.body; // Now expecting both id and status
+
+    if (!['ACTIVE', 'DENY', 'IN REVIEW'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    try {
         const { error } = await supabase
             .from('peer_helpers')
-            .update({ status: 'ACTIVE' })
+            .update({ status })
             .eq('id', id);
 
         if (error) {
@@ -269,6 +272,8 @@ app.post('/peer_helpers/activate', async function(req, res) {
         res.status(500).json({ error: 'An error occurred while updating peer_helper status' });
     }
 });
+
+
 
 
 server.listen(8000, function listening() {
