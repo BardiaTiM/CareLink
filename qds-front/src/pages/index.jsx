@@ -1,41 +1,63 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Login } from './login';
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
 import '../style/Global.css';
+import '../style/Logo.css';
+import logoImageWhite from '../style/images/CareLink v1 - white.png';
+import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 
 export function LandingPage() {
+
+    const handleMouseEnter = (event) => {
+        event.currentTarget.querySelector('.logo-image-2').src = logoImageOrange;
+    };
+
+    const handleMouseLeave = (event) => {
+        event.currentTarget.querySelector('.logo-image-2').src = logoImageWhite;
+    };
+
     return (
         <>
             <div className="landing-container">
                 <div className="header-container">
+                    <Link to="/" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+                        <img src={logoImageWhite} alt="CareLink Logo" className="logo-image-2" />
+                    </Link>
                     <h1>CareLink</h1>
-                    <h3 className="header-title">Find Support Anonymously with CareLink - Matched by AI, Monitored by Counselors</h3>
+                    <h3 className="header-title">
+                        Find Support Anonymously
+                        <br></br>
+                        Matched by AI, Monitored by Counselors</h3>
                 </div>
             </div>
 
-            <div className="contcont">
+            <div className="grid-container">
                 <div className="four-column-grid">
                     <div className="splash-container">
                         <h2>Discover Your Support Network</h2>
-                        <p>Connect anonymously with peers facing similar challenges, fostering a community that goes beyond mental health. Your support journey starts here.</p>
+                        <p>Connect anonymously with peers facing similar challenges, fostering a community that goes beyond mental health.
+                            Your support journey starts here.</p>
                     </div>
 
                     <div className="splash-container">
                         <h2>Smart Matches, Real Oversight</h2>
-                        <p>Experience AI-driven matching that pairs you with the right counselors or peers. All interactions are overseen by real counselors, ensuring a safe and effective support system.</p>
+                        <p>Experience AI-driven matching that pairs you with the right counselors or peers.
+                            All interactions are overseen by real counselors, ensuring a safe and effective support system.</p>
                     </div>
 
                     <div className="splash-container">
-                        <h2>Comprehensive Security for BCIT Students</h2>
-                        <p>BCIT CareLink - where security meets support. Exclusive to BCIT students, with enhanced measures like email verification and counselor approval for meetups. Your well-being is our top priority.</p>
+                        <h2>Empowering Well-being at BCIT</h2>
+                        <p>Discover BCIT CareLink - Elevating your security and support.
+                            Tailored for BCIT students, our platform implements stringent measures including email verification and counselor approval for meetups.
+                        </p>
                     </div>
 
                     <div className="splash-container">
                         <h2>Start Your Journey with Confidence</h2>
-                        <p>Begin your journey to well-being confidently, knowing BCIT CareLink is your exclusive, secure, and comprehensive support network. We're here for you every step of the way.</p>
+                        <p>Begin your journey to well-being confidently, knowing BCIT CareLink is your exclusive, secure, and comprehensive support network.
+                            We're here for you every step of the way.</p>
                     </div>
                 </div>
             </div>
