@@ -83,7 +83,7 @@ export function LandingPage() {
 
             <footer className="footer">
                 <div className="footer-content">
-                    <p>&copy; 2024 BCIT CareLink. All rights reserved.</p>
+                    <p>&copy; 2024 CareLink. All rights reserved.</p>
                 </div>
             </footer>
         </>
