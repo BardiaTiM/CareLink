@@ -41,10 +41,12 @@
 }
 
 .header-motto-container h1 {
+    color: white;
     font-size: 65px;
 }
 
 .header-motto-container h3 {
+    color: white;
     font-size: 50px;
 }
 
@@ -128,6 +130,10 @@
     width: 80vw;
     padding: 20px;
     margin: 0 auto;
+}
+
+.call-to-action-container h1 {
+    color: white;
 }
 
 .four-column-grid {
