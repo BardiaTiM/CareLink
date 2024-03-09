@@ -12,9 +12,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 100%;
+    width: 80vw;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 
 .splash-content {
     flex: 1;
@@ -24,6 +30,7 @@
     flex-direction: column;
     position: relative;
     color: #fff;
+    background-color: white;
 }
 
 .landing-container {
