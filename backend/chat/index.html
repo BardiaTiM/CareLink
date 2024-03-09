@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+<body>
+    <input type="text" id="message" placeholder="Type your message">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:3000');
+        let username = null;
+
+        ws.onopen = function() {
+            username = prompt("Enter your username:");
+            ws.send(JSON.stringify({ type: 'join', username: username }));
+        };
+
+        ws.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'message') {
+                displayMessage(`${data.from}: ${data.message}`);
+            }
+        };
+
+        function sendMessage() {
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value.trim();
+            if (message !== '') {
+                const to = prompt("Enter recipient's username:");
+                ws.send(JSON.stringify({ type: 'message', from: username, to: to, message: message }));
+                messageInput.value = '';
+                displayMessage(`${username}: ${message}`);
+            }
+        }
+
+        function displayMessage(message) {
+            const chatArea = document.getElementById('chat-area');
+            const messageElement = document.createElement('div');
+            messageElement.textContent = message;
+            chatArea.appendChild(messageElement);
+        }
+    </script>
+
+    <div id="chat-area"></div>
+</body>
+</html>
