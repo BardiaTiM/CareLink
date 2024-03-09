@@ -1,0 +1,23 @@
+.splash-page {
+    display: flex;
+    height: 100vh;
+}
+
+.splash-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.login-page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
