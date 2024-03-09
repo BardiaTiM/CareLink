@@ -1,17 +1,10 @@
-.login-page {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 100vh;
-    height: 100vh;
-    background-color: #f4f4f4;
+h1 {
+    color: white;
+    font-size: 50px;
 }
 
-h1 {
-    color: #1A936F;
+.header-title {
+    color: white;
 }
 
 .container {
@@ -22,7 +15,6 @@ form {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
 
@@ -33,6 +25,7 @@ input {
     box-sizing: border-box;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background-color: #ffffff;
 }
 
 button {
