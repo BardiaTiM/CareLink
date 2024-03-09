@@ -11,12 +11,12 @@ h1 {
     text-align: center;
 }
 
-form {
+/* form {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 20px;
     width: 300px;
-}
+} */
 
 input {
     width: 100%;
@@ -54,4 +54,15 @@ button:hover {
     background-color: #042A2B;
     color: #ffffff;
     border: 1px solid #1A936F;
+}
+
+.signup-form div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.signup-form label {
+    align-self: flex-start;
+    margin-bottom: 5px;
 }

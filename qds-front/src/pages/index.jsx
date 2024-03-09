@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { SignUp } from './signup'; // Import the Login component
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -22,17 +23,38 @@ export function LandingPage() {
 
     return (
         <>
-            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
-                <div className="header-container">
-                    <div className="header-text-container">
-                        <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
-                        <h1 className="black-text">CareLink</h1>
-                        <h3 className="lack-text">
-                            Find Support Anonymously
-                            <br></br>
-                            Matched by AI, Monitored by Counselors</h3>
+            <div className="header-container header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
+                <div className="header-image-columns">
+                    {/* Left column */}
+                    <div className="header-image-column">
+                        <div className="header-motto-container">
+                            <h1>
+                                Find Support Anonymously 
+                                <br></br>
+                                for BCIT Students
+                            </h1>
+                            <br />
+                            <h3>
+                                Matched by AI,
+                                <br />
+                                Monitored by Counselors
+                            </h3>
+                        </div>
+                    </div>
+
+                    {/* Right column */}
+                    <div className="header-image-column">
+                        <div className="header-text-container">
+                            <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
+                            {/* <h1 className="black-text">CareLink</h1> */}
+                            <SignUp />
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="call-to-action-container">
+                <h1>The Social Support Network</h1>
             </div>
 
             <div className="grid-container">
@@ -71,7 +93,7 @@ export function LandingPage() {
 
             <footer className="footer">
                 <div className="footer-content">
-                    <p>&copy; 2024 BCIT CareLink. All rights reserved.</p>
+                    <p>&copy; 2024 CareLink. All rights reserved.</p>
                 </div>
             </footer>
         </>
