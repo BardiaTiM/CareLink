@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Login } from './login'; // Import the Login component
+import { SignUp } from './signup'; // Import the Login component
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -41,7 +41,7 @@ export function LandingPage() {
                         <div className="header-text-container">
                             <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
                             {/* <h1 className="black-text">CareLink</h1> */}
-                            <Login />
+                            <SignUp />
                         </div>
                     </div>
                 </div>
