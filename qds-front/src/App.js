@@ -25,6 +25,7 @@ function App() {
             <Router>
                 <Navbar />
                 <Routes>
+
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<Login />} />
@@ -37,6 +38,7 @@ function App() {
                     {/* Add the route for the Problem component */}
                     <Route path="/problem" element={<PrivateRoute><Problem /></PrivateRoute>} />
                     <Route path="*" element={<NotFound />} />
+
                 </Routes>
             </Router>
         </AuthProvider>

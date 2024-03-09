@@ -7,14 +7,15 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors')
+
 
 const { getActivePeerHelpers } = require('./gpt-api/database-query');
 const { getRecommendations } = require('./gpt-api/create-prompt');
@@ -24,20 +25,64 @@ const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-const clients = {};
+// Store connected clients
+const clients = new Map();
+// Store messages
+const messages = [];
+// Track online users
+const onlineUsers = new Set();
+
+// Use body-parser middleware to parse incoming JSON payloads
+app.use(bodyParser.json());
+
+// Use CORS middleware
+app.use(cors());
+
+// const clients = {};
 
 wss.on('connection', (ws) => {
-    ws.on('message', (message) => {
+    ws.on('message', async (message) => {
         const messageObject = JSON.parse(message);
 
         if (messageObject.type === 'join') {
-            // Save the user's WebSocket connection
             clients[messageObject.userId] = ws;
         } else if (messageObject.type === 'message') {
-            // Send the message to the specific other user
             const targetUserId = messageObject.chatId.replace(messageObject.from, '').replace('-', '');
+
+            // Determine user types asynchronously
+            const senderType = await determineUserType(messageObject.from);
+            const recipientType = await determineUserType(targetUserId);
+
+            // Broadcast the message to the recipient if they are connected
             if (clients[targetUserId] && clients[targetUserId].readyState === WebSocket.OPEN) {
-                clients[targetUserId].send(JSON.stringify(messageObject));
+                clients[targetUserId].send(JSON.stringify({
+                    ...messageObject,
+                    message_text: messageObject.content, // Include message text
+                    sender_type: senderType,
+                    recipient_type: recipientType,
+                    time_stamp: new Date().toISOString()
+                }));
+
+            }
+
+            // Save message to the database
+            try {
+                const { data, error } = await supabase
+                    .from('messages')
+                    .insert([{
+                        message_text: messageObject.content,
+                        sender_id: messageObject.from,
+                        sender_type: senderType,
+                        recipient_id: targetUserId,
+                        recipient_type: recipientType,
+                        time_stamp: new Date().toISOString()
+                    }]);
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+            } catch (error) {
+                console.error('Error saving message to the database:', error);
             }
         }
     });
@@ -52,15 +97,32 @@ wss.on('connection', (ws) => {
     });
 });
 
-// Use body-parser middleware to parse incoming JSON payloads
-app.use(bodyParser.json());
+// Implement this function based on your application's logic
+async function determineUserType(userId) {
+    const { data, error } = await supabase.from('user').select('*').eq('id', userId);
 
-// Use CORS middleware
-app.use(cors());
+    if (error) {
+        console.error('Error determining user type:', error.message);
+        // Consider what you want to do in case of an error. You could throw an error, return 'unknown', etc.
+        return 'unknown'; // This is just an example. Handle as appropriate for your app.
+    }
+
+    // Check if the database has returned any data
+    if (data && data.length > 0) {
+        // If the array is not empty, it means the user was found in the 'user' table
+        return 'user';
+    } else {
+        // If the array is empty, it means the user was not found in the 'user' table
+        return 'peer_helper';
+    }
+}
+
+// Serve static files from the chat directory
+app.use(express.static(path.join(__dirname, 'chat')));
 
 // If index.html is located in the chat directory
 app.get('/', function (req, res) {
-    console.log('Serving index.html');
+    res.sendFile(path.join(__dirname, 'chat', 'index.html'));
 });
 
 // Error handling middleware
@@ -71,19 +133,19 @@ app.use(function (err, req, res, next) {
 
 // Endpoint for user sign-up
 app.post('/signup', async function (req, res) {
-    const { username, password, email } = req.body;
+    const { username, password, email, role } = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('user').insert([{ username, password: hashedPassword, email }]);
+        const { data, error } = await supabase.from('user').insert([{ username, password: hashedPassword, email, role }]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
         } else {
-            console.log('User signed up successfully:', username);
+            console.log('User signed up successfully:', data);
             res.status(200).json({ message: 'User signed up successfully' });
         }
     } catch (error) {
@@ -92,17 +154,47 @@ app.post('/signup', async function (req, res) {
     }
 });
 
+app.get("/getAllUsers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('user').select('*');
+        if (error) {
+            console.error('Error getting users:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting users:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
+
+app.get("/getAllPeerHelpers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('peer_helpers').select('*');
+        if (error) {
+            console.error('Error getting peer:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting peer:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
+
 // Endpoint for user sign-up
 app.post('/peersignup', async function (req, res) {
 
-    const { username, password, email, description, status } = req.body;
+    const { username, password, email, description, status, role } = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status }]);
+        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status, role }]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
@@ -139,10 +231,11 @@ app.post('/login', async function (req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
-                const username = data.id;
-
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', userID: username });
+                const username = data.id;
+                const role = data.role;
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
+
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -154,37 +247,7 @@ app.post('/login', async function (req, res) {
     }
 });
 
-app.get("/getAllUsers", async function (req, res) {
-    try {
-        const { data, error } = await supabase.from('user').select('*');
-        if (error) {
-            console.error('Error getting users:', error.message);
-            res.status(500).json({ error: 'An error occurred while getting users' });
-        } else {
-            res.status(200).json(data);
-        }
-    } catch (error) {
-        console.error('Error getting users:', error.message);
-        res.status(500).json({ error: 'An error occurred while getting users' });
-    }
-})
-
-app.get("/getAllPeerHelpers", async function (req, res) {
-    try {
-        const { data, error } = await supabase.from('peer_helpers').select('*');
-        if (error) {
-            console.error('Error getting peer:', error.message);
-            res.status(500).json({ error: 'An error occurred while getting users' });
-        } else {
-            res.status(200).json(data);
-        }
-    } catch (error) {
-        console.error('Error getting peer:', error.message);
-        res.status(500).json({ error: 'An error occurred while getting users' });
-    }
-})
-
-// Endpoint for user login
+// Endpoint for peer login
 app.post('/peerlogin', async function (req, res) {
     const { email, password } = req.body;
 
@@ -207,10 +270,12 @@ app.post('/peerlogin', async function (req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
+                console.log(data);
                 const username = data.id;
+                const role = data.role;
 
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', userID: username });
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -222,8 +287,7 @@ app.post('/peerlogin', async function (req, res) {
     }
 });
 
-
-app.get('/peer_helpers/inreview', async function(req, res) {
+app.get('/peer_helpers/inreview', async function (req, res) {
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -252,7 +316,7 @@ app.get('/peer_helpers/inreview', async function(req, res) {
 
 
 // Endpoint to change the status of a peer_helper
-app.post('/peer_helpers/update_status', async function(req, res) {
+app.post('/peer_helpers/update_status', async function (req, res) {
     const { id, status } = req.body; // Now expecting both id and status
 
     if (!['ACTIVE', 'DENY', 'IN REVIEW'].includes(status)) {
@@ -342,8 +406,10 @@ app.post('/CouncilorLogin', async function (req, res) {
         } else {
             // Compare the provided password with the password stored in the database
             if (password === data.password) {
-                // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful' });
+                const username = data.id;
+                const role = data.role;
+                res.status(200).json({ message: 'Login successful', userID: username, role: role });
+
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -355,7 +421,34 @@ app.post('/CouncilorLogin', async function (req, res) {
     }
 });
 
+app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
+    const { senderId, recipientId } = req.params;
 
+    try {
+        // Query to get messages from the database where the current user is either the sender or recipient
+        let { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(`sender_id.eq.${senderId},recipient_id.eq.${senderId}`)
+            .or(`sender_id.eq.${recipientId},recipient_id.eq.${recipientId}`)
+            .order('time_stamp', { ascending: true }); // Sort by time_stamp to get the messages in order
+
+        if (error) {
+            throw error;
+        }
+
+        // Filter messages that are between senderId and recipientId
+        const chatHistory = data.filter(message => {
+            return (message.sender_id === senderId && message.recipient_id === recipientId) ||
+                (message.sender_id === recipientId && message.recipient_id === senderId);
+        });
+
+        res.json(chatHistory);
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 server.listen(8000, function listening() {
