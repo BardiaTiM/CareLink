@@ -14,6 +14,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
+const cors = require('cors')
 
 //Database Constants
 const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
@@ -25,6 +26,9 @@ const clients = new Map();
 
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
+
+// Use CORS middleware
+app.use(cors());
 
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
