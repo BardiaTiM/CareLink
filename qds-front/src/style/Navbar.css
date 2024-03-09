@@ -1,18 +1,32 @@
 body {
+    font-family: 'Nunito Sans', sans-serif;
     margin: 0;
     padding: 0;
-    /* Ensure body takes up the full viewport height */
-    width: 100%;
+    width: 100vw;
     height: 100%;
 }
 
 .navbar {
-    background-color: #333; /* Dark background color */
+    background-color: #1A936F;
     overflow: hidden;
-    width: 100%; /* Ensure navbar takes full width */
-    max-width: 130%;
-    height: 50px;
-    line-height: 50px; /* Center the links vertically */
+    height: 64px;
+    line-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.brand {
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
 }
 
 .navbar-nav {
@@ -23,31 +37,55 @@ body {
 }
 
 ul {
-    height: 50px;
-    line-height: 50px; /* Center the links vertically */
-
+    height: 64px;
+    line-height: 64px;
     margin: 0;
     padding: 0;
     text-align: center;
 }
 
-/* Targeting <li> elements within the <ul> for individual nav items */
 ul li {
-    display: inline; /* Display links in a line */
-    margin-right: 20px; /* Space between links */
+    display: inline;
+    margin-right: 20px;
 }
 
-/* Styling the <a> elements within the <li> */
+ul li:last-child {
+    margin-right: 0;
+}
+
 ul li a {
     text-decoration: none;
-    color: white; /* Light text color */
+    color: white;
     font-size: 16px;
+    position: relative;
 }
 
-/* Adding hover effects to the <a> elements */
-ul li a:hover {
-    color: black; /* Change text color to black on hover */
-    background-color: cornsilk; /* Change background color on hover */
-    border-radius: 10px; /* Rounded corners for hover effect */
-    padding: 10px 20px; /* Padding for hover effect */
+/* White underline when hovering the link */
+ul li.non-highlight a:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    background-color: white;
+}
+
+/* Highlighted Link Style */
+ul li.highlight a {
+    background-color: white;
+    color: #1A936F;
+    border-radius: 15px;
+    padding: 5px 15px;
+}
+
+ul li.highlight a:hover {
+    background-color: #042A2B;
+    color: white;
+}
+
+ul li.highlight a:hover::after {
+    content: '';
+    display: hidden;
 }
