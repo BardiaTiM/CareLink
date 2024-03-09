@@ -126,6 +126,36 @@ app.post('/signup', async function(req, res) {
     }
 });
 
+app.get("/getAllUsers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('user').select('*');
+        if (error) {
+            console.error('Error getting users:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting users:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
+
+app.get("/getAllPeerHelpers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('peer_helpers').select('*');
+        if (error) {
+            console.error('Error getting peer:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting peer:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
+
 // Endpoint for user sign-up
 app.post('/peersignup', async function(req, res) {
 
