@@ -7,6 +7,7 @@ import '../style/Global.css';
 import '../style/Logo.css';
 import logoImageWhite from '../style/images/CareLink v1 - white.png';
 import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
+import headerBackgroundImage from '../style/images/people-2.jpg';
 
 export function LandingPage() {
 
@@ -32,6 +33,8 @@ export function LandingPage() {
                         Matched by AI, Monitored by Counselors</h3>
                 </div>
             </div>
+
+            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}></div>
 
             <div className="grid-container">
                 <div className="four-column-grid">

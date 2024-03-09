@@ -8,6 +8,21 @@
     z-index: 2;
 }
 
+.header-image-container {
+    width: auto;
+    height: 100vh;
+    color: rgb(0, 0, 0);
+    margin: 0 auto;
+    margin-bottom: 20px;
+    background-size: cover;
+    /* Ensures the background image covers the entire container */
+    background-repeat: no-repeat;
+    /* Prevents the background image from tiling */
+    background-position: center;
+    /* Centers the background image */
+}
+
+
 .splash-container {
     color: rgb(0, 0, 0);
     display: flex;
