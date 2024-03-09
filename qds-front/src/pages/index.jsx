@@ -1,3 +1,5 @@
+import "../style/Global.css";
+
 export function LandingPage() {
     return (
         <>
