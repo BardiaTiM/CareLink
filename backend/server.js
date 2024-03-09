@@ -25,17 +25,48 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 const clients = {};
 
 wss.on('connection', (ws) => {
-    ws.on('message', (message) => {
+    ws.on('message', async (message) => {
         const messageObject = JSON.parse(message);
 
         if (messageObject.type === 'join') {
-            // Save the user's WebSocket connection
             clients[messageObject.userId] = ws;
         } else if (messageObject.type === 'message') {
-            // Send the message to the specific other user
             const targetUserId = messageObject.chatId.replace(messageObject.from, '').replace('-', '');
+
+            // Determine user types asynchronously
+            const senderType = await determineUserType(messageObject.from);
+            const recipientType = await determineUserType(targetUserId);
+
+            // Broadcast the message to the recipient if they are connected
             if (clients[targetUserId] && clients[targetUserId].readyState === WebSocket.OPEN) {
-                clients[targetUserId].send(JSON.stringify(messageObject));
+                clients[targetUserId].send(JSON.stringify({
+                    ...messageObject,
+                    message_text: messageObject.content, // Include message text
+                    sender_type: senderType,
+                    recipient_type: recipientType,
+                    time_stamp: new Date().toISOString()
+                }));
+
+            }
+
+            // Save message to the database
+            try {
+                const { data, error } = await supabase
+                    .from('messages')
+                    .insert([{
+                        message_text: messageObject.content,
+                        sender_id: messageObject.from,
+                        sender_type: senderType,
+                        recipient_id: targetUserId,
+                        recipient_type: recipientType,
+                        time_stamp: new Date().toISOString()
+                    }]);
+
+                if (error) {
+                    throw new Error(error.message);
+                }
+            } catch (error) {
+                console.error('Error saving message to the database:', error);
             }
         }
     });
@@ -50,6 +81,26 @@ wss.on('connection', (ws) => {
     });
 });
 
+// Implement this function based on your application's logic
+async function determineUserType(userId) {
+    const { data, error } = await supabase.from('user').select('*').eq('id', userId);
+
+    if (error) {
+        console.error('Error determining user type:', error.message);
+        // Consider what you want to do in case of an error. You could throw an error, return 'unknown', etc.
+        return 'unknown'; // This is just an example. Handle as appropriate for your app.
+    }
+
+    // Check if the database has returned any data
+    if (data && data.length > 0) {
+        // If the array is not empty, it means the user was found in the 'user' table
+        return 'user';
+    } else {
+        // If the array is empty, it means the user was not found in the 'user' table
+        return 'peer_helper';
+    }
+}
+
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
 
@@ -59,6 +110,35 @@ app.use(cors());
 // If index.html is located in the chat directory
 app.get('/', function (req, res) {
     console.log('Serving index.html');
+});
+
+app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
+    const { senderId, recipientId } = req.params;
+
+    try {
+        // Query to get messages from the database where the current user is either the sender or recipient
+        let { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(`sender_id.eq.${senderId},recipient_id.eq.${senderId}`)
+            .or(`sender_id.eq.${recipientId},recipient_id.eq.${recipientId}`)
+            .order('time_stamp', { ascending: true }); // Sort by time_stamp to get the messages in order
+
+        if (error) {
+            throw error;
+        }
+
+        // Filter messages that are between senderId and recipientId
+        const chatHistory = data.filter(message => {
+            return (message.sender_id === senderId && message.recipient_id === recipientId) ||
+                (message.sender_id === recipientId && message.recipient_id === senderId);
+        });
+
+        res.json(chatHistory);
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // Error handling middleware
@@ -221,7 +301,7 @@ app.post('/peerlogin', async function (req, res) {
 });
 
 
-app.get('/peer_helpers/inreview', async function(req, res) {
+app.get('/peer_helpers/inreview', async function (req, res) {
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -250,7 +330,7 @@ app.get('/peer_helpers/inreview', async function(req, res) {
 
 
 // Endpoint to change the status of a peer_helper
-app.post('/peer_helpers/update_status', async function(req, res) {
+app.post('/peer_helpers/update_status', async function (req, res) {
     const { id, status } = req.body; // Now expecting both id and status
 
     if (!['ACTIVE', 'DENY', 'IN REVIEW'].includes(status)) {
@@ -282,15 +362,35 @@ app.post('/help_request', async function (req, res) {
         const { user_id, description } = req.body; // Assuming user_id and description are sent from the frontend
 
         // Insert the user_id and description into the help_request table
-        const { data, error } = await supabase.from('help_request').insert([{ user_id, description }]);
+        const { data: helpRequestData, error: helpRequestError } = await supabase.from('help_request').insert([{ user_id, description }]);
 
-        if (error) {
-            console.error('Error adding help request:', error.message);
+        if (helpRequestError) {
+            console.error('Error adding help request:', helpRequestError.message);
             res.status(500).json({ error: 'An error occurred while adding help request' });
-        } else {
-            console.log('Help request added successfully:', data);
-            res.status(200).json({ message: 'Help request added successfully' });
+            return; // Stop execution if there's an error
         }
+
+        // Query active peer helpers from the database
+        const { data: peerHelpers, error: peerHelpersError } = await getActivePeerHelpers();
+
+        console.log('Peer helpers data:', peerHelpers);
+        console.log('Peer helpers error:', peerHelpersError);
+
+        if (peerHelpersError) {
+            console.error('Error retrieving active peer helpers:', peerHelpersError.message);
+            res.status(500).json({ error: 'An error occurred while retrieving active peer helpers' });
+            return; // Stop execution if there's an error
+        }
+
+        // Extract descriptions and IDs of active peer helpers
+        const peerHelperDescriptions = peerHelpers.map(peerHelper => peerHelper.description);
+        const peerHelperIDs = peerHelpers.map(peerHelper => peerHelper.id); // Assuming peer helper IDs are available in the data
+
+        // Call GPT to get recommendations based on user's description and peer helpers' descriptions
+        const recommendations = await getRecommendations(description, peerHelperDescriptions, peerHelperIDs, user_id);
+
+        // Return the recommendations to the front end
+        res.status(200).json({ recommendations });
     } catch (error) {
         console.error('Error adding help request:', error.message);
         res.status(500).json({ error: 'An error occurred while adding help request' });
