@@ -23,17 +23,25 @@ export function LandingPage() {
 
     return (
         <>
-            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
-                <div className="header-container">
-                    <div className="header-text-container">
-                        <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
-                        <h1 className="black-text">CareLink</h1>
-                        <h3 className="lack-text">
-                            Find Support Anonymously
-                            <br></br>
-                            Matched by AI, Monitored by Counselors</h3>
+            <div className="header-container header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
+                <div className="header-image-columns">
+                    {/* Left column */}
+                    <div className="header-image-column">
+                        <div className="header-text-container">
+                            <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
+                            <h1 className="black-text">CareLink</h1>
+                            <h3 className="lack-text">
+                                Find Support Anonymously
+                                <br />
+                                Matched by AI, Monitored by Counselors
+                            </h3>
+                        </div>
                     </div>
-                    <Login /> {/* Place the Login component wherever you want it to appear on the page */}
+
+                    {/* Right column */}
+                    <div className="header-image-column">
+                        <Login />
+                    </div>
                 </div>
             </div>
 
