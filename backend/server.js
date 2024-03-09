@@ -32,10 +32,13 @@ const messages = [];
 // Track online users
 const onlineUsers = new Set();
 
-app.use(cors());
-
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
+
+// Use CORS middleware
+app.use(cors());
+
+// const clients = {};
 
 wss.on('connection', (ws) => {
     ws.on('message', async (message) => {
@@ -80,29 +83,19 @@ wss.on('connection', (ws) => {
                 }
             } catch (error) {
                 console.error('Error saving message to the database:', error);
-
             }
-        } catch (error) {
-            console.error('Error parsing message:', error);
         }
     });
 
-    // Send stored messages to the user
-    ws.on('open', function () {
-        if (username) {
-            const userMessages = messages.filter(msg => msg.to === username);
-            userMessages.forEach(msg => {
-                ws.send(JSON.stringify({ type: 'message', from: msg.from, message: msg.message }));
-            });
-        }
-    });
-      ws.on('close', function () {
-        if (username) {
-            onlineUsers.delete(username);
-        }
+    ws.on('close', () => {
+        // Remove the WebSocket connection when the user disconnects
+        Object.entries(clients).forEach(([userId, clientWs]) => {
+            if (clientWs === ws) {
+                delete clients[userId];
+            }
+        });
     });
 });
-
 
 // Implement this function based on your application's logic
 async function determineUserType(userId) {
@@ -124,42 +117,12 @@ async function determineUserType(userId) {
     }
 }
 
-
 // Serve static files from the chat directory
 app.use(express.static(path.join(__dirname, 'chat')));
 
 // If index.html is located in the chat directory
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'chat', 'index.html'));
-});
-
-app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
-    const { senderId, recipientId } = req.params;
-
-    try {
-        // Query to get messages from the database where the current user is either the sender or recipient
-        let { data, error } = await supabase
-            .from('messages')
-            .select('*')
-            .or(`sender_id.eq.${senderId},recipient_id.eq.${senderId}`)
-            .or(`sender_id.eq.${recipientId},recipient_id.eq.${recipientId}`)
-            .order('time_stamp', { ascending: true }); // Sort by time_stamp to get the messages in order
-
-        if (error) {
-            throw error;
-        }
-
-        // Filter messages that are between senderId and recipientId
-        const chatHistory = data.filter(message => {
-            return (message.sender_id === senderId && message.recipient_id === recipientId) ||
-                (message.sender_id === recipientId && message.recipient_id === senderId);
-        });
-
-        res.json(chatHistory);
-    } catch (error) {
-        console.error('Error fetching chat history:', error);
-        res.status(500).send('Internal Server Error');
-    }
 });
 
 // Error handling middleware
@@ -169,8 +132,8 @@ app.use(function (err, req, res, next) {
 });
 
 // Endpoint for user sign-up
-app.post('/signup', async function(req, res) {
-    const { username, password, email,role } = req.body;
+app.post('/signup', async function (req, res) {
+    const { username, password, email, role } = req.body;
 
     try {
         // Hash the password using bcrypt
@@ -222,16 +185,16 @@ app.get("/getAllPeerHelpers", async function (req, res) {
 })
 
 // Endpoint for user sign-up
-app.post('/peersignup', async function(req, res) {
+app.post('/peersignup', async function (req, res) {
 
-    const { username, password, email, description, status,role} = req.body;
+    const { username, password, email, description, status, role } = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status,role}]);
+        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status, role }]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
@@ -246,7 +209,7 @@ app.post('/peersignup', async function(req, res) {
 });
 
 // Endpoint for user login
-app.post('/login', async function(req, res) {
+app.post('/login', async function (req, res) {
     const { email, password } = req.body;
 
     try {
@@ -324,9 +287,7 @@ app.post('/peerlogin', async function (req, res) {
     }
 });
 
-
 app.get('/peer_helpers/inreview', async function (req, res) {
-
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -382,7 +343,7 @@ app.post('/peer_helpers/update_status', async function (req, res) {
 });
 
 // Endpoint to add information into the help_request database table
-app.post('/help_request', async function(req, res) {
+app.post('/help_request', async function (req, res) {
     try {
         const { user_id, description } = req.body; // Assuming user_id and description are sent from the frontend
 
@@ -393,7 +354,6 @@ app.post('/help_request', async function(req, res) {
             console.error('Error adding help request:', helpRequestError.message);
             res.status(500).json({ error: 'An error occurred while adding help request' });
             return; // Stop execution if there's an error
-
         }
 
         // Query active peer helpers from the database
@@ -424,7 +384,7 @@ app.post('/help_request', async function(req, res) {
 });
 
 // Endpoint for councillor login
-app.post('/CouncilorLogin', async function(req, res) {
+app.post('/CouncilorLogin', async function (req, res) {
     const { email, password } = req.body;
 
     try {
@@ -460,7 +420,34 @@ app.post('/CouncilorLogin', async function(req, res) {
     }
 });
 
+app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
+    const { senderId, recipientId } = req.params;
 
+    try {
+        // Query to get messages from the database where the current user is either the sender or recipient
+        let { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(`sender_id.eq.${senderId},recipient_id.eq.${senderId}`)
+            .or(`sender_id.eq.${recipientId},recipient_id.eq.${recipientId}`)
+            .order('time_stamp', { ascending: true }); // Sort by time_stamp to get the messages in order
+
+        if (error) {
+            throw error;
+        }
+
+        // Filter messages that are between senderId and recipientId
+        const chatHistory = data.filter(message => {
+            return (message.sender_id === senderId && message.recipient_id === recipientId) ||
+                (message.sender_id === recipientId && message.recipient_id === senderId);
+        });
+
+        res.json(chatHistory);
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 server.listen(8000, function listening() {

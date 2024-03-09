@@ -32,7 +32,7 @@ function App() {
                     } />
                     <Route path="/chat" element={
 
-                            <Chat loggedInUserId={sessionStorage.getItem("username")} />
+                            <Chat loggedInUserId={sessionStorage.getItem("userId")} />
 
                     } />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
