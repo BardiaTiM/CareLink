@@ -1,0 +1,15 @@
+.logo-home {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    margin-left: 10px;
+    height: 35px;
+    width: auto;
+}
+
+.logo-image-2 {
+    height: 70px;
+    width: auto;
+}

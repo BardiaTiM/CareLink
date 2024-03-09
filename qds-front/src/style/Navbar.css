@@ -98,17 +98,6 @@ ul li.highlight a:hover::after {
     position: relative;
 }
 
-.logo-home {
-    display: flex;
-    align-items: center;
-}
-
-.logo-image {
-    margin-left: 10px;
-    height: 35px;
-    width: auto;
-}
-
 .brand-text {
     color: white;
     font-size: 30px;
