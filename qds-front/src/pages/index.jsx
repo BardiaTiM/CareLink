@@ -4,6 +4,8 @@ import '../style/Navbar.css';
 import '../style/Index.css';
 import '../style/Global.css';
 
+import beachImage from '../style/images/beach.jpg'; // Import the beach image
+
 export function LandingPage() {
     return (
         <>
