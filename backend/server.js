@@ -7,11 +7,11 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
-const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
+
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors')
@@ -21,12 +21,15 @@ const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
-// Store connected clients
-const clients = new Map();
-// Store messages
-const messages = [];
-// Track online users
-const onlineUsers = new Set();
+wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+        wss.clients.forEach((client) => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(message);
+            }
+        });
+    });
+});
 
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
@@ -34,63 +37,9 @@ app.use(bodyParser.json());
 // Use CORS middleware
 app.use(cors());
 
-wss.on('connection', function connection(ws) {
-    let username = null;
-
-    ws.on('message', function incoming(message) {
-        try {
-            const data = JSON.parse(message);
-            if (data.type === 'join') {
-                username = data.username;
-                clients.set(username, ws);
-                onlineUsers.add(username);
-            } else if (data.type === 'message') {
-                const from = data.from;
-                const to = data.to;
-                const messageContent = data.message;
-
-                // Store message
-                messages.push({ from, to, message: messageContent });
-
-                // Send message to recipient if connected
-                if (to && clients.has(to)) {
-                    clients.get(to).send(JSON.stringify({ type: 'message', from, message: messageContent }));
-                } else if (!to) { // Broadcast to all users
-                    wss.clients.forEach(client => {
-                        if (client.readyState === WebSocket.OPEN) {
-                            client.send(JSON.stringify({ type: 'message', from, message: messageContent }));
-                        }
-                    });
-                }
-            }
-        } catch (error) {
-            console.error('Error parsing message:', error);
-        }
-    });
-
-    // Send stored messages to the user
-    ws.on('open', function () {
-        if (username) {
-            const userMessages = messages.filter(msg => msg.to === username);
-            userMessages.forEach(msg => {
-                ws.send(JSON.stringify({ type: 'message', from: msg.from, message: msg.message }));
-            });
-        }
-    });
-
-    ws.on('close', function () {
-        if (username) {
-            onlineUsers.delete(username);
-        }
-    });
-});
-
-// Serve static files from the chat directory
-app.use(express.static(path.join(__dirname, 'chat')));
-
 // If index.html is located in the chat directory
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'chat', 'index.html'));
+    console.log('Serving index.html');
 });
 
 // Error handling middleware
@@ -100,7 +49,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Endpoint for user sign-up
-app.post('/signup', async function(req, res) {
+app.post('/signup', async function (req, res) {
     const { username, password, email } = req.body;
 
     try {
@@ -123,7 +72,7 @@ app.post('/signup', async function(req, res) {
 });
 
 // Endpoint for user login
-app.post('/login', async function(req, res) {
+app.post('/login', async function (req, res) {
     const { email, password } = req.body;
 
     try {
@@ -157,6 +106,21 @@ app.post('/login', async function(req, res) {
         res.status(500).json({ error: 'An error occurred while logging in' });
     }
 });
+
+app.get("/getAllUsers", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('user').select('*');
+        if (error) {
+            console.error('Error getting users:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting users' });
+        } else {
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting users:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting users' });
+    }
+})
 
 
 server.listen(8000, function listening() {
