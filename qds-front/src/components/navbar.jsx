@@ -7,8 +7,9 @@ export function Navbar() {
             <div className="brand">CareLink</div>
             <ul className="navbar-nav">
                 <li className="nav-item"><Link to="/">Home</Link></li>
+                <li className="nav-item"><Link to="/main">Main</Link></li>
                 <li className="nav-item"><Link to="/login">Login</Link></li>
-                <li className="nav-item"><Link to="/main">Main (Temp Link)</Link></li>
+                <li className="nav-item highlight"><Link to="/login">Get Started</Link></li>
             </ul>
         </nav>
     );

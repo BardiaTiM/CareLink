@@ -1,4 +1,3 @@
-/* Navbar.css */
 body {
     font-family: 'Nunito Sans', sans-serif;
     margin: 0;
@@ -10,13 +9,11 @@ body {
 .navbar {
     background-color: #1A936F;
     overflow: hidden;
-    /* width: 100vw; */
     height: 64px;
     line-height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* Distribute space between items */
     position: fixed;
     top: 0;
     left: 0;
@@ -54,7 +51,6 @@ ul li {
 
 ul li:last-child {
     margin-right: 0;
-    /* Remove margin for the last li element */
 }
 
 ul li a {
@@ -74,4 +70,12 @@ ul li a:hover::after {
     bottom: -5px;
     height: 2px;
     background-color: white;
+}
+
+/* Highlighted Link Style */
+ul li.highlight a {
+    background-color: white;
+    color: #1A936F; /* Set text color to the background color of the navbar */
+    border-radius: 15px;
+    padding: 5px 15px;
 }
