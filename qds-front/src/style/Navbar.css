@@ -10,8 +10,12 @@ body {
     overflow: hidden;
     width: 100%;
     max-width: 130%;
-    height: 50px;
-    line-height: 50px;
+    height: 64px;
+    line-height: 64px;
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .navbar-nav {
@@ -22,31 +26,33 @@ body {
 }
 
 ul {
-    height: 50px;
-    line-height: 50px; /* Center the links vertically */
-
+    height: 64px;
+    line-height: 64px;
     margin: 0;
     padding: 0;
     text-align: center;
 }
 
-/* Targeting <li> elements within the <ul> for individual nav items */
 ul li {
-    display: inline; /* Display links in a line */
-    margin-right: 20px; /* Space between links */
+    display: inline;
+    margin-right: 20px;
 }
 
-/* Styling the <a> elements within the <li> */
 ul li a {
     text-decoration: none;
-    color: white; /* Light text color */
+    color: white;
     font-size: 16px;
+    position: relative;
 }
 
-/* Adding hover effects to the <a> elements */
-ul li a:hover {
-    color: black; 
-    background-color: cornsilk; 
-    border-radius: 10px;
-    /* padding: 10px 20px;  */
+/* White underline when hovering the link */
+ul li a:hover::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 2px;
+    background-color: white;
 }
