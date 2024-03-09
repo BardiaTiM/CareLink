@@ -55,3 +55,14 @@ button:hover {
     color: #ffffff;
     border: 1px solid #1A936F;
 }
+
+.signup-form div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.signup-form label {
+    align-self: flex-start;
+    margin-bottom: 5px;
+}

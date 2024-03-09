@@ -48,16 +48,17 @@ export function SignUp() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="signup-form">
                 <div>
-                    <label htmlFor="role">Select Role:</label>
+                    <label htmlFor="role">Select Role</label>
                     <select id="role" value={role} onChange={handleRoleChange} required>
                         <option value="user">User</option>
                         <option value="peer">Peer</option>
                     </select>
                 </div>
+
                 <div>
-                    <label htmlFor="username">Username:</label>
+                    <label htmlFor="username">Username</label>
                     <input
                         type="text"
                         id="username"
@@ -67,19 +68,9 @@ export function SignUp() {
                         required
                     />
                 </div>
+
                 <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email">Email (used for logging in)</label>
                     <input
                         type="email"
                         id="email"
@@ -89,6 +80,19 @@ export function SignUp() {
                         required
                     />
                 </div>
+
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                    />
+                </div>
+
                 {role === 'peer' && (
                     <div>
                         <label htmlFor="description">Description:</label>
