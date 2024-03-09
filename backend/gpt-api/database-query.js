@@ -8,6 +8,10 @@ const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+/**
+ * Function that queries through the Councillor table and returns them for use by format-query.js
+ * @returns an array of javascript objects that have each Councillor and their name and bio
+ */
 async function getCouncillors() {
     try {
         // Query the Supabase database for councillors
@@ -37,3 +41,6 @@ async function getCouncillors() {
 getCouncillors()
     .then(councillors => console.log('Helpers:', councillors))
     .catch(error => console.error('Error:', error));
+
+// exporting method to use in other functions
+module.exports = getCouncillors;
