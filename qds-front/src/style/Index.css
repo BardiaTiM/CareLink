@@ -37,7 +37,6 @@
 
 .header-text-container {
     width: 20vw;
-    height: 40vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
