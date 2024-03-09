@@ -11,9 +11,6 @@ export function LandingPage() {
                 <div className="header-container">
                     <h1 className="header-title">Placeholder</h1>
                 </div>
-                <div className="login-container">
-                    <Login />
-                </div>
             </div>
 
             <div className="splash-container">

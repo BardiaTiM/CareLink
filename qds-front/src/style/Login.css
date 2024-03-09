@@ -1,27 +1,6 @@
-.login-page {
-    position: absolute;
-    top: 25%;
-    left: 75%;
-    transform: translate(-50%, -50%);
-
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    z-index: 2;
-
-    background-color: #f4f4f4;
-
-    border-radius: 20px;
-
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 h1 {
-    color: #1A936F;
+    color: white;
+    font-size: 50px;
 }
 
 .header-title {

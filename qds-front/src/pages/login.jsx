@@ -32,9 +32,9 @@ export function Login() {
     };
 
     return (
-        <div className="login-page">
-            <form onSubmit={handleSubmit}>
+        <div>
             <h1>Login</h1>
+            <form onSubmit={handleSubmit}>
                 <input
                     name="email"
                     type="email"
