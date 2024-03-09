@@ -19,13 +19,12 @@
     background-position: center;
 }
 
-.black-text{
+.black-text {
     color: black;
-
 }
 
 .header-text-container {
-    width: 25vw;
+    width: 30vw;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -109,4 +108,33 @@
     margin: 0 auto;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+}
+
+@media screen and (max-width: 900px) {
+    .four-column-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-container {
+        width: 70vw;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    .header-text-container {
+        width: auto;
+        margin: 0 15%;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .four-column-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .grid-container {
+        width: 50vw;
+        padding: 20px;
+        margin: 0 auto;
+    }
 }
