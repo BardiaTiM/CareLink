@@ -1,25 +1,52 @@
-//Initializing GPT API
-
 import OpenAI from "openai"
 require('dotenv').config();
 // Load your key from an environment variable or secret management service
 // (do not include your key directly in your code)
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+//initializing GPT API
 const openai = new OpenAI({
     apiKey: OPENAI_API_KEY
 });
 
-async function main() {
-    const completion = await openai.chat.completions.create({
-      messages: [{"role": "system", "content": "You are a helpful assistant."},
-          {"role": "user", "content": "Who won the world series in 2020?"},
-          {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-          {"role": "user", "content": "Where was it played?"}],
-      model: "gpt-3.5-turbo",
+/**
+ * Function that uses gpt-api to use a filledTemplate from template-filler.js 
+ * @param {*} filledTemplate created from template-filler.js
+ * @returns response that recommends appropriate counsellors to user
+ */
+async function useGptApi(filledTemplate) {
+  try {
+        const completion = await openai.chat.completions.create({
+        model: "gpt-4-vision-preview",
+        prompt: filledTemplate,
+        max_tokens: 150,
     });
-  
-    console.log(completion.choices[0]);
+
+    console.log(completion.choices[0].message.content);
+    return completion.choices[0].message.content;
+  } catch (error) {
+    console.error("Error fetching the completion:", error);
+    throw error; // Rethrow the error to handle it outside
   }
-  
-  main();
+}
+
+module.exports = useGptApi;
+
+/* 
+    const template = `
+    A student has described a problem that they are dealing with and they are requesting counselling and guidance. Based on the problem description and the meta schema of the councilors best skills pick and rank the top 4 councilors that are able to help.
+
+    Student Problem: [Insert student problem here]
+
+    Meta-schema: [Insert meta-schema here]
+    `;
+
+    const studentProblem = "Feeling overwhelmed with school work and personal life.";
+    const metaSchema = "Counselors specializing in academic stress and personal life balance.";
+
+    // Fill the template
+    const filledTemplate = fillTemplate(template, studentProblem, metaSchema);
+    
+    // Use the filled template as the prompt for the GPT API function
+    await getGptResponse(filledTemplate);
+*/
