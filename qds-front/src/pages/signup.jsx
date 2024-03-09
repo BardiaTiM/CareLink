@@ -50,7 +50,6 @@ export function SignUp() {
 
     return (
         <div>
-            <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
                 <select value={role} onChange={handleRoleChange} required>
                     <option value="user">User</option>
