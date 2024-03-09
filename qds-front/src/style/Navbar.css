@@ -61,7 +61,7 @@ ul li a {
 }
 
 /* White underline when hovering the link */
-ul li a:hover::after {
+ul li.non-highlight a:hover::after {
     content: '';
     display: block;
     position: absolute;
@@ -75,7 +75,17 @@ ul li a:hover::after {
 /* Highlighted Link Style */
 ul li.highlight a {
     background-color: white;
-    color: #1A936F; /* Set text color to the background color of the navbar */
+    color: #1A936F;
     border-radius: 15px;
     padding: 5px 15px;
+}
+
+ul li.highlight a:hover {
+    background-color: #042A2B;
+    color: white;
+}
+
+ul li.highlight a:hover::after {
+    content: '';
+    display: hidden;
 }
