@@ -19,6 +19,8 @@ function generateCounselorTemplate(template, studentProblem, metaSchema) {
     return renderTemplate(studentProblem, metaSchema);
 }
 
+module.exports = generateCounselorTemplate;
+
 /* Example usage
 const templateString = `
 Input:
@@ -46,3 +48,5 @@ const metaSchema = "Counselors specializing in academic stress and personal life
 const filledTemplate = generateCounselorTemplate(templateString, studentProblem, metaSchema);
 console.log(filledTemplate);
 */
+
+// Look back to refactor to implement practices that prevent code injection

@@ -1,19 +1,18 @@
-//Initializing GPT API
-
 import OpenAI from "openai"
 require('dotenv').config();
 // Load your key from an environment variable or secret management service
 // (do not include your key directly in your code)
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
+//initializing GPT API
 const openai = new OpenAI({
     apiKey: OPENAI_API_KEY
 });
 
 /**
- * Function that uses gpt-api
- * @param {*} filledTemplate 
- * @returns 
+ * Function that uses gpt-api to use a filledTemplate from template-filler.js 
+ * @param {*} filledTemplate created from template-filler.js
+ * @returns response that recommends appropriate counsellors to user
  */
 async function useGptApi(filledTemplate) {
   try {
@@ -31,6 +30,7 @@ async function useGptApi(filledTemplate) {
   }
 }
 
+module.exports = useGptApi;
 
 /* 
     const template = `
