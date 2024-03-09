@@ -7,7 +7,25 @@ function PrivateChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
+  // Function to fetch message history
+  const fetchMessageHistory = async () => {
+    try {
+      // This should be your API endpoint that returns the chat history between loggedInUserId and chatUserId
+      const response = await fetch(
+        `http://localhost:8000/getChatHistory/${loggedInUserId}/${chatUserId}`
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const history = await response.json();
+      setMessages(history); // Update state with fetched message history
+    } catch (error) {
+      console.error("Error fetching message history:", error);
+    }
+  };
+
   useEffect(() => {
+    fetchMessageHistory();
     const newSocket = new WebSocket("ws://localhost:8000");
 
     newSocket.onopen = () => {
@@ -55,6 +73,7 @@ function PrivateChat() {
       chatId: `${loggedInUserId}-${chatUserId}`,
       from: loggedInUserId,
       content: newMessage,
+      message_text: newMessage, // Add this line
     };
 
     // Update the UI immediately for the sender
@@ -72,7 +91,8 @@ function PrivateChat() {
   const renderMessages = () => {
     return messages.map((msg, index) => (
       <div key={index}>
-        <b>{msg.from === loggedInUserId ? "You" : "Other"}:</b> {msg.content}
+        <b>{msg.from === loggedInUserId ? "You" : "Other"}:</b>{" "}
+        {msg.message_text}
       </div>
     ));
   };

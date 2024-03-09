@@ -32,40 +32,55 @@ const messages = [];
 // Track online users
 const onlineUsers = new Set();
 
+app.use(cors());
+
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());
 
-// Use CORS middleware
-app.use(cors());
+wss.on('connection', (ws) => {
+    ws.on('message', async (message) => {
+        const messageObject = JSON.parse(message);
 
-wss.on('connection', function connection(ws) {
-    let username = null;
+        if (messageObject.type === 'join') {
+            clients[messageObject.userId] = ws;
+        } else if (messageObject.type === 'message') {
+            const targetUserId = messageObject.chatId.replace(messageObject.from, '').replace('-', '');
 
-    ws.on('message', function incoming(message) {
-        try {
-            const data = JSON.parse(message);
-            if (data.type === 'join') {
-                username = data.username;
-                clients.set(username, ws);
-                onlineUsers.add(username);
-            } else if (data.type === 'message') {
-                const from = data.from;
-                const to = data.to;
-                const messageContent = data.message;
+            // Determine user types asynchronously
+            const senderType = await determineUserType(messageObject.from);
+            const recipientType = await determineUserType(targetUserId);
 
-                // Store message
-                messages.push({ from, to, message: messageContent });
+            // Broadcast the message to the recipient if they are connected
+            if (clients[targetUserId] && clients[targetUserId].readyState === WebSocket.OPEN) {
+                clients[targetUserId].send(JSON.stringify({
+                    ...messageObject,
+                    message_text: messageObject.content, // Include message text
+                    sender_type: senderType,
+                    recipient_type: recipientType,
+                    time_stamp: new Date().toISOString()
+                }));
 
-                // Send message to recipient if connected
-                if (to && clients.has(to)) {
-                    clients.get(to).send(JSON.stringify({ type: 'message', from, message: messageContent }));
-                } else if (!to) { // Broadcast to all users
-                    wss.clients.forEach(client => {
-                        if (client.readyState === WebSocket.OPEN) {
-                            client.send(JSON.stringify({ type: 'message', from, message: messageContent }));
-                        }
-                    });
+            }
+
+            // Save message to the database
+            try {
+                const { data, error } = await supabase
+                    .from('messages')
+                    .insert([{
+                        message_text: messageObject.content,
+                        sender_id: messageObject.from,
+                        sender_type: senderType,
+                        recipient_id: targetUserId,
+                        recipient_type: recipientType,
+                        time_stamp: new Date().toISOString()
+                    }]);
+
+                if (error) {
+                    throw new Error(error.message);
                 }
+            } catch (error) {
+                console.error('Error saving message to the database:', error);
+
             }
         } catch (error) {
             console.error('Error parsing message:', error);
@@ -81,13 +96,34 @@ wss.on('connection', function connection(ws) {
             });
         }
     });
-
-    ws.on('close', function () {
+      ws.on('close', function () {
         if (username) {
             onlineUsers.delete(username);
         }
     });
 });
+
+
+// Implement this function based on your application's logic
+async function determineUserType(userId) {
+    const { data, error } = await supabase.from('user').select('*').eq('id', userId);
+
+    if (error) {
+        console.error('Error determining user type:', error.message);
+        // Consider what you want to do in case of an error. You could throw an error, return 'unknown', etc.
+        return 'unknown'; // This is just an example. Handle as appropriate for your app.
+    }
+
+    // Check if the database has returned any data
+    if (data && data.length > 0) {
+        // If the array is not empty, it means the user was found in the 'user' table
+        return 'user';
+    } else {
+        // If the array is empty, it means the user was not found in the 'user' table
+        return 'peer_helper';
+    }
+}
+
 
 // Serve static files from the chat directory
 app.use(express.static(path.join(__dirname, 'chat')));
@@ -95,6 +131,35 @@ app.use(express.static(path.join(__dirname, 'chat')));
 // If index.html is located in the chat directory
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, 'chat', 'index.html'));
+});
+
+app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
+    const { senderId, recipientId } = req.params;
+
+    try {
+        // Query to get messages from the database where the current user is either the sender or recipient
+        let { data, error } = await supabase
+            .from('messages')
+            .select('*')
+            .or(`sender_id.eq.${senderId},recipient_id.eq.${senderId}`)
+            .or(`sender_id.eq.${recipientId},recipient_id.eq.${recipientId}`)
+            .order('time_stamp', { ascending: true }); // Sort by time_stamp to get the messages in order
+
+        if (error) {
+            throw error;
+        }
+
+        // Filter messages that are between senderId and recipientId
+        const chatHistory = data.filter(message => {
+            return (message.sender_id === senderId && message.recipient_id === recipientId) ||
+                (message.sender_id === recipientId && message.recipient_id === senderId);
+        });
+
+        res.json(chatHistory);
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 // Error handling middleware
@@ -259,7 +324,9 @@ app.post('/peerlogin', async function (req, res) {
     }
 });
 
-app.get('/peer_helpers/inreview', async function(req, res) {
+
+app.get('/peer_helpers/inreview', async function (req, res) {
+
     try {
         // Query the Supabase database for peer_helpers with status "IN REVIEW"
         const { data, error } = await supabase
@@ -288,7 +355,7 @@ app.get('/peer_helpers/inreview', async function(req, res) {
 
 
 // Endpoint to change the status of a peer_helper
-app.post('/peer_helpers/update_status', async function(req, res) {
+app.post('/peer_helpers/update_status', async function (req, res) {
     const { id, status } = req.body; // Now expecting both id and status
 
     if (!['ACTIVE', 'DENY', 'IN REVIEW'].includes(status)) {
@@ -326,6 +393,7 @@ app.post('/help_request', async function(req, res) {
             console.error('Error adding help request:', helpRequestError.message);
             res.status(500).json({ error: 'An error occurred while adding help request' });
             return; // Stop execution if there's an error
+
         }
 
         // Query active peer helpers from the database
