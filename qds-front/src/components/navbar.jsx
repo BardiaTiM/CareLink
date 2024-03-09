@@ -14,10 +14,9 @@ export function Navbar() {
 
     return (
         <nav className="navbar">
-            <div className="brand">CareLink</div>
+            <Link to="/" className="brand logo-home">CareLink</Link>
             <ul className="navbar-nav">
-                <li className="nav-item non-highlight"><Link to="/">Home</Link></li>
-                <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>
+                {isAuthenticated && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
                 {!isAuthenticated && <li className="nav-item non-highlight"><Link to="/login">Login</Link></li>}
                 {!isAuthenticated && <li className="nav-item highlight"><Link to="/signup">Get Started</Link></li>}
                 {isAuthenticated && (
