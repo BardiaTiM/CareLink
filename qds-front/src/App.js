@@ -13,6 +13,7 @@ import {InReview} from "./pages/inReview";
 import Chat from './pages/chat';
 import PrivateChat from './pages/privateChat';
 import {NotFound} from './pages/404'; // Import the NotFound component
+import {RecomPage} from './pages/RecomPage'; // Import the RecomPage component
 
 function App() {    
     return (
@@ -36,10 +37,15 @@ function App() {
                     } />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
                     <Route path="/councilorLogin" element={<CouncilorLogin/>}/>
-                    <Route path={"/inReview"} element={
-                        <PrivateRoute>
+                    <Route path="/inReview" element={
+                        <PrivateRoute requiredRole="COUNCILOR">
                             <InReview/>
                         </PrivateRoute>}/>
+                        <Route path="/recomPage" element={
+                        <PrivateRoute>
+                            <RecomPage /> {/* Use RecomPage here */}
+                        </PrivateRoute>
+                    } />
                     <Route path="*" element={<NotFound/>}/> {/* Catch-all route */}
                 </Routes>
             </Router>

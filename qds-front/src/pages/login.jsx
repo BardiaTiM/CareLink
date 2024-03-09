@@ -37,6 +37,7 @@ export function Login() {
         break;
     }
 
+
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -45,11 +46,37 @@ export function Login() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      const username = data.userID;
-      //place the username in session storage
-      sessionStorage.setItem("username", username);
+
+        if (response.ok) {
+            const { userID, role } = await response.json(); // Assume backend returns role in response
+            console.log("signed in userId: ",userID);
+            console.log("signed in role: ", role);
+
+            const data = await response.json();
+            const username = data.userID;
+          
+            sessionStorage.setItem('userId', userID);
+            sessionStorage.setItem('userRole', role);
+            sessionStorage.setItem("username", username);
+            login();
+
+            if(role === 'USER'){
+                navigate('/main');
+            } else if(role === 'PEER'){
+                navigate('/chat');
+            } else if(role === 'COUNCILOR'){
+                navigate('/inReview');
+            }
+
+        } else {
+            // Here, instead of just logging the error, we also set the error message state
+            const errorData = await response.json();
+            if (errorData.error) {
+                setErrorMessage("Invalid email or password");
+            }
+        }
+    };
+
 
       console.log("Login successful on frontend: ", username);
       login();
