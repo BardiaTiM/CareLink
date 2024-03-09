@@ -21,7 +21,7 @@ export function LandingPage() {
 
     return (
         <>
-            <div className="landing-container">
+            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
                 <div className="header-container">
                     <Link to="/" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
                         <img src={logoImageWhite} alt="CareLink Logo" className="logo-image-2" />
@@ -33,8 +33,6 @@ export function LandingPage() {
                         Matched by AI, Monitored by Counselors</h3>
                 </div>
             </div>
-
-            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}></div>
 
             <div className="grid-container">
                 <div className="four-column-grid">
@@ -64,7 +62,6 @@ export function LandingPage() {
                     </div>
                 </div>
             </div>
-
 
             <div className="call-to-action-container">
                 <h1>Get started with CareLink</h1>
