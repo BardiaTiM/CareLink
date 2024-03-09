@@ -5,10 +5,10 @@ import { AuthProvider } from './Authentication/AuthContext';
 import { Navbar } from './components/navbar';
 import { LandingPage } from './pages/index';
 import { Login } from './pages/login';
-import { MainPage } from './pages/mainPage';
 import { PrivateRoute } from './routing/PrivateRoute';
 import { SignUp } from './pages/signup';
 import { CouncilorLogin } from './pages/councilorLogin';
+import {Main} from "./pages/main";
 
 function App() {
     return (
