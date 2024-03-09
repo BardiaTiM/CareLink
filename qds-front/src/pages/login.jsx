@@ -4,25 +4,23 @@ import { useNavigate } from 'react-router-dom';
 export function Login() {
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState('');
+    // Renamed state variables for clarity
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
+    // Updated handlers to reflect we're using email now
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handlePasswordChange = (e) => setPassword(e.target.value);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('http://localhost:8081/api/login', {
+        const response = await fetch('http://localhost:8000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            // Updated to send email instead of username
+            body: JSON.stringify({ email, password }),
         });
 
         if (response.ok) {
@@ -37,18 +35,18 @@ export function Login() {
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <input
-                    name="username"
-                    type="text"
-                    placeholder="Username"
-                    value={username} // Bind input to state
-                    onChange={handleUsernameChange} // Update state on change
+                    name="email"
+                    type="email"
+                    placeholder="Email"
+                    value={email} // Bind input to email state
+                    onChange={handleEmailChange} // Update email state on change
                 />
                 <input
                     name="password"
                     type="password"
                     placeholder="Password"
-                    value={password} // Bind input to state
-                    onChange={handlePasswordChange} // Update state on change
+                    value={password} // Bind input to password state
+                    onChange={handlePasswordChange} // Update password state on change
                 />
                 <button type="submit">Login</button>
                 <button type={'button'} onClick={() => navigate('/signup')}>Sign Up</button>
