@@ -16,29 +16,30 @@ async function getCouncillors() {
     try {
         // Query the Supabase database for councillors
         const { data, error } = await supabase
-            .from('councillors')
-            .select('username, biography');
+            .from('peer_helpers')
+            .select('id, username, description');
 
         if (error) {
-            console.error('Error retrieving councillors:', error.message);
+            console.error('Error retrieving peer helpers:', error.message);
             return []; // Return an empty array if there's an error
         } else {
             // Extract usernames and biographies from the data
-            const councillors = data.map(councillor => ({
-                username: councillor.username,
-                biography: councillor.biography
+            const peer_helpers = data.map(peer_helper => ({
+                id: peer_helper.id,
+                username: peer_helper.username,
+                biography: peer_helper.description
             }));
-            return councillors;
+            return peer_helpers;
         }
     } catch (error) {
-        console.error('Error retrieving councillors:', error.message);
+        console.error('Error retrieving peer helpers:', error.message);
         return []; // Return an empty array if there's an error
     }
 }
 
 // Call the getCouncillors function and log the result
 getCouncillors()
-    .then(councillors => console.log('Councillors:', councillors))
+    .then(councillors => console.log('Helpers:', councillors))
     .catch(error => console.error('Error:', error));
 
 // exporting method to use in other functions

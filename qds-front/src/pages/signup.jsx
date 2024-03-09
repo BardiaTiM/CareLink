@@ -3,26 +3,32 @@ import { useNavigate } from 'react-router-dom';
 
 export function SignUp() {
     const navigate = useNavigate();
-
-    // State hooks for each input field
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [role, setRole] = useState('user'); // State to keep track of the selected role
+    const [description, setDescription] = useState(''); // Additional state for the description when role is 'peer'
 
-    // Handlers for input field changes
+    // Handlers for input changes
     const handleUsernameChange = (e) => setUsername(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
+    const handleRoleChange = (e) => setRole(e.target.value); // Handler for role change
+    const handleDescriptionChange = (e) => setDescription(e.target.value); // Handler for description change
 
-    // Handler for form submission
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
+        e.preventDefault();
+        let userData = { username, password, email };
 
-        const userData = { username, password, email };
+        if (role === 'peer') {
+            userData = { ...userData, description, status: 'IN REVIEW' }; // Include description for 'peer'
+        }
 
-        // Send the data to your backend
+        // Determine the endpoint based on the selected role
+        const endpoint = role === 'peer' ? 'http://localhost:8000/peersignup' : 'http://localhost:8000/signup';
+
         try {
-            const response = await fetch('http://localhost:8000/signup', {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,7 +38,7 @@ export function SignUp() {
 
             if (response.ok) {
                 console.log("Signup successful");
-                navigate('/login');
+                navigate('/login'); // Navigate to login page after successful signup
             } else {
                 const errorData = await response.json();
                 console.error("Signup failed:", errorData.message);
@@ -46,25 +52,42 @@ export function SignUp() {
         <div>
             <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
+                <select value={role} onChange={handleRoleChange} required>
+                    <option value="user">User</option>
+                    <option value="peer">Peer</option>
+                </select>
                 <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={handleUsernameChange}
+                    required
                 />
                 <input
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={handlePasswordChange}
+                    required
                 />
                 <input
                     type="email"
                     placeholder="Email"
                     value={email}
                     onChange={handleEmailChange}
+                    required
                 />
+                {role === 'peer' && (
+                    <input
+                        type="text"
+                        placeholder="Description"
+                        value={description}
+                        onChange={handleDescriptionChange}
+                        required
+                    />
+                )}
                 <button type="submit">Sign Up</button>
+                <button type={'button'} onClick={() => navigate('/login')} className="signup-button">I already have an account</button>
             </form>
         </div>
     );
