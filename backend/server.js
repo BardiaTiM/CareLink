@@ -16,6 +16,9 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors')
 
+const { getActivePeerHelpers } = require('./gpt-api/database-query');
+const { getRecommendations } = require('./gpt-api/create-prompt');
+
 //Database Constants
 const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
@@ -276,15 +279,35 @@ app.post('/help_request', async function(req, res) {
         const { user_id, description } = req.body; // Assuming user_id and description are sent from the frontend
 
         // Insert the user_id and description into the help_request table
-        const { data, error } = await supabase.from('help_request').insert([{ user_id, description }]);
+        const { data: helpRequestData, error: helpRequestError } = await supabase.from('help_request').insert([{ user_id, description }]);
 
-        if (error) {
-            console.error('Error adding help request:', error.message);
+        if (helpRequestError) {
+            console.error('Error adding help request:', helpRequestError.message);
             res.status(500).json({ error: 'An error occurred while adding help request' });
-        } else {
-            console.log('Help request added successfully:', data);
-            res.status(200).json({ message: 'Help request added successfully' });
+            return; // Stop execution if there's an error
         }
+
+        // Query active peer helpers from the database
+        const { data: peerHelpers, error: peerHelpersError } = await getActivePeerHelpers();
+
+        console.log('Peer helpers data:', peerHelpers);
+        console.log('Peer helpers error:', peerHelpersError);
+
+        if (peerHelpersError) {
+            console.error('Error retrieving active peer helpers:', peerHelpersError.message);
+            res.status(500).json({ error: 'An error occurred while retrieving active peer helpers' });
+            return; // Stop execution if there's an error
+        }
+
+        // Extract descriptions and IDs of active peer helpers
+        const peerHelperDescriptions = peerHelpers.map(peerHelper => peerHelper.description);
+        const peerHelperIDs = peerHelpers.map(peerHelper => peerHelper.id); // Assuming peer helper IDs are available in the data
+
+        // Call GPT to get recommendations based on user's description and peer helpers' descriptions
+        const recommendations = await getRecommendations(description, peerHelperDescriptions, peerHelperIDs, user_id);
+
+        // Return the recommendations to the front end
+        res.status(200).json({ recommendations });
     } catch (error) {
         console.error('Error adding help request:', error.message);
         res.status(500).json({ error: 'An error occurred while adding help request' });
