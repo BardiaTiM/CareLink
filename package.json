@@ -9,6 +9,7 @@
   "author": "Ravdeep Aulakh",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+    "ws": "^8.16.0"
   }
 }
