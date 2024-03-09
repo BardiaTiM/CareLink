@@ -10,16 +10,6 @@
     <input type="text" id="username" placeholder="Enter your username" />
     <button onclick="selectUser()">Select</button>
 
-    <script>
-      function selectUser() {
-        const username = document.getElementById("username").value.trim();
-        if (username !== "") {
-          localStorage.setItem("selectedUser", username);
-          window.location.href = "chat.html";
-        } else {
-          alert("Please enter a username.");
-        }
-      }
-    </script>
+    <script src="./selectUser.js"></script>
   </body>
 </html>
