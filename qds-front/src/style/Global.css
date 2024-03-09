@@ -13,5 +13,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f4f4f4;
+    background-color: #1A936F;
+    background: linear-gradient(to bottom, #1A936F 50%, #1A936F 50%, #157A5C);
 }
