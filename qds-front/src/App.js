@@ -10,6 +10,7 @@ import { SignUp } from './pages/signup';
 import Chat from './pages/chat';
 import { CouncilorLogin } from './pages/councilorLogin';
 import { Main } from "./pages/main";
+import PrivateChat from './pages/privateChat';
 
 function App() {    
     return (
@@ -31,6 +32,7 @@ function App() {
                             <Chat loggedInUserId={sessionStorage.getItem("username")} />
 
                     } />
+                    <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
                 </Routes>
             </Router>
         </AuthProvider>

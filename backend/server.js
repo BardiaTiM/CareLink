@@ -22,11 +22,29 @@ const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
 const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
+const clients = {};
+
 wss.on('connection', (ws) => {
     ws.on('message', (message) => {
-        wss.clients.forEach((client) => {
-            if (client !== ws && client.readyState === WebSocket.OPEN) {
-                client.send(message);
+        const messageObject = JSON.parse(message);
+
+        if (messageObject.type === 'join') {
+            // Save the user's WebSocket connection
+            clients[messageObject.userId] = ws;
+        } else if (messageObject.type === 'message') {
+            // Send the message to the specific other user
+            const targetUserId = messageObject.chatId.replace(messageObject.from, '').replace('-', '');
+            if (clients[targetUserId] && clients[targetUserId].readyState === WebSocket.OPEN) {
+                clients[targetUserId].send(JSON.stringify(messageObject));
+            }
+        }
+    });
+
+    ws.on('close', () => {
+        // Remove the WebSocket connection when the user disconnects
+        Object.entries(clients).forEach(([userId, clientWs]) => {
+            if (clientWs === ws) {
+                delete clients[userId];
             }
         });
     });
@@ -73,16 +91,16 @@ app.post('/signup', async function (req, res) {
 });
 
 // Endpoint for user sign-up
-app.post('/peersignup', async function(req, res) {
+app.post('/peersignup', async function (req, res) {
 
-    const { username, password, email, description, status} = req.body;
+    const { username, password, email, description, status } = req.body;
 
     try {
         // Hash the password using bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Insert the username, hashed password, and email into the Supabase database
-        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status}]);
+        const { data, error } = await supabase.from('peer_helpers').insert([{ username, password: hashedPassword, email, description, status }]);
         if (error) {
             console.error('Error signing up:', error.message);
             res.status(500).json({ error: 'An error occurred while signing up' });
@@ -119,9 +137,10 @@ app.post('/login', async function (req, res) {
             // Compare the provided password with the hashed password stored in the database
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
-                const username = data.username;
+                const username = data.id;
+
                 // Passwords match, user is authenticated
-                res.status(200).json({ message: 'Login successful', userID: username});
+                res.status(200).json({ message: 'Login successful', userID: username });
             } else {
                 // Passwords do not match
                 res.status(401).json({ error: 'Invalid credentials' });
@@ -149,7 +168,7 @@ app.get("/getAllUsers", async function (req, res) {
 })
 
 // Endpoint for user login
-app.post('/peerlogin', async function(req, res) {
+app.post('/peerlogin', async function (req, res) {
     const { email, password } = req.body;
 
     try {
