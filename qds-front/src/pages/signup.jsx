@@ -21,7 +21,7 @@ export function SignUp() {
         let userData = { username, password, email };
 
         if (role === 'peer') {
-            userData = { ...userData, description, status: 'In Reivew' }; // Include description for 'peer'
+            userData = { ...userData, description, status: 'IN REVIEW' }; // Include description for 'peer'
         }
 
         // Determine the endpoint based on the selected role

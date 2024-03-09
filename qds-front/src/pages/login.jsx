@@ -30,7 +30,7 @@ export function Login() {
                 endpoint = 'http://localhost:8000/peerlogin';
                 break;
             case 'counselor':
-                endpoint = 'http://localhost:8000/counselorlogin';
+                endpoint = 'http://localhost:8000/CouncilorLogin';
                 break;
             default:
                 endpoint = 'http://localhost:8000/login'; // Default endpoint or handle error
