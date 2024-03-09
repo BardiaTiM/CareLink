@@ -182,7 +182,7 @@ app.post('/login', async function(req, res) {
     }
 });
 
-// Endpoint for user login
+// Endpoint for peer login
 app.post('/peerlogin', async function(req, res) {
     const { email, password } = req.body;
 
@@ -267,6 +267,62 @@ app.post('/peer_helpers/activate', async function(req, res) {
     } catch (error) {
         console.error('Error updating peer_helper status:', error.message);
         res.status(500).json({ error: 'An error occurred while updating peer_helper status' });
+    }
+});
+
+// Endpoint to add information into the help_request database table
+app.post('/help_request', async function(req, res) {
+    try {
+        const { user_id, description } = req.body; // Assuming user_id and description are sent from the frontend
+
+        // Insert the user_id and description into the help_request table
+        const { data, error } = await supabase.from('help_request').insert([{ user_id, description }]);
+
+        if (error) {
+            console.error('Error adding help request:', error.message);
+            res.status(500).json({ error: 'An error occurred while adding help request' });
+        } else {
+            console.log('Help request added successfully:', data);
+            res.status(200).json({ message: 'Help request added successfully' });
+        }
+    } catch (error) {
+        console.error('Error adding help request:', error.message);
+        res.status(500).json({ error: 'An error occurred while adding help request' });
+    }
+});
+
+// Endpoint for councillor login
+app.post('/CouncilorLogin', async function(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        // Query the Supabase database for the user with the provided email
+        const { data, error } = await supabase
+            .from('councillors')
+            .select('*')
+            .eq('email', email)
+            .single();
+
+        // Check if the user exists and the password matches
+        if (error) {
+            console.error('Error logging in:', error.message);
+            res.status(500).json({ error: 'An error occurred while logging in' });
+        } else if (!data) {
+            // User not found
+            res.status(401).json({ error: 'Invalid credentials' });
+        } else {
+            // Compare the provided password with the password stored in the database
+            if (password === data.password) {
+                // Passwords match, user is authenticated
+                res.status(200).json({ message: 'Login successful' });
+            } else {
+                // Passwords do not match
+                res.status(401).json({ error: 'Invalid credentials' });
+            }
+        }
+    } catch (error) {
+        console.error('Error logging in:', error.message);
+        res.status(500).json({ error: 'An error occurred while logging in' });
     }
 });
 
