@@ -1,12 +1,31 @@
-/* Targeting the <ul> directly for the navbar's overall styling */
-ul {
-    width: 100%; /* Set width to 100% of the containing element */
-    box-sizing: border-box;
+body {
+    margin: 0;
+    padding: 0;
+    /* Ensure body takes up the full viewport height */
+    width: 100%;
+    height: 100%;
+}
+
+.navbar {
     background-color: #333; /* Dark background color */
     overflow: hidden;
+    width: 100%; /* Ensure navbar takes full width */
+    max-width: 130%;
     height: 50px;
     line-height: 50px; /* Center the links vertically */
+}
+
+.navbar-nav {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+ul {
+    height: 50px;
+    line-height: 50px; /* Center the links vertically */
+
     margin: 0;
     padding: 0;
     text-align: center;
