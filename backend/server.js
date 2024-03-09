@@ -307,13 +307,10 @@ app.post('/help_request', async function (req, res) {
         // Extract descriptions and IDs of active peer helpers
         const peerHelperDescriptions = peerHelpers.map(peerHelper => peerHelper.description);
         const peerHelperIDs = peerHelpers.map(peerHelper => peerHelper.id); // Assuming peer helper IDs are available in the data
-        // Query the database for the names of peer helpers based on their IDs
-        const peerHelperNames = await supabase.from('peer_helpers').select('username').in('id', peerHelperIDs);
-
-        console.log('Peer helper names:', peerHelperNames);
+        const peerHelperNames = peerHelpers.map(peerHelper => peerHelper.username)
 
         // Call GPT to get recommendations based on user's description and peer helpers' descriptions
-        const recommendations = await getRecommendations(description, peerHelperDescriptions, peerHelperIDs, user_id, peerHelperNames);
+        const recommendations = await getRecommendations(description, peerHelperDescriptions, peerHelperIDs, peerHelperNames);
 
         // Return the recommendations to the front end
         res.status(200).json({ recommendations });

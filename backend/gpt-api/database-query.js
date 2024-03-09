@@ -13,7 +13,7 @@ async function getActivePeerHelpers() {
         // Query the Supabase database for active peer helpers
         const { data, error } = await supabase
             .from('peer_helpers')
-            .select('id, description')
+            .select('id, description, username')
             .eq('status', 'ACTIVE');
 
         if (error) {
@@ -23,7 +23,8 @@ async function getActivePeerHelpers() {
             // Extract usernames and descriptions from the data
             const peerHelpers = data.map(peerHelper => ({
                 id: peerHelper.id,
-                description: peerHelper.description
+                description: peerHelper.description,
+                username: peerHelper.username
             }));
             return { data: peerHelpers }; // Return the data object
         }
