@@ -1,9 +1,11 @@
 .header-container {
-    background-color: red; /* Red color for testing purposes */
-    padding: 10px; /* Add padding as needed */
-    text-align: center; /* Center the content */
-    color: white; /* Text color for visibility */
-    z-index: 1; /* Ensure the header appears above other elements */
+    width: 100vw;
+    height: 100vh;
+    background-color: red;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    z-index: 2;
 }
 
 .splash-container {
@@ -14,7 +16,6 @@
     width: 100%;
     height: 100%;
     background-color: #f4f4f4;
-    /* Remove padding-top from splash-container */
 }
 
 .splash-content {
