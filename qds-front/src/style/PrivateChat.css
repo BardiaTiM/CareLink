@@ -7,17 +7,17 @@
   padding-bottom: 50px; /* Space forz input container */
 }
 
-.contact-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 0 0 30%; /* flex-grow: 0, flex-shrink: 0, flex-basis: 30% */
-  height: 100vh;
-  overflow-y: auto;
-  background-color: #042a2b;
-  color: white;
-  /* Remove the max-width as flex-basis will take care of the width */
-}
+/*.contact-list {*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  justify-content: space-between;*/
+/*  flex: 0 0 30%; !* flex-grow: 0, flex-shrink: 0, flex-basis: 30% *!*/
+/*  height: 100vh;*/
+/*  overflow-y: auto;*/
+/*  background-color: #042a2b;*/
+/*  color: white;*/
+/*  !* Remove the max-width as flex-basis will take care of the width *!*/
+/*}*/
 
 /* Sidebar styles */
 .messageList-container {
