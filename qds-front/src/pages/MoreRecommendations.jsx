@@ -7,6 +7,14 @@ import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png'
 import VerifiedHelper from '../style/images/badges/Verified-User.png';
 import logoImageBlack from '../style/images/CareLink v1 - black.png';
 
+import plant from '../style/images/plant.png';
+
+import Plant1 from '../style/images/plantPFPs/plant1.png';
+import Plant2 from '../style/images/plantPFPs/plant2.png';
+import Plant3 from '../style/images/plantPFPs/plant3.png';
+import Plant4 from '../style/images/plantPFPs/plant4.png';
+import Plant5 from '../style/images/plantPFPs/plant5.png';
+
 export function MoreRecommendations({ recommendations, onClose }) {
     const [showModal, setShowModal] = useState(false);
     const [selectedRecommendation, setSelectedRecommendation] = useState(null);
@@ -29,7 +37,9 @@ export function MoreRecommendations({ recommendations, onClose }) {
 
                         <div className="person-info">
 
-                            <img src={`https://via.placeholder.com/150?text=${recommendation.username}`} alt="Person" />
+                            {/* <img src={`https://via.placeholder.com/150?text=${recommendation.username}`} alt="Person" /> */}
+
+                            <img src={plant} alt="Plant" className="plant"></img>
 
                             <div className="info">
                                 <h3>Username</h3>
