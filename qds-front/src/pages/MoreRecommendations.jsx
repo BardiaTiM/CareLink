@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
-import { RecomModal } from './RecomModal';
-import '../style/recomePage.css';
-import firstTimeHelper from '../style/images/badges/First-time-helper.png';
-import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
-import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';
-import VerifiedHelper from '../style/images/badges/Verified-User.png';
-import logoImageBlack from '../style/images/CareLink v1 - black.png';
+import React, { useState } from "react";
+import { RecomModal } from "./RecomModal";
+import "../style/recomePage.css";
+import firstTimeHelper from "../style/images/badges/First-time-helper.png";
+import HelpedTenPeople from "../style/images/badges/Helped-10-people.png";
+import HelpedTwentyFivePeople from "../style/images/badges/Helped-25-people.png";
+import VerifiedHelper from "../style/images/badges/Verified-User.png";
+import logoImageBlack from "../style/images/CareLink v1 - black.png";
 
-import plant from '../style/images/plant.png';
+import plant from "../style/images/plant.png";
 
-import plant1 from '../style/images/plantPFPs/plant1.png';
-import plant2 from '../style/images/plantPFPs/plant2.png';
-import plant3 from '../style/images/plantPFPs/plant3.png';
-import plant4 from '../style/images/plantPFPs/plant4.png';
-import plant5 from '../style/images/plantPFPs/plant5.png';
+import plant1 from "../style/images/plantPFPs/plant1.png";
+import plant2 from "../style/images/plantPFPs/plant2.png";
+import plant3 from "../style/images/plantPFPs/plant3.png";
+import plant4 from "../style/images/plantPFPs/plant4.png";
+import plant5 from "../style/images/plantPFPs/plant5.png";
 
 const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
-export function MoreRecommendations({ recommendations, onClose, onSelectRecommendation }) {
+export function MoreRecommendations({
+  recommendations,
+  onClose,
+  onSelectRecommendation,
+}) {
   const [showModal, setShowModal] = useState(false);
   const [selectedRecommendation, setSelectedRecommendation] = useState(null);
 
@@ -25,15 +29,15 @@ export function MoreRecommendations({ recommendations, onClose, onSelectRecommen
     setShowModal(!showModal);
   };
 
-    const getRandomPlantPFP = () => {
-        const randomIndex = Math.floor(Math.random() * plantPFPs.length);
-        return plantPFPs[randomIndex];
-    };
+  const getRandomPlantPFP = () => {
+    const randomIndex = Math.floor(Math.random() * plantPFPs.length);
+    return plantPFPs[randomIndex];
+  };
 
-    const handleCardClick = (recommendation) => {
-        setSelectedRecommendation(recommendation);
-        toggleModal();
-    };
+  const handleCardClick = (recommendation) => {
+    setSelectedRecommendation(recommendation);
+    toggleModal();
+  };
 
     return (
         <div className="more-recommendations-container">

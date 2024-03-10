@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { RecomModal } from './RecomModal';
-import { MoreRecommendations } from './MoreRecommendations';
+import React, { useState, useEffect } from "react";
+import { RecomModal } from "./RecomModal";
+import { MoreRecommendations } from "./MoreRecommendations";
 
-import '../style/recomePage.css';
-import '../style/Recommendations.css';
+import "../style/recomePage.css";
+import "../style/Recommendations.css";
 
-import firstTimeHelper from '../style/images/badges/First-time-helper.png';
-import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
-import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';
-import VerifiedHelper from '../style/images/badges/Verified-User.png';
-import logoImageBlack from '../style/images/CareLink v1 - black.png';
+import firstTimeHelper from "../style/images/badges/First-time-helper.png";
+import HelpedTenPeople from "../style/images/badges/Helped-10-people.png";
+import HelpedTwentyFivePeople from "../style/images/badges/Helped-25-people.png";
+import VerifiedHelper from "../style/images/badges/Verified-User.png";
+import logoImageBlack from "../style/images/CareLink v1 - black.png";
 
-import plant from '../style/images/plant.png';
+import plant from "../style/images/plant.png";
 
-import plant1 from '../style/images/plantPFPs/plant1.png';
-import plant2 from '../style/images/plantPFPs/plant2.png';
-import plant3 from '../style/images/plantPFPs/plant3.png';
-import plant4 from '../style/images/plantPFPs/plant4.png';
-import plant5 from '../style/images/plantPFPs/plant5.png';
+import plant1 from "../style/images/plantPFPs/plant1.png";
+import plant2 from "../style/images/plantPFPs/plant2.png";
+import plant3 from "../style/images/plantPFPs/plant3.png";
+import plant4 from "../style/images/plantPFPs/plant4.png";
+import plant5 from "../style/images/plantPFPs/plant5.png";
 
 const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
@@ -87,6 +87,13 @@ export function RecomPage() {
                 <img src={HelpedTenPeople} alt="Badge 2" />
                 <img src={HelpedTwentyFivePeople} alt="Badge 3" />
               </div>
+              <div className="badges">
+                <h3>Badge(s)</h3>
+                <img src={VerifiedHelper} alt="Badge 4" />
+                <img src={firstTimeHelper} alt="Badge 1" />
+                <img src={HelpedTenPeople} alt="Badge 2" />
+                <img src={HelpedTwentyFivePeople} alt="Badge 3" />
+              </div>
 
               <br />
 
@@ -125,3 +132,4 @@ export function RecomPage() {
     </div>
   );
 }
+
