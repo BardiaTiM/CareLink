@@ -7,15 +7,9 @@ import logoImageWhite from '../style/images/CareLink v1 - white.png';
 import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 
 export function Navbar() {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated,logout } = useAuth();
     const navigate = useNavigate();
-    const CouncilorRole = () => {
-        return sessionStorage.getItem('userRole') === 'COUNCILOR';
-    }
-
-    const UserRole = () => {
-        return sessionStorage.getItem('userRole') === 'USER';
-    }
+    const userRole = sessionStorage.getItem('userRole');
 
     const handleLogout = () => {
         logout();
@@ -30,21 +24,36 @@ export function Navbar() {
         event.currentTarget.querySelector('.logo-image').src = logoImageWhite;
     };
 
-    // Update this part for conditional redirection based on isAuthenticated
-    const logoLink = isAuthenticated ? "/main" : "/";
+    // Determine the redirection path based on the user's role
+    const getLogoLink = () => {
+        if (!isAuthenticated) return "/";
+        switch(userRole) {
+            case 'USER':
+                return "/main";
+            case 'PEER':
+                return "/chat";
+            case 'COUNCILOR':
+                return "/inReview";
+            default:
+                return "/";
+        }
+    };
+
+    // Use the function to set the logo link dynamically
+    const logoLink = getLogoLink();
 
     return (
         <nav className="navbar">
-            {/* Updated Link component to use logoLink for conditional redirection */}
             <Link to={logoLink} className="brand logo-home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <span className="brand-text">CareLink</span>
                 <img src={logoImageWhite} alt="CareLink Logo" className="logo-image" />
             </Link>
             <ul className="navbar-nav">
                 <li className="nav-item non-highlight"><Link to="/FAQ">FAQ</Link></li>
-                {isAuthenticated && UserRole() &&  <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
+                {isAuthenticated && userRole === 'USER' &&  <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
                 {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
-                {isAuthenticated && CouncilorRole() && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
+                {isAuthenticated && userRole === 'COUNCILOR' && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
+                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/chat">Chat</Link></li>)}
             </ul>
         </nav>
     );
