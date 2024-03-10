@@ -9,6 +9,7 @@ import firstTimeHelper from '../style/images/badges/First-time-helper.png';
 import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
 import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';
 import VerifiedHelper from '../style/images/badges/Verified-User.png';
+import logoImageBlack from '../style/images/CareLink v1 - black.png';
 
 export function RecomPage() {
     const [showModal, setShowModal] = useState(false);
@@ -43,19 +44,25 @@ export function RecomPage() {
                     <div className="person-info">
 
                         <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
-                        
+
                         <div className="info">
-                            <p>@{mainRecommendation.username}</p>
+                            <h3>Username</h3>
+                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                <p>@{mainRecommendation.username}</p>
+                                <img src={logoImageBlack} alt="CareLink Logo" className="verified-CL" />
+                            </div>
+
+                            <br></br>
+
+                            <div className="badges">
+                                <h3>Badge(s)</h3>
+                                <img src={VerifiedHelper} alt="Badge 4" />
+                                <img src={firstTimeHelper} alt="Badge 1" />
+                                <img src={HelpedTenPeople} alt="Badge 2" />
+                                <img src={HelpedTwentyFivePeople} alt="Badge 3" />
+                            </div>
                         </div>
 
-                        <div className="badges">
-
-                        <img src={VerifiedHelper} alt="Badge 4" />
-                        <img src={firstTimeHelper} alt="Badge 1" />
-                        <img src={HelpedTenPeople} alt="Badge 2" />
-                        <img src={HelpedTwentyFivePeople} alt="Badge 3" />
-
-                        </div>
                     </div>
                 </div>
             )}
