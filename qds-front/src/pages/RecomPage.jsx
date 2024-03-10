@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { RecomModal } from './RecomModal';
 import { MoreRecommendations } from './MoreRecommendations';
 import '../style/recomePage.css';
+import firstTimeHelper from '../style/images/badges/First-time-helper.png';
+import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
+import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';
+import VerifiedHelper from '../style/images/badges/Verified-User.png';
 
 export function RecomPage() {
     const [showModal, setShowModal] = useState(false);
@@ -37,6 +41,12 @@ export function RecomPage() {
                         <div className="info">
                             <p>Name: {mainRecommendation.username}</p>
                             <p>Description: {mainRecommendation.description}</p>
+                        </div>
+                        <div className="badges">
+                        <img src={VerifiedHelper} alt="Badge 4" />
+                        <img src={firstTimeHelper} alt="Badge 1" />
+                        <img src={HelpedTenPeople} alt="Badge 2" />
+                        <img src={HelpedTwentyFivePeople} alt="Badge 3" />
                         </div>
                     </div>
                 </div>
