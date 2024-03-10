@@ -150,53 +150,71 @@ app.post('/signup', async function (req, res) {
     }
 });
 
+// Endpoint to get all users
 app.get("/getAllUsers", async function (req, res) {
     try {
+        // Query the Supabase database for all users
         const { data, error } = await supabase.from('user').select('*');
         if (error) {
+            // Handle error if query fails
             console.error('Error getting users:', error.message);
             res.status(500).json({ error: 'An error occurred while getting users' });
         } else {
+            // Return user data if query is successful
             console.log(data);
             res.status(200).json(data);
         }
     } catch (error) {
+        // Catch any unexpected errors
         console.error('Error getting users:', error.message);
         res.status(500).json({ error: 'An error occurred while getting users' });
     }
 })
 
+
+// Endpoint to retrieve all peer helpers
 app.get("/getAllPeerHelpers", async function (req, res) {
     try {
+        // Retrieve all peer helpers from the Supabase database
         const { data, error } = await supabase.from('peer_helpers').select('*');
         if (error) {
-            console.error('Error getting peer:', error.message);
-            res.status(500).json({ error: 'An error occurred while getting users' });
+            // Handle error if there's an issue retrieving peer helpers
+            console.error('Error retrieving peer helpers:', error.message);
+            res.status(500).json({ error: 'An error occurred while retrieving peer helpers' });
         } else {
+            // Send peer helpers data if retrieval is successful
             console.log(data);
             res.status(200).json(data);
         }
     } catch (error) {
-        console.error('Error getting peer:', error.message);
-        res.status(500).json({ error: 'An error occurred while getting users' });
+        // Catch any unexpected errors during the process
+        console.error('Error retrieving peer helpers:', error.message);
+        res.status(500).json({ error: 'An error occurred while retrieving peer helpers' });
     }
 })
 
+
+// Endpoint to retrieve all councilors
 app.get("/getAllCouncilors", async function (req, res) {
     try {
+        // Retrieve all councilors from the Supabase database
         const { data, error } = await supabase.from('councillors').select('*');
         if (error) {
-            console.error('Error getting councillors:', error.message);
-            res.status(500).json({ error: 'An error occurred while getting councillors' });
+            // Handle error if there's an issue retrieving councilors
+            console.error('Error retrieving councillors:', error.message);
+            res.status(500).json({ error: 'An error occurred while retrieving councillors' });
         } else {
+            // Send councilors data if retrieval is successful
             console.log(data);
             res.status(200).json(data);
         }
     } catch (error) {
-        console.error('Error getting councillors:', error.message);
-        res.status(500).json({ error: 'An error occurred while getting councillors' });
+        // Catch any unexpected errors during the process
+        console.error('Error retrieving councillors:', error.message);
+        res.status(500).json({ error: 'An error occurred while retrieving councillors' });
     }
 });
+
 
 // Endpoint for user sign-up
 app.post('/peersignup', async function (req, res) {
@@ -332,32 +350,38 @@ app.get('/peer_helpers/inreview', async function (req, res) {
 });
 
 
-// Endpoint to change the status of a peer_helper
+// Endpoint to update the status of a peer helper
 app.post('/peer_helpers/update_status', async function (req, res) {
-    const { id, status } = req.body; // Now expecting both id and status
+    const { id, status } = req.body; // Extracting id and status from the request body
 
+    // Validate the status to ensure it's one of the allowed values
     if (!['ACTIVE', 'DENY', 'IN REVIEW'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status' });
     }
 
     try {
+        // Update the status of the peer helper in the Supabase database
         const { error } = await supabase
             .from('peer_helpers')
             .update({ status })
             .eq('id', id);
 
         if (error) {
+            // Handle error if there's an issue updating the status
             console.error('Error updating peer_helper status:', error.message);
             res.status(500).json({ error: 'An error occurred while updating peer_helper status' });
         } else {
+            // Send success message if the status is updated successfully
             console.log('Peer_helper status updated successfully');
             res.status(200).json({ message: 'Peer_helper status updated successfully' });
         }
     } catch (error) {
+        // Catch any unexpected errors during the process
         console.error('Error updating peer_helper status:', error.message);
         res.status(500).json({ error: 'An error occurred while updating peer_helper status' });
     }
 });
+
 
 // Endpoint to add information into the help_request database table
 app.post('/help_request', async function (req, res) {
@@ -438,44 +462,54 @@ app.post('/CouncilorLogin', async function (req, res) {
     }
 });
 
+// Endpoint to get username by user or peer_helper ID
 app.get('/getUserNameById/:id', async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params; // Extracting the ID from the request parameters
 
     try {
+        // Query the 'user' table to get the username by user ID
         let { data: userData, error: userError } = await supabase
             .from('user')
             .select('username')
             .eq('id', id);
 
         if (userError) {
+            // Throw an error if there's an issue with the query
             throw userError;
         }
 
         if (userData && userData.length === 1) {
+            // If user data is found, send the username in the response
             res.status(200).send({ username: userData[0].username });
             return;
         }
 
+        // If user data is not found, query the 'peer_helpers' table
         let { data: helperData, error: helperError } = await supabase
             .from('peer_helpers')
             .select('username')
             .eq('id', id);
 
         if (helperError) {
+            // Throw an error if there's an issue with the query
             throw helperError;
         }
 
         if (helperData && helperData.length === 1) {
+            // If peer_helper data is found, send the username in the response
             res.status(200).send({ username: helperData[0].username });
             return;
         }
 
+        // If neither user nor peer_helper data is found, send a 404 response
         res.status(404).send('User not found');
     } catch (error) {
+        // Catch any unexpected errors during the process and send a 500 response
         console.error('Error fetching username:', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
     const { senderId, recipientId } = req.params;
@@ -506,32 +540,40 @@ app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
     }
 });
 
+// Endpoint to connect a user with a peer
 app.post('/connectUserWithPeer', async (req, res) => {
-    const { userId, peerId } = req.body;
+    const { userId, peerId } = req.body; // Extracting userId and peerId from the request body
 
     console.log('Connecting user with peer:', userId, peerId);
 
     try {
+        // Insert a new record into the 'user_to_peer' table to establish the connection
         const { data, error } = await supabase
             .from('user_to_peer')
             .insert([{ user_id: userId, peer_id: peerId }]);
 
         if (error) {
+            // If there's an error during the database operation, log and throw the error
             console.error('Database error:', error);
             throw error;
         }
 
+        // If the operation is successful, send a 200 status response indicating success
         res.status(200).send('Connected user with peer');
     } catch (error) {
+        // Catch any unexpected errors during the process and send a 500 response with error details
         console.error('Error connecting user with peer:', error);
         res.status(500).send('Error details: ' + error.message);
     }
 });
 
+
+// Endpoint to retrieve peers connected with a user
 app.get('/getUsersConnectedWithPeers/:userId', async (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.params; // Extracting userId from the request parameters
 
     try {
+        // Query the 'user_to_peer' table to get data of peer_helpers connected with the user
         const { data, error } = await supabase
             .from('user_to_peer')
             .select(`
@@ -547,6 +589,7 @@ app.get('/getUsersConnectedWithPeers/:userId', async (req, res) => {
             .eq('user_id', userId);
 
         if (error) {
+            // If there's an error during the database operation, log and throw the error
             console.error('Database error:', error);
             throw error;
         }
@@ -554,19 +597,23 @@ app.get('/getUsersConnectedWithPeers/:userId', async (req, res) => {
         // Extracting peer_helpers data from each row
         const peerHelpersData = data.map(item => item.peer_helpers);
 
+        // Sending the peer helpers data as a JSON response
         res.status(200).json(peerHelpersData);
     } catch (error) {
+        // Catch any unexpected errors during the process and send a 500 response with error details
         console.error('Error fetching users connected with peers:', error);
         res.status(500).send('Error details: ' + error.message);
     }
 });
 
+// Endpoint to retrieve users connected with a peer
 app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
-    const { userId } = req.params;
+    const { userId } = req.params; // Extracting userId from the request parameters
 
     console.log('Fetching peers connected with user:', userId);
 
     try {
+        // Query the 'user_to_peer' table to get data of users connected with the peer
         const { data, error } = await supabase
             .from('user_to_peer')
             .select(`
@@ -581,6 +628,7 @@ app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
             .eq('peer_id', userId);
 
         if (error) {
+            // If there's an error during the database operation, log and throw the error
             console.error('Database error:', error);
             throw error;
         }
@@ -588,13 +636,14 @@ app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
         // Extracting user data from each row
         const userData = data.map(item => item.user);
 
+        // Sending the user data as a JSON response
         res.status(200).json(userData);
     } catch (error) {
+        // Catch any unexpected errors during the process and send a 500 response with error details
         console.error('Error fetching users connected with peers:', error);
         res.status(500).send('Error details: ' + error.message);
     }
 });
-
 
 server.listen(8000, function listening() {
     console.log('Server started on port 8000');
