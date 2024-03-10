@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 /* Style for the modal content */
@@ -21,6 +22,7 @@
     max-width: 400px; /* Set maximum width */
     width: 80%; /* Set width as a percentage */
     margin: 0 auto; /* Center horizontally */
+    z-index: 1001;
 }
 
 /* Style for the person image */

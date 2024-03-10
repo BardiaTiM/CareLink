@@ -6,7 +6,7 @@
 /* Style for the recommendation card */
 .recommendation-card {
     display: flex;
-    border: 1px solid #ccc;
+    /*border: 1px solid #ccc;*/
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
@@ -16,6 +16,7 @@
 
 .recommendation-card:hover {
     transform: scale(1.05) rotate(0.5deg);
+    z-index: 0;
 }
 
 /* Style for the person image */
@@ -66,6 +67,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -84,4 +86,9 @@
 
 .RecomPage h1 {
     color: #000000;
+}
+
+.modal-open .recommendation-card {
+    pointer-events: none; /* Disables clicking and hovering */
+    z-index: 0; /* Ensures it's below the overlay */
 }
