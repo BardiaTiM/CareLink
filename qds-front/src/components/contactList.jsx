@@ -99,22 +99,18 @@ export function ContactList() {
   }, [userData]); // Trigger effect when user data changes
 
   return (
-    <div
-      className="contact-container"
-    >
-      {errorMessage && <p>{errorMessage}</p>}
+    <div className="contact-container">
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <h2>Contact</h2>
-      <div>
+      <div className="contact-list">
         {userData.map((user) => (
           <div
             className="contact-user-profile"
             key={user.id}
             onClick={() => handleUserClick(user.id)}
             style={{
-              backgroundColor:
-                user.id === selectedUserId ? "#042A2B" : "transparent", // Highlight the selected user
-              color: user.id === selectedUserId ? "white" : "inherit", // Change text color for contrast if needed
-              cursor: "pointer",
+              backgroundColor: user.id === selectedUserId ? "#042A2B" : "transparent",
+              color: user.id === selectedUserId ? "white" : "inherit",
             }}
           >
             {user.username}
@@ -123,4 +119,5 @@ export function ContactList() {
       </div>
     </div>
   );
+  
 }
