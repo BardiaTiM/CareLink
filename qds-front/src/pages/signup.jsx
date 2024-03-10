@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export function SignUp() {
-    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('user');
     const [description, setDescription] = useState('');
+    const [successMessage, setSuccessMessage] = useState(''); // Modified to store the success message text
 
     const handleUsernameChange = (e) => setUsername(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -15,9 +14,10 @@ export function SignUp() {
     const handleRoleChange = (e) => setRole(e.target.value);
     const handleDescriptionChange = (e) => setDescription(e.target.value);
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let userData = { username, password, email, role: 'USER' };
+        let userData = { username, password, email, role: role.toUpperCase() };
 
         if (role === 'peer') {
             userData = { ...userData, description, status: 'IN REVIEW', role: 'PEER' };
@@ -35,14 +35,24 @@ export function SignUp() {
             });
 
             if (response.ok) {
-                console.log("Signup successful");
-                navigate('/login');
+                // Debugging log to check which message should be set
+                console.log("Signup successful, role:", role);
+                console.log("sign up check", role === 'peer');
+                // Set the success message based on the role
+                const message = role === 'peer'
+                    ? "Thank you for signing up as a peer, your credentials will be reviewed."
+                    : "Signup successful. Please login with your created credentials.";
+
+                console.log("message: ", message);
+                setSuccessMessage(message);
             } else {
                 const errorData = await response.json();
                 console.error("Signup failed:", errorData.message);
+                setSuccessMessage(''); // Clear the message in case of an error
             }
         } catch (error) {
             console.error('Request failed:', error);
+            setSuccessMessage(''); // Clear the message in case of an error
         }
     };
 
@@ -108,6 +118,12 @@ export function SignUp() {
                 )}
                 <button type="submit">Sign Up</button>
             </form>
+            {successMessage && (
+                <div>
+                    <p>{successMessage}</p>
+                    <br />
+                </div>
+            )}
         </div>
     );
 }
