@@ -37,69 +37,63 @@ export function MoreRecommendations({ recommendations, onClose, onSelectRecommen
 
     return (
         <div className="more-recommendations-container">
-            <h2>More Recommendations</h2>
-            <div className="recommendation-cards">
-                {recommendations.map((recommendation, index) => (
-                    <div key={recommendation.id || index}
-                        className="recommendation-card"
-                        onClick={() => onSelectRecommendation(recommendation)}>
-
-                        <div className="person-info">
-
-                            {/* Use a random plant profile picture */}
-                            <img src={getRandomPlantPFP()} alt="Plant" className="plant"></img>
-
-                            <div className="info">
-                                <h3>Username</h3>
-                                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                    <p>@{recommendation.username}</p>
-                                    <img src={logoImageBlack} alt="CareLink Logo" className="verified-CL" />
-                                </div>
-
-                                <br></br>
-
-                                <div className="badges">
-                                    <h3>Badge(s)</h3>
-                                    {index === 0 && (
-                                        <>
-                                            <img src={VerifiedHelper} alt="Badge 1" />
-                                            <img src={firstTimeHelper} alt="Badge 2" />
-                                        </>
-                                    )}
-                                    {index === 1 && (
-                                        <>
-                                            <img src={VerifiedHelper} alt="Badge 1" />
-                                            <img src={firstTimeHelper} alt="Badge 2" />
-                                            <img src={HelpedTenPeople} alt="Badge 3" />
-                                        </>
-                                    )}
-                                    {index === 2 && (
-                                        <img src={VerifiedHelper} alt="Badge 1" />
-                                    )}
-                                </div>
-
-                                <br></br>
-
-                                <div>
-                                    <p style={{ color: 'grey', fontSize: '12px' }}>
-                                        (Click Card for more info)
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
+          <h2>More Recommendations</h2>
+          <div className="recommendation-cards">
+            {recommendations.map((recommendation, index) => (
+              <div
+                key={recommendation.id || index}
+                className="recommendation-card"
+                onClick={() => onSelectRecommendation(recommendation)}
+              >
+                <div className="person-info">
+                  {/* Use the stored image URL for each recommendation */}
+                  <img src={recommendation.imageUrl} alt="Plant" className="plant" />
+                  <div className="info">
+                    <h3>Username</h3>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                      <p>@{recommendation.username}</p>
+                      <img src={logoImageBlack} alt="CareLink Logo" className="verified-CL" />
                     </div>
-                ))}
+                    <br />
+                    <div className="badges">
+                      <h3>Badge(s)</h3>
+                      {index === 0 && (
+                        <>
+                          <img src={VerifiedHelper} alt="Badge 1" />
+                          <img src={firstTimeHelper} alt="Badge 2" />
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <img src={VerifiedHelper} alt="Badge 1" />
+                          <img src={firstTimeHelper} alt="Badge 2" />
+                          <img src={HelpedTenPeople} alt="Badge 3" />
+                        </>
+                      )}
+                      {index === 2 && (
+                        <img src={VerifiedHelper} alt="Badge 1" />
+                      )}
+                    </div>
+                    <br />
+                    <div>
+                      <p style={{ color: 'grey', fontSize: '12px' }}>
+                        (Click Card for more info)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {showModal && (
+            <div className="overlay" onClick={toggleModal}>
+              {/* Pass the selected recommendation to RecomModal */}
+              <RecomModal
+                onClose={onClose}
+                description={selectedRecommendation.description}
+              />
             </div>
-      {showModal && (
-        <div className="overlay" onClick={toggleModal}>
-          {/* Pass the selected recommendation to RecomModal */}
-          <RecomModal
-            onClose={onClose}
-            description={selectedRecommendation.description}
-          />
+          )}
         </div>
-      )}
-    </div>
-  );
+      );
 }
