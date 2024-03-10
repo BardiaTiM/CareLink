@@ -89,39 +89,14 @@ export function ContactList() {
       container.scrollTop = 0;
     }
   }, [userData]); // Trigger effect when user data changes
-
-  // Render contacts based on user role
-  if (sessionStorage.getItem("userRole") === "COUNCILOR") {
-    return (
-      <div className="contact-container">
-        {/* Render error message if exists */}
-        {errorMessage && <p>{errorMessage}</p>}
-        <h2 style={{ marginTop: "1700px" }}>Contact</h2>
-
-        <div>
-          {/* Render contact list */}
-          {userData.map((user, index) => (
-            <div className="contact-user-profile" key={user.id || index}>
-              <Link
-                to={`/chat/${loggedInUserId}/${user.id}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                {user.username}
-              </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+  
+  // 
   return (
     <div className="contact-container">
-      {/* Render error message if exists */}
       {errorMessage && <p>{errorMessage}</p>}
       <h2>Contact</h2>
       <div>
-        {/* Render contact list */}
+      {/*Display the list of users*/}
         {userData.map((user, index) => (
           <div className="contact-user-profile" key={user.id || index}>
             <Link
