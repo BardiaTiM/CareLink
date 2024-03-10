@@ -81,7 +81,7 @@ export function Login() {
 
                 <div>
                     <label htmlFor="role">Select Role</label>
-                    <select value={role} onChange={handleRoleChange}>
+                    <select className='role-dropbox' value={role} onChange={handleRoleChange}>
                         <option value="user">User</option>
                         <option value="peer">Peer</option>
                         <option value="counselor">Counselor</option>
