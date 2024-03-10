@@ -41,6 +41,7 @@ export function RecomPage() {
 
             {mainRecommendation && (
                 <div className="recommendation-card" onClick={toggleModal}>
+                    
                     <div className="person-info">
 
                         <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
@@ -64,6 +65,7 @@ export function RecomPage() {
                         </div>
 
                     </div>
+                    
                 </div>
             )}
 
