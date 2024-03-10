@@ -38,10 +38,14 @@ export function Main() {
         setParagraph(event.target.value);
     };
 
+    const getUserName = () => {
+        return sessionStorage.getItem('username');
+    }
+
     const sendParagraph = () => {
         try {
             setIsLoading(true); // Set loading state to true
-            const username = sessionStorage.getItem('username');
+            const userId = sessionStorage.getItem('userId');
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:8000/help_request');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -60,7 +64,7 @@ export function Main() {
                     }
                 }
             };
-            xhr.send(JSON.stringify({ user_id: username, description: paragraph }));
+            xhr.send(JSON.stringify({ user_id: userId, description: paragraph }));
         } catch (error) {
             setIsLoading(false); // Set loading state to false in case of error
             console.error('Error sending paragraph:', error.message);
@@ -69,31 +73,44 @@ export function Main() {
 
     return (
         <div className="main-container">
+
+
             {currentStep === 1 && (
-                <h1 className={animationClass}>Feeling Overwhelmed? Let's Balance Life Together.</h1>
+                <h1 className={animationClass} style={{ color: 'black' }}>
+                    Feeling Overwhelmed? Let's Balance Life Together.
+                </h1>
             )}
             {currentStep === 2 && (
-                <h1 className={animationClass}>Looking for Support? Connect with Peers and Counselors Here.</h1>
+                <h1 className={animationClass} style={{ color: 'black' }}>
+                    Looking for Support? Connect with Peers and Counselors Here.
+                </h1>
             )}
             {currentStep === 3 && (
                 <div>
-                    {isLoading ? ( // Conditionally render loading GIF or card
+                    {isLoading ? (
+                        // If isLoading is true, show the loading image
                         <img src={loading} alt="Loading..." key={Date.now()} />
                     ) : (
-                        <div className="cards">
-                            <div className={animationClass}>
-                                <h2>Share Your BCIT Experience</h2>
-                                <textarea
-                                    value={paragraph}
-                                    onChange={handleInputChange}
-                                    placeholder="Describe any challenges or issues you're facing at BCIT"
-                                    rows={10}
-                                    cols={50}
-                                />
-                                <br />
-                                <button onClick={sendParagraph}>Submit</button>
+                        // Use a fragment to wrap the welcome message and the card without adding extra DOM nodes
+                        <>
+                            <div>
+                                <h1 className="welcome-message fade-in-only">Welcome, {getUserName()}</h1>
                             </div>
-                        </div>
+                            <div className="cards">
+                                <div className={animationClass}>
+                                    <h2>Share Your BCIT Experience</h2>
+                                    <textarea
+                                        value={paragraph}
+                                        onChange={handleInputChange}
+                                        placeholder="Describe any challenges or issues you're facing"
+                                        rows={10}
+                                        cols={50}
+                                    />
+                                    <br />
+                                    <button onClick={sendParagraph}>Submit</button>
+                                </div>
+                            </div>
+                        </>
                     )}
                 </div>
             )}

@@ -1,5 +1,3 @@
-/* recomPage.css */
-
 /* Style for the main container */
 .recom-page-container {
     margin: 20px;
@@ -7,18 +5,44 @@
 
 /* Style for the recommendation card */
 .recommendation-card {
+    display: flex;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.recommendation-card:hover {
+    transform: scale(1.05) rotate(0.5deg);
 }
 
 /* Style for the person image */
 .recommendation-card img {
-    width: 150px; /* Adjust as needed */
-    height: 150px; /* Adjust as needed */
-    border-radius: 50%; /* Ensure circular shape */
-    margin-bottom: 10px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+/* Mainly for the verified badge next to the username */
+.info img {
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Style for the person info */
+.person-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Style for the person name */
@@ -27,9 +51,9 @@
 }
 
 .badges img {
-    width: 50px; /* Adjust as needed */
-    height: 50px; /* Adjust as needed */
-    margin-right: 10px; /* Add margin between badges */
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 .overlay {
@@ -38,7 +62,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -48,12 +72,16 @@
     background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    text-align: center; /* Center align the content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .modal-content img {
-    max-width: 100%; /* Ensure the image fits within the modal content */
-    border-radius: 50%; /* Make the image round */
-    margin-bottom: 20px; /* Add some space below the image */
+    max-width: 100%;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.RecomPage h1 {
+    color: #000000;
 }
