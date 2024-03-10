@@ -44,11 +44,16 @@ export function RecomPage() {
 
   useEffect(() => {
     // Retrieve data from local storage when component mounts
-    const storedRecommendations = localStorage.getItem("recommendations");
+    const storedRecommendations = localStorage.getItem('recommendations');
     if (storedRecommendations) {
       const parsedRecommendations = JSON.parse(storedRecommendations);
-      setMainRecommendation(parsedRecommendations[0]); // Display the first item as the main recommendation
-      setRecommendations(parsedRecommendations.slice(1)); // Set the rest of the recommendations for "More Recommendations"
+      // Generate a random plant profile picture for each recommendation
+      const recommendationsWithImages = parsedRecommendations.map((recommendation) => ({
+        ...recommendation,
+        imageUrl: getRandomPlantPFP(),
+      }));
+      setMainRecommendation(recommendationsWithImages[0]); // Display the first item as the main recommendation
+      setRecommendations(recommendationsWithImages.slice(1)); // Set the rest of the recommendations for "More Recommendations"
     }
   }, []);
 
@@ -57,41 +62,23 @@ export function RecomPage() {
     return plantPFPs[randomIndex];
   };
 
-  useEffect(() => {
-    // Retrieve data from local storage when component mounts
-    const storedRecommendations = localStorage.getItem("recommendations");
-    if (storedRecommendations) {
-      const parsedRecommendations = JSON.parse(storedRecommendations);
-      setMainRecommendation(parsedRecommendations[0]); // Display the first item as the main recommendation
-      setRecommendations(parsedRecommendations.slice(1)); // Set the rest of the recommendations for "More Recommendations"
-    }
-  }, []);
-
   return (
     <div className="RecomPage">
       <h1>Peer For You</h1>
 
       {mainRecommendation && (
-        <div
-          className="recommendation-card"
-          onClick={() => toggleModal(mainRecommendation)}
-        >
+        <div className="recommendation-card" onClick={() => toggleModal(mainRecommendation)}>
           <div className="person-info">
             {/* Use a random plant profile picture for the main recommendation */}
-            <img src={getRandomPlantPFP()} alt="Plant" className="plant"></img>
-
+            <img src={mainRecommendation.imageUrl} alt="Plant" className="plant" />
             <div className="info">
               <h3>Username</h3>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <p>@{mainRecommendation.username}</p>
-                <img
-                  src={logoImageBlack}
-                  alt="CareLink Logo"
-                  className="verified-CL"
-                />
+                <img src={logoImageBlack} alt="CareLink Logo" className="verified-CL" />
               </div>
 
-              <br></br>
+              <br />
 
               <div className="badges">
                 <h3>Badge(s)</h3>
@@ -101,12 +88,10 @@ export function RecomPage() {
                 <img src={HelpedTwentyFivePeople} alt="Badge 3" />
               </div>
 
-              <br></br>
+              <br />
 
               <div>
-                <p style={{ color: "grey", fontSize: "12px" }}>
-                  (Click Card for more info)
-                </p>
+                <p style={{ color: 'grey', fontSize: '12px' }}>(Click Card for more info)</p>
               </div>
             </div>
           </div>
@@ -119,6 +104,7 @@ export function RecomPage() {
             onClose={() => setShowModal(false)}
             description={selectedRecommendation.description}
             peerId={selectedRecommendation.peerID}
+            imageUrl={selectedRecommendation.imageUrl} // Pass imageUrl to the modal
           />
         </div>
       )}
@@ -139,3 +125,4 @@ export function RecomPage() {
     </div>
   );
 }
+

@@ -142,7 +142,7 @@ function PrivateChat() {
   };
 
   return (
-    <div className="main-container">
+    <div className="main-chat-container">
       <ContactList className="contact-list" />
       <div className="chat-container">
         <div className="messages-container">

@@ -91,7 +91,7 @@ export function Main() {
         <div className="sub-container">
           {isLoading ? (
             // If isLoading is true, show the loading image
-            <img src={loading} alt="Loading..." key={Date.now()} />
+            <img src={loading} alt="Loading..." key={Date.now()} className="loading-image" />
           ) : (
             // Use a fragment to wrap the welcome message and the card without adding extra DOM nodes
             <div className="sub-main-container">
