@@ -26,16 +26,10 @@
     margin-bottom: 5px;
 }
 
-/* Style for the badges container */
-.badges {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* Style for individual badge images */
 .badges img {
     width: 50px; /* Adjust as needed */
     height: 50px; /* Adjust as needed */
+    margin-right: 10px; /* Add margin between badges */
 }
 
 .overlay {

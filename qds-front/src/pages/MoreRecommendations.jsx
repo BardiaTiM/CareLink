@@ -1,7 +1,10 @@
-// MoreRecommendations.jsx
 import React, { useState } from 'react';
 import { RecomModal } from './RecomModal';
 import '../style/recomePage.css';
+import firstTimeHelper from '../style/images/badges/First-time-helper.png';
+import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
+import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';
+import VerifiedHelper from '../style/images/badges/Verified-User.png';
 
 export function MoreRecommendations({ recommendations, onClose }) {
     const [showModal, setShowModal] = useState(false);
@@ -29,10 +32,22 @@ export function MoreRecommendations({ recommendations, onClose }) {
                                 <p>Description: {recommendation.description}</p>
                                 {/* Render badge images */}
                                 <div className="badges">
-                                    <img src={recommendation.badge1Url} alt="Badge 1" />
-                                    <img src={recommendation.badge2Url} alt="Badge 2" />
-                                    <img src={recommendation.badge3Url} alt="Badge 3" />
-                                    <img src={recommendation.badge4Url} alt="Badge 4" />
+                                    {index === 0 && (
+                                        <>
+                                            <img src={VerifiedHelper} alt="Badge 1" />
+                                            <img src={firstTimeHelper} alt="Badge 2" />
+                                        </>
+                                    )}
+                                    {index === 1 && (
+                                        <>
+                                            <img src={VerifiedHelper} alt="Badge 1" />
+                                            <img src={firstTimeHelper} alt="Badge 2" />
+                                            <img src={HelpedTenPeople} alt="Badge 3" />
+                                        </>
+                                    )}
+                                    {index === 2 && (
+                                        <img src={VerifiedHelper} alt="Badge 1" />
+                                    )}
                                 </div>
                             </div>
                         </div>
