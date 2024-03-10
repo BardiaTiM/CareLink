@@ -1,13 +1,14 @@
-// src/pages/RecomPage.jsx
-
-import React, { useState } from 'react';
-import { RecomModal } from './RecomModal'; // Correct the import statement
-import { MoreRecommendations } from './MoreRecommendations'; // Import the MoreRecommendations component
+// RecomPage.jsx
+import React, { useState, useEffect } from 'react';
+import { RecomModal } from './RecomModal';
+import { MoreRecommendations } from './MoreRecommendations';
 import '../style/recomePage.css';
 
-export function RecomPage() { // Change the component name to start with uppercase
+export function RecomPage() {
     const [showModal, setShowModal] = useState(false);
-    const [showMore, setShowMore] = useState(false); // State to toggle the visibility of more recommendations
+    const [showMore, setShowMore] = useState(false);
+    const [recommendations, setRecommendations] = useState([]);
+    const [mainRecommendation, setMainRecommendation] = useState(null);
 
     const toggleModal = () => {
         setShowModal(!showModal);
@@ -17,38 +18,41 @@ export function RecomPage() { // Change the component name to start with upperca
         setShowMore(!showMore);
     };
 
+    useEffect(() => {
+        // Retrieve data from local storage when component mounts
+        const storedRecommendations = localStorage.getItem('recommendations');
+        if (storedRecommendations) {
+            const parsedRecommendations = JSON.parse(storedRecommendations);
+            setMainRecommendation(parsedRecommendations[0]); // Display the first item as the main recommendation
+            setRecommendations(parsedRecommendations.slice(1)); // Set the rest of the recommendations for "More Recommendations"
+        }
+    }, []);
+
     return (
         <div>
             <h1>Main Recommendation</h1>
-            <div className="recommendation-card" onClick={toggleModal}>
-                <div className="person-info">
-                    <img src="https://via.placeholder.com/150" alt="Person" />
-                    <div className="info">
-                        <p>Name: John Doe</p>
-                        <div className="badges">
-                            <img src="https://via.placeholder.com/50" alt="Badge 1" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 2" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 3" />
-                            <img src="https://via.placeholder.com/50" alt="Badge 4" />
+            {mainRecommendation && (
+                <div className="recommendation-card" onClick={toggleModal}>
+                    <div className="person-info">
+                        <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
+                        <div className="info">
+                            <p>Name: {mainRecommendation.username}</p>
+                            <p>Description: {mainRecommendation.description}</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            )}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={toggleModal} />
+                    <RecomModal onClose={toggleModal} recommendation={mainRecommendation} />
                 </div>
             )}
-
-            {/* Render the "View More Recommendations" button */}
-            {!showMore && (
+            {!showMore && recommendations.length > 0 && (
                 <div className="view-more-container">
                     <button onClick={toggleMore}>View More Recommendations</button>
                 </div>
             )}
-
-            {/* Render the MoreRecommendations component if showMore is true */}
-            {showMore && <MoreRecommendations />}
+            {showMore && <MoreRecommendations recommendations={recommendations} onClose={toggleModal} />} {/* Pass recommendations and toggleModal function to MoreRecommendations component */}
         </div>
     );
 }
