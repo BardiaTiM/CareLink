@@ -510,22 +510,92 @@ app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
 app.post('/connectUserWithPeer', async (req, res) => {
     const { userId, peerId } = req.body;
 
+    console.log('Connecting user with peer:', userId, peerId);
+
     try {
-        // Insert the user_id and peer_id into the database
         const { data, error } = await supabase
             .from('user_to_peer')
             .insert([{ user_id: userId, peer_id: peerId }]);
 
         if (error) {
+            console.error('Database error:', error);
             throw error;
         }
 
         res.status(200).send('Connected user with peer');
     } catch (error) {
         console.error('Error connecting user with peer:', error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send('Error details: ' + error.message);
     }
 });
+
+app.get('/getUsersConnectedWithPeers/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const { data, error } = await supabase
+            .from('user_to_peer')
+            .select(`
+                peer_helpers (
+                    id,
+                    username,
+                    email,
+                    description,
+                    status,
+                    role
+                )
+            `)
+            .eq('user_id', userId);
+
+        if (error) {
+            console.error('Database error:', error);
+            throw error;
+        }
+
+        // Extracting peer_helpers data from each row
+        const peerHelpersData = data.map(item => item.peer_helpers);
+
+        res.status(200).json(peerHelpersData);
+    } catch (error) {
+        console.error('Error fetching users connected with peers:', error);
+        res.status(500).send('Error details: ' + error.message);
+    }
+});
+
+app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    console.log('Fetching peers connected with user:', userId);
+
+    try {
+        const { data, error } = await supabase
+            .from('user_to_peer')
+            .select(`
+                user (
+                    id,
+                    username,
+                    email,
+                    description,
+                    role
+                )
+            `)
+            .eq('peer_id', userId);
+
+        if (error) {
+            console.error('Database error:', error);
+            throw error;
+        }
+
+        // Extracting user data from each row
+        const userData = data.map(item => item.user);
+
+        res.status(200).json(userData);
+    } catch (error) {
+        console.error('Error fetching users connected with peers:', error);
+        res.status(500).send('Error details: ' + error.message);
+    }
+});
+
 
 server.listen(8000, function listening() {
     console.log('Server started on port 8000');

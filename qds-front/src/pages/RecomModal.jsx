@@ -1,25 +1,32 @@
 // src/pages/RecomModal.jsx
 
 import React from "react";
-import { Navigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../style/recomePage.css";
 
 export function RecomModal({ onClose, description, peerId }) {
+
+    console.log("peerId: ", peerId);
+  const nagivate = useNavigate();
+
   const handleStartChat = async () => {
     const loggedInUserId = sessionStorage.getItem("userId");
     const chatUserId = peerId;
 
     try {
-      const response = await fetch("/connectUserWithPeer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: loggedInUserId,
-          peerId: chatUserId,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8000/connectUserWithPeer",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: loggedInUserId,
+            peerId: chatUserId,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -27,7 +34,7 @@ export function RecomModal({ onClose, description, peerId }) {
 
       const result = await response.text();
       console.log(result); // or handle the result as needed
-    //   Navigation('/chat')
+      nagivate('/chat/' + loggedInUserId + '/' + chatUserId);
     } catch (error) {
       console.error("Error connecting user with peer:", error);
     }

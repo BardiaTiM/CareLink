@@ -1,8 +1,8 @@
 .main-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
 }
 
 .message-list-container {
@@ -20,6 +20,13 @@
   width: 100%;
   /* Other existing styles... */
 }
+.message-username {
+  margin-bottom: 4px; /* Space between username and message bubble */
+  color: #666; /* Dark grey color for the text */
+  font-size: 0.85rem; /* Smaller font size for the username */
+  margin-left: 10px; /* Aligns the username with the 'from-other' bubble */
+  margin-bottom: 2px; /* Reduced space between username and message bubble */
+}
 
 .messages-container {
   /* ... [existing styles] ... */
@@ -27,7 +34,7 @@
   flex-direction: column;
   align-items: flex-end; /* Aligns your messages to the right */
   padding: 20px; /* Add more padding around messages */
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
 }
 
 .message-container {
@@ -38,19 +45,34 @@
 }
 
 .message-bubble {
-  padding: 10px 15px;
   border-radius: 20px;
   word-wrap: break-word;
   max-width: 75%; /* Widens the message bubble */
   margin-bottom: 8px; /* Space between messages */
+  word-wrap: break-word;
+  padding: 10px 15px;
+}
+
+.from-user-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Aligns the bubbles to the right */
+  margin-bottom: 10px;
 }
 
 .from-user {
   margin-left: auto;
   margin-right: 10px;
-  background-color: #042A2B; /* Blue background */
+  background-color: #042a2b; /* Blue background */
   color: white; /* White text for readability */
   align-self: flex-end; /* Aligns your messages to the right */
+}
+
+.from-other-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns the bubbles to the left */
+  margin-bottom: 10px;
 }
 
 .from-other {
@@ -69,7 +91,7 @@
 }
 
 .messages-container {
-  justify-content: flex-end; /* Aligns user messages to the right */
+  justify-content: space-between; /* Aligns user messages to the right */
   margin-bottom: 4px; /* Adds space between messages */
 }
 
@@ -96,7 +118,7 @@
 .send-button {
   flex: 0 0 20%; /* Remaining 20% of the space */
   padding: 10px;
-  background-color: #042A2B; /* Button color */
+  background-color: #042a2b; /* Button color */
   color: white;
   border: none;
   border-radius: 20px;

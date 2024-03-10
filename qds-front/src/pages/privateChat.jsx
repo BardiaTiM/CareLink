@@ -9,7 +9,6 @@ function PrivateChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [receiverUserName, setReceiverUserName] = useState("");
-  const [userData, setUserData] = useState([]);
 
   // Function to fetch message history
   const fetchMessageHistory = async () => {
@@ -59,7 +58,6 @@ function PrivateChat() {
         console.error("Error fetching receiver username:", error);
       });
     fetchMessageHistory();
-    fetchListOfUsers();
     const newSocket = new WebSocket("ws://localhost:8000");
 
     newSocket.onopen = () => {
@@ -124,55 +122,32 @@ function PrivateChat() {
 
   const renderMessages = () => {
     return messages.map((msg, index) => (
-      <div key={index} className="message-container">
+      <div
+        key={index}
+        className={`message-container ${
+          msg.from === loggedInUserId
+            ? "from-user-container"
+            : "from-other-container"
+        }`}
+      >
+        {msg.from !== loggedInUserId && (
+          <div className="message-username">{receiverUserName}</div>
+        )}
         <div
           className={`message-bubble ${
             msg.from === loggedInUserId ? "from-user" : "from-other"
           }`}
         >
-          <b>{msg.from === loggedInUserId ? "You" : "Other"}:</b>{" "}
           {msg.message_text}
         </div>
       </div>
     ));
   };
 
-  const fetchListOfUsers = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/getAllUsers");
-
-      const userList = await response.json();
-
-      const loggedInUserExists = userList.some(
-        (user) => user.id === loggedInUserId
-      );
-
-      if (loggedInUserExists) {
-        const peerHelperResponse = await fetch(
-          "http://localhost:8000/getAllPeerHelpers"
-        );
-        if (!peerHelperResponse.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const peerHelperData = await peerHelperResponse.json();
-        setUserData(peerHelperData);
-      } else {
-        setUserData(userList);
-      }
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-    } catch (error) {
-      console.error("Error fetching user list:", error);
-    }
-  };
-
   return (
     <div className="main-container">
-      <MessageList users={userData} loggedInUserId={loggedInUserId} />
+      <MessageList />
       <div className="chat-container">
-        <h2>Private Chat with {receiverUserName || "User"}</h2>
         <div className="messages-container">{renderMessages()}</div>
         <div className="input-container">
           <input
