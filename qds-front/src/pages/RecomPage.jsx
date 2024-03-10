@@ -21,22 +21,23 @@ import plant5 from "../style/images/plantPFPs/plant5.png";
 
 const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
+// Array of recommendation objects
 export function RecomPage() {
   const [showModal, setShowModal] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
   const [mainRecommendation, setMainRecommendation] = useState(null);
   const [selectedRecommendation, setSelectedRecommendation] = useState(null);
-
+  // Function to toggle the visibility of the modal
   const toggleModal = (recommendation) => {
     setSelectedRecommendation(recommendation);
     setShowModal(!showModal);
   };
-
+  // Function to toggle the visibility of the "More Recommendations" section
   const toggleMore = () => {
     setShowMore(!showMore);
   };
-
+  // Function to handle the click event on a recommendation card
   const handleRecommendationSelect = (recommendation) => {
     setSelectedRecommendation(recommendation);
     setShowModal(true);
