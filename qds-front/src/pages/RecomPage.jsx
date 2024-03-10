@@ -35,7 +35,7 @@ export function RecomPage() {
     }, []);
 
     return (
-        <div>
+        <div className="RecomPage">
             <h1>Main Recommendation</h1>
             {mainRecommendation && (
                 <div className="recommendation-card" onClick={toggleModal}>
