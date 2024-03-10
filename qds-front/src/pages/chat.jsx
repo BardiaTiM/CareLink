@@ -1,6 +1,6 @@
 import React from "react";
-import { MessageList } from "../components/messageList";
+import { ContactList } from "../components/contactList";
 
 export default function Chat() {
-  return <MessageList />;
+  return <ContactList />;
 }

@@ -27,10 +27,6 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Store connected clients
 const clients = new Map();
-// Store messages
-const messages = [];
-// Track online users
-const onlineUsers = new Set();
 
 // Use body-parser middleware to parse incoming JSON payloads
 app.use(bodyParser.json());

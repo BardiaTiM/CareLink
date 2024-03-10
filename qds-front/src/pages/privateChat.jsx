@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MessageList } from "../components/messageList";
+import { ContactList } from "../components/contactList";
 import "../style/PrivateChat.css";
 
 function PrivateChat() {
@@ -130,9 +130,6 @@ function PrivateChat() {
             : "from-other-container"
         }`}
       >
-        {msg.from !== loggedInUserId && (
-          <div className="message-username">{receiverUserName}</div>
-        )}
         <div
           className={`message-bubble ${
             msg.from === loggedInUserId ? "from-user" : "from-other"
@@ -146,10 +143,15 @@ function PrivateChat() {
 
   return (
     <div className="main-container">
-      <MessageList />
+      <ContactList className="contact-list" />
       <div className="chat-container">
-        <div className="messages-container">{renderMessages()}</div>
-        <div className="input-container">
+        <div className="messages-container">
+          <h1 className="receiver-username">
+            {receiverUserName ? receiverUserName : "Loading..."}
+          </h1>
+          <hr />
+          {renderMessages()}
+          <div className="input-container">
           <input
             type="text"
             value={newMessage}
@@ -159,6 +161,7 @@ function PrivateChat() {
           <button onClick={handleSendMessage} className="send-button">
             Send
           </button>
+        </div>
         </div>
       </div>
     </div>
