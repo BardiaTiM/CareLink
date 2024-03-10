@@ -14,8 +14,8 @@ export function Main() {
   useEffect(() => {
     // Sequence: 1. First message, 2. Second message, 3. Input form
     const transitions = [
-      { timeout: 0, nextStep: 2, nextAnimation: "fade-out" },
-      { timeout: 0, nextStep: 3, nextAnimation: "fade-out" },
+      { timeout: 2000, nextStep: 2, nextAnimation: "fade-out" },
+      { timeout: 2000, nextStep: 3, nextAnimation: "fade-out" },
     ];
 
     if (currentStep < 3) {
