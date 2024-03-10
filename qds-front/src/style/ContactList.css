@@ -1,3 +1,57 @@
-.chat-container {
-  width: 500px; /* Fixed width */
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  height: 100%; /* Full height */
+  padding: 20px; /* Add padding */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  max-height: 625px; /* Set a maximum height */
+  overflow: scroll; /* Enable scrolling */
+}
+
+.contact-container h2 {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  margin-bottom: 20px; /* Space below the header */
+  /* Other styles... */
+}
+
+/* Style for the individual contacts */
+.contact-container p {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  /* Other styles... */
+}
+
+.contact-container a {
+  /* Styles for links */
+  /* Other styles... */
+}
+
+/* Error message style */
+.contact-container p.error-message {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  /* Other styles... */
+}
+
+.contact-user-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  padding: 20px; /* Add padding */
+  padding-left: 50px;
+  padding-right: 50px;
+  border: 1px solid #042A2B; /* Add border */
+  border-radius: 20px;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  margin-bottom: 10px;
+}
+
+.contact-user-profile:hover {
+  background-color: #042A2B; /* Change background color on hover */
+  cursor: pointer; /* Change cursor on hover */
+  color: white;
 }

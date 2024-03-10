@@ -97,6 +97,9 @@ export function Main() {
             <div className="sub-main-container">
               <div className="card-container">
 
+    return (
+        <div className="main-chat-container">
+
                 <div className="content-container">
                   
                   <h1 className="welcome-message fade-in-only">
