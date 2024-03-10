@@ -26,7 +26,6 @@ export function MoreRecommendations({ recommendations, onClose }) {
                             <img src={recommendation.imageUrl} alt="Person" />
                             <div className="info">
                                 <p>Name: {recommendation.username}</p>
-                                <p>Description: {recommendation.description}</p>
                                 {/* Render badge images */}
                                 <div className="badges">
                                     <img src={recommendation.badge1Url} alt="Badge 1" />
@@ -41,7 +40,8 @@ export function MoreRecommendations({ recommendations, onClose }) {
             </div>
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={onClose} recommendation={selectedRecommendation} />
+                    {/* Pass the selected recommendation to RecomModal */}
+                    <RecomModal onClose={onClose} description={selectedRecommendation.description} />
                 </div>
             )}
         </div>
