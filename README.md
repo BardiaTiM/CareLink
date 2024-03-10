@@ -1,6 +1,6 @@
 # CareLink
 
-<p align="center"><img src="./readMeImages/CareLink_v1_-_white__orange.png"></p>
+<p align="center"><img src="./readMeImages/CareLink v1 - color.png"></p>
 
 ## Team Members
 
