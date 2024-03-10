@@ -26,9 +26,9 @@ function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/signup" element={<SignUp />} />
                     {/*<Route path="/login" element={<Login />} />*/}
-                    <Route path="/main" element={<PrivateRoute><Main /></PrivateRoute>} />
-                    <Route path="/chat" element={<Chat />} />
-                    <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
+                    <Route path="/main" element={<PrivateRoute requiredRole="USER"><Main /></PrivateRoute>} />
+                    <Route path="/chat" element={<PrivateRoute><Chat /></PrivateRoute>} />
+                    <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateRoute><PrivateChat /></PrivateRoute>} />
                     <Route path="/councilorLogin" element={<CouncilorLogin />} />
                     <Route path="/inReview" element={<PrivateRoute><InReview /></PrivateRoute>} />
                     <Route path="/recomPage" element={<PrivateRoute><RecomPage /></PrivateRoute>} />
