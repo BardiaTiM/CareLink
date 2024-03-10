@@ -3,12 +3,21 @@
   flex-direction: column;
   justify-content: center; /* Center vertically */
   align-items: center; /* Center horizontally */
-  height: 100%; /* Full height */
+  /*width: 100%;*/
   padding: 20px; /* Add padding */
   box-sizing: border-box; /* Include padding and border in the width calculation */
-  max-height: 625px; /* Set a maximum height */
-  overflow: scroll; /* Enable scrolling */
+  height: 650px; /* or any specific height */
+
 }
+
+.contact-list {
+  display: flex;
+  flex-direction: column; /* Ensure items are listed vertically */
+  max-height: 650px; /* Adjust this as needed to fit within your layout */
+  overflow-y: auto; /* Show scroll bar only when necessary */
+  /*width: 100%; !* Ensure it takes the full width of its parent *!*/
+}
+
 
 .contact-container h2 {
   width: 100%; /* Full width */
