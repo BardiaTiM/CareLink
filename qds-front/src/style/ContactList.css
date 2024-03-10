@@ -6,6 +6,8 @@
   height: 100%; /* Full height */
   padding: 20px; /* Add padding */
   box-sizing: border-box; /* Include padding and border in the width calculation */
+  max-height: 625px; /* Set a maximum height */
+  overflow: scroll; /* Enable scrolling */
 }
 
 .contact-container h2 {
@@ -34,4 +36,22 @@
   /* Other styles... */
 }
 
+.contact-user-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  padding: 20px; /* Add padding */
+  padding-left: 50px;
+  padding-right: 50px;
+  border: 1px solid #042A2B; /* Add border */
+  border-radius: 20px;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  margin-bottom: 10px;
+}
 
+.contact-user-profile:hover {
+  background-color: #042A2B; /* Change background color on hover */
+  cursor: pointer; /* Change cursor on hover */
+  color: white;
+}

@@ -1,4 +1,4 @@
-.main-container {
+.main-chat-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-start; /* Align to the start of the container */
@@ -52,21 +52,27 @@
   color: white;
 }
 
+.message-input {
+    border-radius: 20px;
+}
 
 .chat-container {
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
   flex: 3; /* Takes up the remaining space; since contact-list is 1, this will be 4 times of contact-list */
-  height: calc(100vh - 200px); /* Adjust based on your padding-bottom of main-container */
+  height: calc(
+    100vh - 200px
+  ); /* Adjust based on your padding-bottom of main-container */
   overflow: hidden; /* Adjust as needed */
   border-left: 3px solid black; /* Add a left border */
 }
 
-  .messages-container {
-    width: 100%; /* Use the full width of the chat-container */
-    align-items: center; /* Align children (message-container) to the right */
-    overflow-y: auto; /* Allows for scrolling */
-  }
+.messages-container {
+  width: 100%; /* Use the full width of the chat-container */
+  align-items: center; /* Align children (message-container) to the right */
+  overflow-y: auto; /* Allows for scrolling */
+}
 
 .message-container {
   display: flex;
@@ -76,19 +82,15 @@
   padding: 5px; /* Adjust padding as needed */
 }
 
-
 .from-user-container {
   justify-content: flex-end;
 }
 
 .from-other-container {
-
   justify-content: flex-start;
 }
 
-
 .receiver-username {
-
   color: #042a2b;
   margin: 0px 10px 20px 0px;
   text-align: center;
@@ -102,7 +104,7 @@
   width: 100%; /* Full width */
   background-color: white; /* Match your design */
   padding: 10px; /* Padding around input field */
-  box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
 }
 
 hr {
@@ -118,4 +120,5 @@ hr {
   border: none;
   padding: 10px;
   cursor: pointer;
+  border-radius: 20px;
 }

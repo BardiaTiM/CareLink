@@ -78,17 +78,49 @@ export function ContactList() {
     fetchUsers();
   }, [loggedInUserId, userRole]);
 
+  useEffect(() => {
+    const container = document.querySelector(".contact-container");
+    if (container) {
+      container.scrollTop = 0;
+    }
+  }, [userData]);
+
+  if (sessionStorage.getItem("userRole") === "COUNCILOR") {
+    return (
+      <div className="contact-container">
+        {errorMessage && <p>{errorMessage}</p>}
+        <h2 style={{ marginTop: "1700px" }}>Contact</h2>
+
+        <div>
+          {userData.map((user, index) => (
+            <div className="contact-user-profile" key={user.id || index}>
+              <Link
+                to={`/chat/${loggedInUserId}/${user.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                {user.username}
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="contact-container">
       {errorMessage && <p>{errorMessage}</p>}
       <h2>Contact</h2>
       <div>
         {userData.map((user, index) => (
-          <p key={user.id || index}>
-            <Link to={`/chat/${loggedInUserId}/${user.id}`}>
+          <div className="contact-user-profile" key={user.id || index}>
+            <Link
+              to={`/chat/${loggedInUserId}/${user.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
               {user.username}
             </Link>
-          </p>
+          </div>
         ))}
       </div>
     </div>

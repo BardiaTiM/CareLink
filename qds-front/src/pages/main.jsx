@@ -72,7 +72,7 @@ export function Main() {
     };
 
     return (
-        <div className="main-container">
+        <div className="main-chat-container">
 
 
             {currentStep === 1 && (

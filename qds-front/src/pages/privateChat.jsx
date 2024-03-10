@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ContactList } from "../components/contactList";
 import "../style/PrivateChat.css";
@@ -132,36 +132,36 @@ function PrivateChat() {
 
   const renderMessages = () => {
     return (
-        <>
-          {messages.map((msg, index) => (
-              <div
-                  key={index}
-                  className={`message-container ${
-                      msg.from === loggedInUserId ? "from-user-container" : "from-other-container"
-                  }`}
-              >
-                <div
-                    className={`message-bubble ${
-                        msg.from === loggedInUserId ? "from-user" : "from-other"
-                    }`}
-                >
-                  {msg.message_text}
-                </div>
-              </div>
-          ))}
-          <div ref={messagesEndRef} /> {/* Add this line */}
-        </>
+      <>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={`message-container ${
+              msg.from === loggedInUserId
+                ? "from-user-container"
+                : "from-other-container"
+            }`}
+          >
+            <div
+              className={`message-bubble ${
+                msg.from === loggedInUserId ? "from-user" : "from-other"
+              }`}
+            >
+              {msg.message_text}
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} /> {/* Add this line */}
+      </>
     );
   };
 
   return (
-
-    <div className="main-container">
+    <div className="main-chat-container">
       <ContactList className="contact-list" />
 
-
       <div className="chat-container">
-        <br/>
+        <br />
         <h1 className="receiver-username">
           {receiverUserName ? receiverUserName : "Loading..."}
         </h1>
@@ -169,16 +169,16 @@ function PrivateChat() {
           <hr />
           {renderMessages()}
           <div className="input-container">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className="message-input"
-          />
-          <button onClick={handleSendMessage} className="send-button">
-            Send
-          </button>
-        </div>
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              className="message-input"
+            />
+            <button onClick={handleSendMessage} className="send-button">
+              Send
+            </button>
+          </div>
         </div>
       </div>
     </div>
