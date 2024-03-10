@@ -49,16 +49,16 @@ export function Login() {
         });
 
         if (response.ok) {
-            const { userID, role } = await response.json(); // Assume backend returns role in response
+            const { userID, role, username } = await response.json(); // Assume backend returns role in response
             console.log("signed in userId: ", userID);
             console.log("signed in role: ", role);
-
-
             sessionStorage.setItem('userId', userID);
             sessionStorage.setItem('userRole', role);
             login();
 
             if (role === 'USER') {
+                console.log("username: ", username);
+                sessionStorage.setItem('username', username);
                 navigate('/main');
             } else if (role === 'PEER') {
                 navigate('/chat');
