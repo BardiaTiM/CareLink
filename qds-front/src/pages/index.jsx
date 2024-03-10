@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignUp } from './signup';
+import { Login } from './login'; // Import your Login component
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -12,6 +13,7 @@ import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 import headerBackgroundImage from '../style/images/people-2.jpg';
 
 export function LandingPage() {
+    const [showSignUp, setShowSignUp] = useState(true);
 
     const handleMouseEnter = (event) => {
         event.currentTarget.querySelector('.logo-image-2').src = logoImageOrange;
@@ -23,6 +25,10 @@ export function LandingPage() {
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const toggleView = () => {
+        setShowSignUp((prev) => !prev);
     };
 
     return (
@@ -40,18 +46,23 @@ export function LandingPage() {
                             <br />
                             <h3>
                                 Matched by AI,
-                                <br />
+                                <br></br>
                                 Monitored by Counselors
+                                <br></br>
+                                <br></br>
                             </h3>
                         </div>
                     </div>
-
                     {/* Right column */}
                     <div className="header-image-column">
                         <div className="header-text-container">
                             <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
-                            {/* <h1 className="black-text">CareLink</h1> */}
-                            <SignUp />
+                            {showSignUp ? <SignUp /> : <Login />}
+                            <p>
+                                {showSignUp ? "Already have an account? " : "Don't have an account? "}
+                                <Link onClick={toggleView}>{showSignUp ? 'Login' : 'Sign Up'}</Link>
+                                <br></br>
+                            </p>
                         </div>
                     </div>
                 </div>
