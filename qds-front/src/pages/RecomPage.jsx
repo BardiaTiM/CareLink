@@ -1,4 +1,3 @@
-// RecomPage.jsx
 import React, { useState, useEffect } from 'react';
 import { RecomModal } from './RecomModal';
 import { MoreRecommendations } from './MoreRecommendations';

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import '../style/main.css'; // Make sure this points to your CSS file
+import { useNavigate } from 'react-router-dom';
 
 export function Main() {
     const [paragraph, setParagraph] = useState('');
