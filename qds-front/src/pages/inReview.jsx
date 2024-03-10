@@ -49,7 +49,9 @@ export function InReview() {
     };
 
     return (
-        <div>
+        <div className="InReview-Container">
+            <br />
+            <br />
             <h1>In Review</h1>
             <br></br>
             {isLoading ? (

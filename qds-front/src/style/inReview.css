@@ -30,3 +30,7 @@
 .card button {
     margin-top: 10px;
 }
+
+.InReview-Container h1{
+    color: black;
+}
