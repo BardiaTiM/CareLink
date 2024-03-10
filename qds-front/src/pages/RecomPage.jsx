@@ -52,7 +52,7 @@ export function RecomPage() {
             )}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={toggleModal} description={mainRecommendation.description} />
+                    <RecomModal onClose={toggleModal} description={mainRecommendation.description} peerId={mainRecommendation.id} />
                 </div>
             )}
             {!showMore && recommendations.length > 0 && (

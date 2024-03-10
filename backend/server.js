@@ -507,6 +507,26 @@ app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
     }
 });
 
+app.post('/connectUserWithPeer', async (req, res) => {
+    const { userId, peerId } = req.body;
+
+    try {
+        // Insert the user_id and peer_id into the database
+        const { data, error } = await supabase
+            .from('user_to_peer')
+            .insert([{ user_id: userId, peer_id: peerId }]);
+
+        if (error) {
+            throw error;
+        }
+
+        res.status(200).send('Connected user with peer');
+    } catch (error) {
+        console.error('Error connecting user with peer:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 server.listen(8000, function listening() {
     console.log('Server started on port 8000');
 });
