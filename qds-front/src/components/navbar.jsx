@@ -37,6 +37,7 @@ export function Navbar() {
                 <img src={logoImageWhite} alt="CareLink Logo" className="logo-image" />
             </Link>
             <ul className="navbar-nav">
+                <li className="nav-item non-highlight"><Link to="/FAQ">FAQ</Link></li>
                 {isAuthenticated && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
                 {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
                 {isAuthenticated && CouncilorRole() && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import '../style/faq.css'; // Make sure the CSS file path is correct
 
 export const FAQ = () => {
@@ -7,44 +7,44 @@ export const FAQ = () => {
     // An array of your questions and answers
     const faqs = [
         {
-            question: 'How do I upgrade/downgrade my workspace plan?',
-            answer: 'You can upgrade or downgrade your plan via the settings page.'
+            question: 'What is BCIT CareLink?',
+            answer: 'BCIT CareLink is an exclusive platform connecting BCIT students with counselors and peers to discuss various challenges confidentially, supported by AI-driven matching.'
         },
         {
-            question: 'Can I add other information to be added to an invoice?',
-            answer: 'Yes, you can customize invoices with additional information in the invoice settings.'
+            question: 'How does the anonymity feature work?',
+            answer: 'You can choose to remain anonymous while sharing your challenges and seeking support, ensuring privacy and comfort in your conversations.'
         },
         {
-            question: 'What is the response time for support queries?',
-            answer: 'Our support team typically responds within 24 hours.'
+            question: 'What types of problems can I seek support for on CareLink?',
+            answer: 'CareLink offers support for a wide range of issues, not limited to mental health. Whether academic, personal, or social, you can find assistance.'
         },
         {
-            question: 'Can I integrate third-party tools with this app?',
-            answer: 'Yes, we offer integrations with several popular third-party tools.'
+            question: 'How does the AI matching system work?',
+            answer: 'Our AI system carefully analyzes your described problem to match you with counselors or peers who have the most relevant experience or advice to offer.'
         },
         {
-            question: 'Is there a mobile version of the application available?',
-            answer: 'Yes, our app is available on both iOS and Android devices.'
+            question: 'Is BCIT CareLink monitored for safety?',
+            answer: 'Yes, actual counselors oversee all interactions on the platform to ensure a safe and supportive environment for every student.'
         },
         {
-            question: 'How do I reset my password?',
-            answer: 'You can reset your password by clicking on "Forgot Password?" at the login page.'
+            question: 'How do I sign up for BCIT CareLink?',
+            answer: 'Sign up using your BCIT email for verification. This exclusive process ensures a trusted community space.'
         },
         {
-            question: 'Can I export my data?',
-            answer: 'Yes, you can export your data in various formats from the export section.'
+            question: 'Can I meet with counselors or peers in person?',
+            answer: 'For security reasons, in-person meetups are not initially approved unless endorsed by a counselor after thorough consideration.'
         },
         {
-            question: 'Do you offer any discounts for non-profit organizations?',
-            answer: 'Yes, we offer special pricing for non-profit organizations. Please contact sales for more information.'
+            question: 'Are the support services on CareLink BCIT-specific?',
+            answer: 'Yes, CareLink is tailored specifically for the BCIT community, addressing unique challenges faced by our students.'
         },
         {
-            question: 'How can I cancel my subscription?',
-            answer: 'You can cancel your subscription from your account settings page. Please note that cancellations must be made at least 24 hours before the renewal date.'
+            question: 'How can CareLink help me if I\'m not sure what I need?',
+            answer: 'CareLink can provide recommendations even when you\'re uncertain. Our system is designed to guide you to the right support options.'
         },
         {
-            question: 'What kind of support do you offer?',
-            answer: 'We offer email and chat support for all users. Phone support is available for premium plan subscribers.'
+            question: 'What if I only feel comfortable chatting online?',
+            answer: 'CareLink is built for flexibility, offering online chat options for those who prefer not to talk over the phone or face-to-face.'
         }
     ];
 
