@@ -1,5 +1,8 @@
 .three-column-grid {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
     margin: 0 auto;
     grid-template-columns: repeat(3, 1fr); /* Corrected for 3 columns */
     gap: 20px;
@@ -33,4 +36,12 @@
 
 .InReview-Container h1{
     color: black;
+}
+
+.InReview-Container {
+    text-align: center; /* This ensures everything inside is centered */
+}
+
+.message {
+    text-align: center; /* Center align loading and error messages */
 }
