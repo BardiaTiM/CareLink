@@ -267,7 +267,7 @@ app.post('/login', async function (req, res) {
                 const userId = data.id;
                 const role = data.role;
                 const name = data.username;
-                res.status(200).json({ message: 'Login successful', userID: userId , role: role, username: name });
+                res.status(200).json({ message: 'Login successful', userID: userId, role: role, username: name });
 
             } else {
                 // Passwords do not match
@@ -640,6 +640,32 @@ app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
         res.status(200).json(userData);
     } catch (error) {
         // Catch any unexpected errors during the process and send a 500 response with error details
+        console.error('Error fetching users connected with peers:', error);
+        res.status(500).send('Error details: ' + error.message);
+    }
+});
+
+app.get('/checkGPTPeerDuplicate/:userId/:peerId', async (req, res) => {
+    const { userId, peerId } = req.params; // Extracting userId and peerId from the request parameters
+
+    try {
+        const { data, error } = await supabase
+            .from('user_to_peer')
+            .select('*')
+            .eq('peer_id', peerId)
+            .eq('user_id', userId);
+
+        if (error) {
+            console.error('Database error:', error);
+            throw error;
+        }
+
+        if (data && data.length > 0) {
+            res.status(200).json(true);
+        } else {
+            res.status(200).json(false);
+        }
+    } catch (error) {
         console.error('Error fetching users connected with peers:', error);
         res.status(500).send('Error details: ' + error.message);
     }
