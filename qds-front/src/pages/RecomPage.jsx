@@ -41,10 +41,14 @@ export function RecomPage() {
 
             {mainRecommendation && (
                 <div className="recommendation-card" onClick={toggleModal}>
-                    
+
                     <div className="person-info">
 
-                        <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
+                        <img
+                            src={`https://via.placeholder.com/150?text=${mainRecommendation.username}&bg=042A2B&fg=f4f4f4`}
+                            alt="Main Peer"
+                        />
+
 
                         <div className="info">
                             <h3>Username</h3>
@@ -62,10 +66,19 @@ export function RecomPage() {
                                 <img src={HelpedTenPeople} alt="Badge 2" />
                                 <img src={HelpedTwentyFivePeople} alt="Badge 3" />
                             </div>
+
+                            <br></br>
+
+                            <div>
+                                <p style={{ color: 'grey', fontSize: '12px' }}>
+                                    (Click Card for more info)
+                                </p>
+                            </div>
+
                         </div>
 
                     </div>
-                    
+
                 </div>
             )}
 

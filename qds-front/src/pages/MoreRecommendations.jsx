@@ -59,6 +59,15 @@ export function MoreRecommendations({ recommendations, onClose }) {
                                         <img src={VerifiedHelper} alt="Badge 1" />
                                     )}
                                 </div>
+
+                                <br></br>
+
+                                <div>
+                                    <p style={{ color: 'grey', fontSize: '12px' }}>
+                                        (Click Card for more info)
+                                    </p>
+                                </div>
+
                             </div>
                         </div>
                     </div>
