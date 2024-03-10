@@ -45,7 +45,7 @@ export function Main() {
     const sendParagraph = () => {
         try {
             setIsLoading(true); // Set loading state to true
-            const username = sessionStorage.getItem('username');
+            const userId = sessionStorage.getItem('userId');
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'http://localhost:8000/help_request');
             xhr.setRequestHeader('Content-Type', 'application/json');
@@ -64,7 +64,7 @@ export function Main() {
                     }
                 }
             };
-            xhr.send(JSON.stringify({ user_id: username, description: paragraph }));
+            xhr.send(JSON.stringify({ user_id: userId, description: paragraph }));
         } catch (error) {
             setIsLoading(false); // Set loading state to false in case of error
             console.error('Error sending paragraph:', error.message);

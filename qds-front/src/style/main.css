@@ -31,7 +31,7 @@
 }
 
 .main-container h1 {
-    color: #ffffff;
+    color: #000000;
     text-align: center;
     font-size: 40px;
     /* Adjust this value to make the text smaller */
@@ -76,6 +76,7 @@ textarea {
     to {
         opacity: 0;
     }
+}
 
 @keyframes fadeInOnly {
     from { opacity: 0; }
