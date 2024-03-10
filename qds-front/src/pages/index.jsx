@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { SignUp } from './signup';
+import { Login } from './login'; // Import your Login component
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -11,6 +13,7 @@ import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 import headerBackgroundImage from '../style/images/people-2.jpg';
 
 export function LandingPage() {
+    const [showSignUp, setShowSignUp] = useState(true);
 
     const handleMouseEnter = (event) => {
         event.currentTarget.querySelector('.logo-image-2').src = logoImageOrange;
@@ -20,19 +23,53 @@ export function LandingPage() {
         event.currentTarget.querySelector('.logo-image-2').src = logoImageWhite;
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const toggleView = () => {
+        setShowSignUp((prev) => !prev);
+    };
+
     return (
         <>
-            <div className="header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
-                <div className="header-container">
-                    <div className="header-text-container">
-                        <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
-                        <h1 className="black-text">CareLink</h1>
-                        <h3 className="lack-text">
-                            Find Support Anonymously
-                            <br></br>
-                            Matched by AI, Monitored by Counselors</h3>
+            <div className="header-container header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
+                <div className="header-image-columns">
+                    {/* Left column */}
+                    <div className="header-image-column">
+                        <div className="header-motto-container">
+                            <h1>
+                                Find Support Anonymously
+                                <br></br>
+                                for BCIT Students
+                            </h1>
+                            <br />
+                            <h3>
+                                Matched by AI,
+                                <br></br>
+                                Monitored by Counselors
+                                <br></br>
+                                <br></br>
+                            </h3>
+                        </div>
+                    </div>
+                    {/* Right column */}
+                    <div className="header-image-column">
+                        <div className="header-text-container">
+                            <img src={logoImageColor} alt="CareLink Logo" className="logo-image-2" />
+                            {showSignUp ? <SignUp /> : <Login />}
+                            <p>
+                                {showSignUp ? "Already have an account? " : "Don't have an account? "}
+                                <Link onClick={toggleView}>{showSignUp ? 'Login' : 'Sign Up'}</Link>
+                                <br></br>
+                            </p>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="call-to-action-container">
+                <h1>The Social Support Network</h1>
             </div>
 
             <div className="grid-container">
@@ -66,12 +103,14 @@ export function LandingPage() {
 
             <div className="call-to-action-container">
                 <h1>Get started with CareLink</h1>
-                <Link to="/signup" className="get-started-button">Get Started</Link>
+                <Link className="get-started-button" onClick={scrollToTop}>
+                    Get Started
+                </Link>
             </div>
 
             <footer className="footer">
                 <div className="footer-content">
-                    <p>&copy; 2024 BCIT CareLink. All rights reserved.</p>
+                    <p>&copy; 2024 CareLink. All rights reserved.</p>
                 </div>
             </footer>
         </>

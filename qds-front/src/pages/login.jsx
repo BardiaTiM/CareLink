@@ -24,7 +24,7 @@ export function Login() {
 
         console.log("role: ", role);
         let endpoint;
-        switch(role) {
+        switch (role) {
             case 'user':
                 endpoint = 'http://localhost:8000/login';
                 break;
@@ -50,7 +50,7 @@ export function Login() {
 
         if (response.ok) {
             const { userID, role } = await response.json(); // Assume backend returns role in response
-            console.log("signed in userId: ",userID);
+            console.log("signed in userId: ", userID);
             console.log("signed in role: ", role);
 
 
@@ -58,11 +58,11 @@ export function Login() {
             sessionStorage.setItem('userRole', role);
             login();
 
-            if(role === 'USER'){
+            if (role === 'USER') {
                 navigate('/main');
-            } else if(role === 'PEER'){
+            } else if (role === 'PEER') {
                 navigate('/chat');
-            } else if(role === 'COUNCILOR'){
+            } else if (role === 'COUNCILOR') {
                 navigate('/inReview');
             }
 
@@ -77,31 +77,42 @@ export function Login() {
 
     return (
         <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={handleEmailChange}
-                />
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-                <select value={role} onChange={handleRoleChange}>
-                    <option value="user">User</option>
-                    <option value="peer">Peer</option>
-                    <option value="counselor">Counselor</option>
-                </select>
+            <form onSubmit={handleSubmit} className="signup-form">
+
+                <div>
+                    <label htmlFor="role">Select Role</label>
+                    <select value={role} onChange={handleRoleChange}>
+                        <option value="user">User</option>
+                        <option value="peer">Peer</option>
+                        <option value="counselor">Counselor</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        name="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={handleEmailChange}
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
+                </div>
+
                 <button type="submit">Login</button>
-                <button type={'button'} onClick={() => navigate('/signup')} className="signup-button">I don't have an account</button>
             </form>
-            {errorMessage && <div style={{color: 'red'}}>{errorMessage}</div>}
+            {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </div>
     );
 }

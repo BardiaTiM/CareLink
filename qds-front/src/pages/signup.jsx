@@ -6,25 +6,23 @@ export function SignUp() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [role, setRole] = useState('user'); // State to keep track of the selected role
-    const [description, setDescription] = useState(''); // Additional state for the description when role is 'peer'
+    const [role, setRole] = useState('user');
+    const [description, setDescription] = useState('');
 
-    // Handlers for input changes
     const handleUsernameChange = (e) => setUsername(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
-    const handleRoleChange = (e) => setRole(e.target.value); // Handler for role change
-    const handleDescriptionChange = (e) => setDescription(e.target.value); // Handler for description change
+    const handleRoleChange = (e) => setRole(e.target.value);
+    const handleDescriptionChange = (e) => setDescription(e.target.value);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         let userData = { username, password, email, role: 'USER' };
 
         if (role === 'peer') {
-            userData = { ...userData, description, status: 'IN REVIEW', role: 'PEER' }; // Include description for 'peer'
+            userData = { ...userData, description, status: 'IN REVIEW', role: 'PEER' };
         }
 
-        // Determine the endpoint based on the selected role
         const endpoint = role === 'peer' ? 'http://localhost:8000/peersignup' : 'http://localhost:8000/signup';
 
         try {
@@ -38,7 +36,7 @@ export function SignUp() {
 
             if (response.ok) {
                 console.log("Signup successful");
-                navigate('/login'); // Navigate to login page after successful signup
+                navigate('/login');
             } else {
                 const errorData = await response.json();
                 console.error("Signup failed:", errorData.message);
@@ -50,44 +48,65 @@ export function SignUp() {
 
     return (
         <div>
-            <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
-                <select value={role} onChange={handleRoleChange} required>
-                    <option value="user">User</option>
-                    <option value="peer">Peer</option>
-                </select>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                />
-                {role === 'peer' && (
+            <form onSubmit={handleSubmit} className="signup-form">
+                <div>
+                    <label htmlFor="role">Select Role</label>
+                    <select id="role" value={role} onChange={handleRoleChange} required>
+                        <option value="user">User</option>
+                        <option value="peer">Peer</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label htmlFor="username">Username</label>
                     <input
                         type="text"
-                        placeholder="Description"
-                        value={description}
-                        onChange={handleDescriptionChange}
+                        id="username"
+                        placeholder="Username"
+                        value={username}
+                        onChange={handleUsernameChange}
                         required
                     />
+                </div>
+
+                <div>
+                    <label htmlFor="email">Email (used for logging in)</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={handleEmailChange}
+                        required
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                        required
+                    />
+                </div>
+
+                {role === 'peer' && (
+                    <div>
+                        <label htmlFor="description">Description:</label>
+                        <input
+                            type="text"
+                            id="description"
+                            placeholder="Description"
+                            value={description}
+                            onChange={handleDescriptionChange}
+                            required
+                        />
+                    </div>
                 )}
                 <button type="submit">Sign Up</button>
-                <button type={'button'} onClick={() => navigate('/login')} className="signup-button">I already have an account</button>
             </form>
         </div>
     );
