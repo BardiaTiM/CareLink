@@ -6,12 +6,16 @@
 /* Style for the recommendation card */
 .recommendation-card {
     display: flex;
-    /* Use flexbox to create a row layout */
     border: 1px solid #ccc;
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.recommendation-card:hover {
+    transform: scale(1.05) rotate(0.5deg);
 }
 
 /* Style for the person image */
