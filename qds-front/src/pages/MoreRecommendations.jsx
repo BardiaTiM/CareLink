@@ -9,11 +9,13 @@ import logoImageBlack from '../style/images/CareLink v1 - black.png';
 
 import plant from '../style/images/plant.png';
 
-import Plant1 from '../style/images/plantPFPs/plant1.png';
-import Plant2 from '../style/images/plantPFPs/plant2.png';
-import Plant3 from '../style/images/plantPFPs/plant3.png';
-import Plant4 from '../style/images/plantPFPs/plant4.png';
-import Plant5 from '../style/images/plantPFPs/plant5.png';
+import plant1 from '../style/images/plantPFPs/plant1.png';
+import plant2 from '../style/images/plantPFPs/plant2.png';
+import plant3 from '../style/images/plantPFPs/plant3.png';
+import plant4 from '../style/images/plantPFPs/plant4.png';
+import plant5 from '../style/images/plantPFPs/plant5.png';
+
+const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
 export function MoreRecommendations({ recommendations, onClose }) {
     const [showModal, setShowModal] = useState(false);
@@ -21,6 +23,11 @@ export function MoreRecommendations({ recommendations, onClose }) {
 
     const toggleModal = () => {
         setShowModal(!showModal);
+    };
+
+    const getRandomPlantPFP = () => {
+        const randomIndex = Math.floor(Math.random() * plantPFPs.length);
+        return plantPFPs[randomIndex];
     };
 
     const handleCardClick = (recommendation) => {
@@ -37,9 +44,8 @@ export function MoreRecommendations({ recommendations, onClose }) {
 
                         <div className="person-info">
 
-                            {/* <img src={`https://via.placeholder.com/150?text=${recommendation.username}`} alt="Person" /> */}
-
-                            <img src={plant} alt="Plant" className="plant"></img>
+                            {/* Use a random plant profile picture */}
+                            <img src={getRandomPlantPFP()} alt="Plant" className="plant"></img>
 
                             <div className="info">
                                 <h3>Username</h3>
