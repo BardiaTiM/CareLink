@@ -91,17 +91,17 @@ export function Main() {
         <div className="sub-container">
           {isLoading ? (
             // If isLoading is true, show the loading image
-            <img src={loading} alt="Loading..." key={Date.now()} className="loading-image" />
+            <img
+              src={loading}
+              alt="Loading..."
+              key={Date.now()}
+              className="loading-image"
+            />
           ) : (
             // Use a fragment to wrap the welcome message and the card without adding extra DOM nodes
             <div className="sub-main-container">
               <div className="card-container">
-
-    return (
-        <div className="main-chat-container">
-
                 <div className="content-container">
-                  
                   <h1 className="welcome-message fade-in-only">
                     Welcome, {getUserName()}
                   </h1>
@@ -120,7 +120,6 @@ export function Main() {
                       <button onClick={sendParagraph}>Submit</button>
                     </div>
                   </div>
-
                 </div>
                 <div className="image-container">
                   <img
