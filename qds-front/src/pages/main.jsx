@@ -38,6 +38,10 @@ export function Main() {
         setParagraph(event.target.value);
     };
 
+    const getUserName = () => {
+        return sessionStorage.getItem('username');
+    }
+
     const sendParagraph = () => {
         try {
             setIsLoading(true); // Set loading state to true
@@ -69,6 +73,8 @@ export function Main() {
 
     return (
         <div className="main-container">
+
+
             {currentStep === 1 && (
                 <h1 className={animationClass} style={{ color: 'black' }}>
                     Feeling Overwhelmed? Let's Balance Life Together.
@@ -81,23 +87,30 @@ export function Main() {
             )}
             {currentStep === 3 && (
                 <div>
-                    {isLoading ? ( // Conditionally render loading GIF or card
+                    {isLoading ? (
+                        // If isLoading is true, show the loading image
                         <img src={loading} alt="Loading..." key={Date.now()} />
                     ) : (
-                        <div className="cards">
-                            <div className={animationClass}>
-                                <h2>Share Your BCIT Experience</h2>
-                                <textarea
-                                    value={paragraph}
-                                    onChange={handleInputChange}
-                                    placeholder="Describe any challenges or issues you're facing at BCIT"
-                                    rows={10}
-                                    cols={50}
-                                />
-                                <br />
-                                <button onClick={sendParagraph}>Submit</button>
+                        // Use a fragment to wrap the welcome message and the card without adding extra DOM nodes
+                        <>
+                            <div>
+                                <h1 className="welcome-message fade-in-only">Welcome, {getUserName()}</h1>
                             </div>
-                        </div>
+                            <div className="cards">
+                                <div className={animationClass}>
+                                    <h2>Share Your BCIT Experience</h2>
+                                    <textarea
+                                        value={paragraph}
+                                        onChange={handleInputChange}
+                                        placeholder="Describe any challenges or issues you're facing at BCIT"
+                                        rows={10}
+                                        cols={50}
+                                    />
+                                    <br />
+                                    <button onClick={sendParagraph}>Submit</button>
+                                </div>
+                            </div>
+                        </>
                     )}
                 </div>
             )}

@@ -76,4 +76,12 @@ textarea {
     to {
         opacity: 0;
     }
+
+@keyframes fadeInOnly {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in-only {
+    animation: fadeInOnly 2s forwards; /* Use 'forwards' to keep the state at the end of the animation */
 }
