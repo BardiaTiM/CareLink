@@ -1,3 +1,37 @@
-.chat-container {
-  width: 500px; /* Fixed width */
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  height: 100%; /* Full height */
+  padding: 20px; /* Add padding */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
 }
+
+.contact-container h2 {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  margin-bottom: 20px; /* Space below the header */
+  /* Other styles... */
+}
+
+/* Style for the individual contacts */
+.contact-container p {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  /* Other styles... */
+}
+
+.contact-container a {
+  /* Styles for links */
+  /* Other styles... */
+}
+
+/* Error message style */
+.contact-container p.error-message {
+  width: 100%; /* Full width */
+  text-align: center; /* Center text */
+  /* Other styles... */
+}
+
+

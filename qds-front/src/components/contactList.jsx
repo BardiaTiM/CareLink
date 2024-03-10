@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import "../style/ContactList.css";
 
 export function ContactList() {
   const [userData, setUserData] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { useParams } from "react-router-dom";
 import { ContactList } from "../components/contactList";
 import "../style/PrivateChat.css";
@@ -120,35 +120,52 @@ function PrivateChat() {
     setNewMessage("");
   };
 
+  const messagesEndRef = useRef(null); // Create a ref
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const renderMessages = () => {
-    return messages.map((msg, index) => (
-      <div
-        key={index}
-        className={`message-container ${
-          msg.from === loggedInUserId
-            ? "from-user-container"
-            : "from-other-container"
-        }`}
-      >
-        <div
-          className={`message-bubble ${
-            msg.from === loggedInUserId ? "from-user" : "from-other"
-          }`}
-        >
-          {msg.message_text}
-        </div>
-      </div>
-    ));
+    return (
+        <>
+          {messages.map((msg, index) => (
+              <div
+                  key={index}
+                  className={`message-container ${
+                      msg.from === loggedInUserId ? "from-user-container" : "from-other-container"
+                  }`}
+              >
+                <div
+                    className={`message-bubble ${
+                        msg.from === loggedInUserId ? "from-user" : "from-other"
+                    }`}
+                >
+                  {msg.message_text}
+                </div>
+              </div>
+          ))}
+          <div ref={messagesEndRef} /> {/* Add this line */}
+        </>
+    );
   };
 
   return (
+
     <div className="main-container">
       <ContactList className="contact-list" />
+
+
       <div className="chat-container">
+        <br/>
+        <h1 className="receiver-username">
+          {receiverUserName ? receiverUserName : "Loading..."}
+        </h1>
         <div className="messages-container">
-          <h1 className="receiver-username">
-            {receiverUserName ? receiverUserName : "Loading..."}
-          </h1>
           <hr />
           {renderMessages()}
           <div className="input-container">

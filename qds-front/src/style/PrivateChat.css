@@ -1,20 +1,22 @@
 .main-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start; /* Align to the start of the container */
   width: 100%;
-  height: auto;
+  height: auto; /* Adjusted from 100vh */
+  padding-bottom: 50px; /* Space forz input container */
 }
 
 .contact-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 500px; /* Fixed width */
-    height: 100vh; /* Full height */
-    overflow-y: auto; /* Scrollable list */
-    background-color: #042a2b; /* Dark background for the sidebar */
-    color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 0 0 30%; /* flex-grow: 0, flex-shrink: 0, flex-basis: 30% */
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #042a2b;
+  color: white;
+  /* Remove the max-width as flex-basis will take care of the width */
 }
 
 /* Sidebar styles */
@@ -33,6 +35,7 @@
 }
 
 .message-bubble {
+  margin-bottom: 10px;
   padding: 10px 20px;
   border-radius: 20px;
   max-width: 60%; /* Max width for each bubble */
@@ -40,55 +43,66 @@
 }
 
 .from-user {
-  background-color: #042a2b; /* Blue bubble for outgoing messages */
+  background-color: #073efa; /* Blue bubble for outgoing messages */
   color: white;
 }
 
 .from-other {
-  background-color: #f2f2f7; /* Light bubble for incoming messages */
-  color: black;
+  background-color: #575758; /* Light bubble for incoming messages */
+  color: white;
 }
 
-/* Chat container styles */
+
 .chat-container {
-  flex-grow: 1; /* Take up remaining space */
   display: flex;
   flex-direction: column;
+  flex: 3; /* Takes up the remaining space; since contact-list is 1, this will be 4 times of contact-list */
+  height: calc(100vh - 200px); /* Adjust based on your padding-bottom of main-container */
+  overflow: hidden; /* Adjust as needed */
+  border-left: 3px solid black; /* Add a left border */
 }
 
-.messages-container {
-  flex-grow: 1;
-  margin: 10px;
-
-  border-left: 1px solid #f2f2f7; /* Light separator line */
-}
+  .messages-container {
+    width: 100%; /* Use the full width of the chat-container */
+    align-items: center; /* Align children (message-container) to the right */
+    overflow-y: auto; /* Allows for scrolling */
+  }
 
 .message-container {
   display: flex;
-  justify-content: flex-end; /* Right align for outgoing messages */
-  margin-bottom: 10px;
-  padding: 5px 10px 0 10px;
+  /*justify-content: flex-end; !* Right align the message bubble *!*/
+  max-width: 100%; /* Ensure it fills the messages-container */
+  flex-grow: 1; /* Grow to fill horizontal space */
+  padding: 5px; /* Adjust padding as needed */
 }
+
 
 .from-user-container {
   justify-content: flex-end;
 }
 
 .from-other-container {
+
   justify-content: flex-start;
 }
 
+
 .receiver-username {
+
   color: #042a2b;
   margin: 0px 10px 20px 0px;
+  text-align: center;
 }
 
 .input-container {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
-  width: 100%;
+  position: fixed; /* Fixed position */
+  bottom: 0; /* Align to bottom */
+  left: 0; /* Align to left */
+  width: 100%; /* Full width */
+  background-color: white; /* Match your design */
+  padding: 10px; /* Padding around input field */
+  box-shadow: 0px -2px 5px rgba(0,0,0,0.1);
 }
 
 hr {
