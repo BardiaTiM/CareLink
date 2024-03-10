@@ -48,6 +48,12 @@ function PrivateChat() {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
+  };
+
   useEffect(() => {
     fetchReceiverUserName(chatUserId)
       .then((username) => {
@@ -69,12 +75,6 @@ function PrivateChat() {
         })
       );
     };
-
-    console.log("Logged In User ID:", loggedInUserId);
-    console.log("Other User ID:", chatUserId);
-
-    const chatId = `${loggedInUserId}-${chatUserId}`;
-    console.log("chatId:", chatId); // Debugging line
 
     newSocket.onmessage = (event) => {
       try {
@@ -100,25 +100,28 @@ function PrivateChat() {
   }, [loggedInUserId, chatUserId]);
 
   const handleSendMessage = () => {
+    const now = new Date(); // Get the current time
     const message = {
       type: "message",
       chatId: `${loggedInUserId}-${chatUserId}`,
       from: loggedInUserId,
       content: newMessage,
-      message_text: newMessage, // Add this line
+      message_text: newMessage,
+      time_stamp: now.toISOString(), // Add a valid timestamp
     };
-
-    // Update the UI immediately for the sender
-    setMessages((prevMessages) => [...prevMessages, message]);
-
+  
+    // Update the UI immediately for the sender with the valid timestamp
+    setMessages(prevMessages => [...prevMessages, { ...message, time_stamp: now.toISOString() }]);
+  
     // Send the message to the server for processing and storing in the database
     if (socket && socket.readyState === WebSocket.OPEN) {
       socket.send(JSON.stringify(message));
     }
-
+  
     // Clear the input field
     setNewMessage("");
   };
+  
 
   const messagesEndRef = useRef(null); // Create a ref
 
@@ -131,29 +134,66 @@ function PrivateChat() {
   }, [messages]);
 
   const renderMessages = () => {
-    return (
-      <>
-        {messages.map((msg, index) => (
+    const messageElements = [];
+    let lastDate;
+
+    messages.forEach((msg, index) => {
+      const msgDate = new Date(msg.time_stamp).toDateString();
+      // Create a unique key for the date separator
+      const dateKey = `date-${msgDate}`;
+      if (msgDate !== lastDate) {
+        // This message starts a new day
+        messageElements.push(
+          <div key={dateKey} className="date-separator">
+            {msgDate}
+          </div>
+        );
+        lastDate = msgDate;
+      }
+
+      // Create a unique key for each message
+      const messageKey = `msg-${index}-${msg.time_stamp}`;
+      // Push your message bubble
+      messageElements.push(
+        <div
+          key={messageKey}
+          className={`message-container ${
+            msg.from === loggedInUserId
+              ? "from-user-container"
+              : "from-other-container"
+          }`}
+        >
+          {msg.from !== loggedInUserId && (
+            <div className="message-time">
+              {new Date(msg.time_stamp).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </div>
+          )}
           <div
-            key={index}
-            className={`message-container ${
-              msg.from === loggedInUserId
-                ? "from-user-container"
-                : "from-other-container"
+            className={`message-bubble ${
+              msg.from === loggedInUserId ? "from-user" : "from-other"
             }`}
           >
-            <div
-              className={`message-bubble ${
-                msg.from === loggedInUserId ? "from-user" : "from-other"
-              }`}
-            >
-              {msg.message_text}
-            </div>
+            {msg.message_text}
           </div>
-        ))}
-        <div ref={messagesEndRef} /> {/* Add this line */}
-      </>
-    );
+          {msg.from === loggedInUserId && (
+            <div className="message-time">
+              {new Date(msg.time_stamp).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </div>
+          )}
+        </div>
+      );
+    });
+
+    // Add the messages end ref div once, outside of the loop
+    messageElements.push(<div key="messages-end-ref" ref={messagesEndRef} />);
+
+    return <>{messageElements}</>;
   };
 
   return (
@@ -173,6 +213,7 @@ function PrivateChat() {
               type="text"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyPress} // Add this line
               className="message-input"
             />
             <button onClick={handleSendMessage} className="send-button">

@@ -609,9 +609,6 @@ app.get('/getUsersConnectedWithPeers/:userId', async (req, res) => {
 // Endpoint to retrieve users connected with a peer
 app.get('/getPeersConnectedWithUsers/:userId', async (req, res) => {
     const { userId } = req.params; // Extracting userId from the request parameters
-
-    console.log('Fetching peers connected with user:', userId);
-
     try {
         // Query the 'user_to_peer' table to get data of users connected with the peer
         const { data, error } = await supabase

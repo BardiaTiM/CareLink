@@ -35,7 +35,7 @@
 }
 
 .message-bubble {
-  margin-bottom: 10px;
+  
   padding: 10px 20px;
   border-radius: 20px;
   max-width: 60%; /* Max width for each bubble */
@@ -43,51 +43,60 @@
 }
 
 .from-user {
-  background-color: #073efa; /* Blue bubble for outgoing messages */
+  background-color: #F28F3B; /* Blue bubble for outgoing messages */
   color: white;
 }
 
 .from-other {
-  background-color: #575758; /* Light bubble for incoming messages */
+  background-color: #1A936F; /* Light bubble for incoming messages */
   color: white;
 }
 
 .message-input {
-    border-radius: 20px;
+  border-radius: 20px;
 }
 
 .chat-container {
   padding: 0 30px;
   display: flex;
   flex-direction: column;
-  flex: 3; /* Takes up the remaining space; since contact-list is 1, this will be 4 times of contact-list */
-  height: calc(
-    100vh - 200px
-  ); /* Adjust based on your padding-bottom of main-container */
-  overflow: hidden; /* Adjust as needed */
-  border-left: 3px solid black; /* Add a left border */
+  flex: 1; /* Takes up the remaining space */
+  height: calc(100vh - 200px); /* Adjust height to leave space for header/footer */
+  position: relative; /* Needed for absolute positioning of children */
 }
 
+
 .messages-container {
-  width: 100%; /* Use the full width of the chat-container */
-  align-items: center; /* Align children (message-container) to the right */
-  overflow-y: auto; /* Allows for scrolling */
+  overflow-y: auto;
+  flex-grow: 1;
+  margin-bottom: 50px; /* Same height as input-container including padding */
 }
 
 .message-container {
   display: flex;
-  /*justify-content: flex-end; !* Right align the message bubble *!*/
-  max-width: 100%; /* Ensure it fills the messages-container */
-  flex-grow: 1; /* Grow to fill horizontal space */
-  padding: 5px; /* Adjust padding as needed */
+  align-items: flex-end; /* Align items vertically in the center */
+  padding: 5px;
 }
 
+.message-time {
+  font-size: 0.75em;
+  color: #666;
+  margin: 0 5px;
+}
 .from-user-container {
   justify-content: flex-end;
 }
 
+.from-user-container .message-time {
+  order: -1; /* Render time before the message bubble for your own messages */
+}
+
 .from-other-container {
   justify-content: flex-start;
+}
+
+.from-other-container .message-time {
+  order: 1; /* Render time after the message bubble for opponent's messages */
 }
 
 .receiver-username {
@@ -96,15 +105,16 @@
   text-align: center;
 }
 
+
 .input-container {
   display: flex;
-  position: fixed; /* Fixed position */
-  bottom: 0; /* Align to bottom */
-  left: 0; /* Align to left */
+  position: absolute; /* Position absolute within chat-container */
+  bottom: -40px; /* Stick to the bottom */
+  left: 0; /* Align to the left */
   width: 100%; /* Full width */
-  background-color: white; /* Match your design */
-  padding: 10px; /* Padding around input field */
-  box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+  background-color: transparent; /* Background color */
+  padding: 10px; /* Padding */
+  
 }
 
 hr {
@@ -115,10 +125,17 @@ hr {
 
 .send-button {
   width: 20%;
-  background-color: #042a2b; /* Blue send button */
+  background-color: #1A936F; /* Blue send button */
   color: white;
   border: none;
   padding: 10px;
   cursor: pointer;
   border-radius: 20px;
+}
+
+.date-separator {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  color: #999;
 }
