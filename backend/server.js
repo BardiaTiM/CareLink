@@ -161,6 +161,7 @@ app.get("/getAllUsers", async function (req, res) {
             console.error('Error getting users:', error.message);
             res.status(500).json({ error: 'An error occurred while getting users' });
         } else {
+            console.log(data);
             res.status(200).json(data);
         }
     } catch (error) {
@@ -176,6 +177,7 @@ app.get("/getAllPeerHelpers", async function (req, res) {
             console.error('Error getting peer:', error.message);
             res.status(500).json({ error: 'An error occurred while getting users' });
         } else {
+            console.log(data);
             res.status(200).json(data);
         }
     } catch (error) {
@@ -183,6 +185,22 @@ app.get("/getAllPeerHelpers", async function (req, res) {
         res.status(500).json({ error: 'An error occurred while getting users' });
     }
 })
+
+app.get("/getAllCouncilors", async function (req, res) {
+    try {
+        const { data, error } = await supabase.from('councillors').select('*');
+        if (error) {
+            console.error('Error getting councillors:', error.message);
+            res.status(500).json({ error: 'An error occurred while getting councillors' });
+        } else {
+            console.log(data);
+            res.status(200).json(data);
+        }
+    } catch (error) {
+        console.error('Error getting councillors:', error.message);
+        res.status(500).json({ error: 'An error occurred while getting councillors' });
+    }
+});
 
 // Endpoint for user sign-up
 app.post('/peersignup', async function (req, res) {
@@ -421,6 +439,45 @@ app.post('/CouncilorLogin', async function (req, res) {
     }
 });
 
+app.get('/getUserNameById/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        let { data: userData, error: userError } = await supabase
+            .from('user')
+            .select('username')
+            .eq('id', id);
+
+        if (userError) {
+            throw userError;
+        }
+
+        if (userData && userData.length === 1) {
+            res.status(200).send({ username: userData[0].username });
+            return;
+        }
+
+        let { data: helperData, error: helperError } = await supabase
+            .from('peer_helpers')
+            .select('username')
+            .eq('id', id);
+
+        if (helperError) {
+            throw helperError;
+        }
+
+        if (helperData && helperData.length === 1) {
+            res.status(200).send({ username: helperData[0].username });
+            return;
+        }
+
+        res.status(404).send('User not found');
+    } catch (error) {
+        console.error('Error fetching username:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
     const { senderId, recipientId } = req.params;
 
@@ -449,7 +506,6 @@ app.get('/getChatHistory/:senderId/:recipientId', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 server.listen(8000, function listening() {
     console.log('Server started on port 8000');

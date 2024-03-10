@@ -30,7 +30,7 @@ function App() {
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/main" element={<PrivateRoute><Main /></PrivateRoute>} />
-                    <Route path="/chat" element={<Chat loggedInUserId={sessionStorage.getItem("username")} />} />
+                    <Route path="/chat" element={<Chat />} />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
                     <Route path="/councilorLogin" element={<CouncilorLogin />} />
                     <Route path="/inReview" element={<PrivateRoute><InReview /></PrivateRoute>} />
