@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import '../style/Signup.css';
 
+// Function to handle the signup form
 export function SignUp() {
+
+    // State variables to store the form data
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -9,13 +12,14 @@ export function SignUp() {
     const [description, setDescription] = useState('');
     const [successMessage, setSuccessMessage] = useState(''); // Modified to store the success message text
 
+    // Event handlers to update the state variables
     const handleUsernameChange = (e) => setUsername(e.target.value);
     const handlePasswordChange = (e) => setPassword(e.target.value);
     const handleEmailChange = (e) => setEmail(e.target.value);
     const handleRoleChange = (e) => setRole(e.target.value);
     const handleDescriptionChange = (e) => setDescription(e.target.value);
 
-
+    // Function to handle the form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         let userData = { username, password, email, role: role.toUpperCase() };
@@ -23,7 +27,7 @@ export function SignUp() {
         if (role === 'peer') {
             userData = { ...userData, description, status: 'IN REVIEW', role: 'PEER' };
         }
-
+        // only allow user or peer to sign up
         const endpoint = role === 'peer' ? 'http://localhost:8000/peersignup' : 'http://localhost:8000/signup';
 
         try {
