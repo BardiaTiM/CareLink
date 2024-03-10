@@ -15,7 +15,7 @@ export function Navbar() {
 
     const handleLogout = () => {
         logout();
-        navigate('/login'); // Redirect to login after logout
+        navigate('/'); // redirect to landing page
     };
 
     const handleMouseEnter = (event) => {
@@ -26,18 +26,20 @@ export function Navbar() {
         event.currentTarget.querySelector('.logo-image').src = logoImageWhite;
     };
 
+    // Update this part for conditional redirection based on isAuthenticated
+    const logoLink = isAuthenticated ? "/main" : "/";
+
     return (
         <nav className="navbar">
-            <Link to="/" className="brand logo-home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+            {/* Updated Link component to use logoLink for conditional redirection */}
+            <Link to={logoLink} className="brand logo-home" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <span className="brand-text">CareLink</span>
                 <img src={logoImageWhite} alt="CareLink Logo" className="logo-image" />
             </Link>
             <ul className="navbar-nav">
                 {isAuthenticated && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
-                {/* {!isAuthenticated && <li className="nav-item non-highlight"><Link to="/login">Login</Link></li>} */}
-                {/* {!isAuthenticated && <li className="nav-item highlight"><Link to="/login">Login</Link></li>} */}
-                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/login" onClick={handleLogout}>Logout</Link></li>)}
-                {isAuthenticated && CouncilorRole (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
+                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
+                {isAuthenticated && CouncilorRole() && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
             </ul>
         </nav>
     );

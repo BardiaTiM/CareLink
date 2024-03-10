@@ -26,7 +26,7 @@ function App() {
 
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/login" element={<Login />} />
+                    {/*<Route path="/login" element={<Login />} />*/}
                     <Route path="/main" element={<PrivateRoute><Main /></PrivateRoute>} />
                     <Route path="/chat" element={<Chat loggedInUserId={sessionStorage.getItem("username")} />} />
                     <Route path="/chat/:loggedInUserId/:chatUserId" element={<PrivateChat />} />
