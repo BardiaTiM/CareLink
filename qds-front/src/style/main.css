@@ -22,10 +22,12 @@
     transition: opacity 2s ease-in-out;
 }
 
-h1 {
-    color: #333;
+.main-container h1 {
+    color: #ffffff;
     text-align: center;
+    font-size: 40px; /* Adjust this value to make the text smaller */
 }
+
 
 textarea {
     width: 100%; /* Maintain the width to ensure padding and aesthetics */

@@ -68,7 +68,7 @@ export function Main() {
     };
 
     return (
-        <div>
+        <div className="main-container">
             {currentStep === 1 && (
                 <h1 className={animationClass}>Feeling Overwhelmed? Let's Balance Life Together.</h1>
             )}
