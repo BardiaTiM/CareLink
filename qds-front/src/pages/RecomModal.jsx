@@ -1,66 +1,63 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../style/recomModal.css"; // Import the new CSS file
+import { useNavigate } from "react-router-dom"; // Import hook for navigation
+import "../style/recomModal.css"; // Import CSS for the modal component
 
 export function RecomModal({ onClose, description, peerId, imageUrl }) {
-  const navigate = useNavigate();
+    const navigate = useNavigate(); // Hook for programmatically navigating
 
-  const handleStartChat = async () => {
-    const loggedInUserId = sessionStorage.getItem("userId");
-    const chatUserId = peerId;
+    // Function to handle initiating a chat with a peer
+    const handleStartChat = async () => {
+        // Retrieve the logged-in user's ID from session storage
+        const loggedInUserId = sessionStorage.getItem("userId");
+        const chatUserId = peerId; // The ID of the peer to start a chat with
 
-    // Ensure loggedInUserId is not null or undefined
-    if (loggedInUserId && loggedInUserId !== "USER") {
-      try {
-        const peerResponse = await fetch(
-          `http://localhost:8000/checkGPTPeerDuplicate/${loggedInUserId}/${chatUserId}`
-        );
+        try {
+            // Attempt to connect the logged-in user with the selected peer via a POST request
+            const response = await fetch(
+                "http://localhost:8000/connectUserWithPeer",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    // Send the logged-in user's ID and the peer's ID in the request body
+                    body: JSON.stringify({
+                        userId: loggedInUserId,
+                        peerId: chatUserId,
+                    }),
+                }
+            );
 
-        if (!peerResponse.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const alreadyConnectedWithPeer = await peerResponse.json();
-
-        if (!alreadyConnectedWithPeer) {
-          const response = await fetch(
-            "http://localhost:8000/connectUserWithPeer",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                userId: loggedInUserId,
-                peerId: chatUserId,
-              }),
+            // Check if the response was successful
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-          );
 
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-
-          const result = await response.text();
-          console.log(result); // or handle the result as needed
+            // Process the response (here, simply logging it to the console)
+            const result = await response.text();
+            console.log(result); // Log the result for debugging or further processing
+            // Navigate to the chat page with both user IDs in the path
+            navigate('/chat/' + loggedInUserId + '/' + chatUserId);
+        } catch (error) {
+            // Log any errors encountered during the fetch operation
+            console.error("Error connecting user with peer:", error);
         }
+    };
 
-        navigate("/chat/" + loggedInUserId + "/" + chatUserId);
-
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    }
-  };
-
-  return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <img src={imageUrl} alt="Person" />
-        <h2>Bio</h2>
-        <p>Description: {description}</p>
-        <button onClick={handleStartChat}>Start Chat</button>
-      </div>
-    </div>
-  );
+    // Render the modal
+    return (
+        // Modal overlay that closes the modal when clicked
+        <div className="modal-overlay" onClick={onClose}>
+            {/* Modal content box */}
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                {/* Display the peer's image */}
+                <img src={imageUrl} alt="Person" />
+                <h2>Bio</h2>
+                {/* Display the peer's description */}
+                <p>Description: {description}</p>
+                {/* Button to initiate chat with the peer */}
+                <button onClick={handleStartChat}>Start Chat</button>
+            </div>
+        </div>
+    );
 }
