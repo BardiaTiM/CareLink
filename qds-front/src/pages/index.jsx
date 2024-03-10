@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { SignUp } from './signup'; // Import the Login component
+import { SignUp } from './signup';
 import '../style/Navbar.css';
 import '../style/Footer.css';
 import '../style/Index.css';
@@ -21,6 +21,10 @@ export function LandingPage() {
         event.currentTarget.querySelector('.logo-image-2').src = logoImageWhite;
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <>
             <div className="header-container header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
@@ -29,7 +33,7 @@ export function LandingPage() {
                     <div className="header-image-column">
                         <div className="header-motto-container">
                             <h1>
-                                Find Support Anonymously 
+                                Find Support Anonymously
                                 <br></br>
                                 for BCIT Students
                             </h1>
@@ -88,7 +92,9 @@ export function LandingPage() {
 
             <div className="call-to-action-container">
                 <h1>Get started with CareLink</h1>
-                <Link to="/signup" className="get-started-button">Get Started</Link>
+                <Link className="get-started-button" onClick={scrollToTop}>
+                    Get Started
+                </Link>
             </div>
 
             <footer className="footer">
