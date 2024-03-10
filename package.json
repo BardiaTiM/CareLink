@@ -9,6 +9,9 @@
   "author": "Ravdeep Aulakh",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.12",
     "@supabase/supabase-js": "^2.39.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",

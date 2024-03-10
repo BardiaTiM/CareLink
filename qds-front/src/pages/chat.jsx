@@ -1,47 +1,86 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function Chat({ loggedInUserId }) {
+export default function Chat() {
   const [userData, setUserData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const loggedInUserId = sessionStorage.getItem('userId')
+  const userRole = sessionStorage.getItem('userRole')
+  console.log("loggedInUserId: ", loggedInUserId);
+  console.log("userRole: ", userRole);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        // Fetch user data
-        const response = await fetch("http://localhost:8000/getAllUsers");
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-
-        // Check if loggedInUserId exists in the fetched userData
-        const loggedInUserExists = data.some(
-          (user) => user.id === loggedInUserId
-        );
-
-        // Fetch appropriate user list based on loggedInUserId
-        if (loggedInUserExists) {
-          const peerHelperResponse = await fetch(
+        if (userRole === "USER") {
+          const peerResponse = await fetch(
             "http://localhost:8000/getAllPeerHelpers"
           );
-          if (!peerHelperResponse.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const peerHelperData = await peerHelperResponse.json();
-          setUserData(peerHelperData);
-        } else {
-          setUserData(data);
+          if (!peerResponse.ok)
+            throw new Error(
+              "Network response was not ok for getAllPeerHelpers"
+            );
+
+          const peerUsers = await peerResponse.json();
+
+          const councilorResponse = await fetch(
+            "http://localhost:8000/getAllCouncilors"
+          );
+          if (!councilorResponse.ok)
+            throw new Error("Network response was not ok for getAllCouncilors");
+
+          const councilorUsers = await councilorResponse.json();
+
+          // Combine the two lists
+          setUserData([...peerUsers, ...councilorUsers]);
+        } else if (userRole === "PEER") {
+          const userResponse = await fetch("http://localhost:8000/getAllUsers");
+          if (!userResponse.ok)
+            throw new Error("Network response was not ok for getAllUsers");
+
+          const normalUsers = await userResponse.json();
+
+          const councilorResponse = await fetch(
+            "http://localhost:8000/getAllCouncilors"
+          );
+          if (!councilorResponse.ok)
+            throw new Error("Network response was not ok for getAllCouncilors");
+
+          const councilorUsers = await councilorResponse.json();
+
+          // Combine the two lists
+          setUserData([...normalUsers, ...councilorUsers]);
+        } else if (userRole === "COUNCILOR") {
+          const usersResponse = await fetch(
+            "http://localhost:8000/getAllUsers"
+          );
+          if (!usersResponse.ok)
+            throw new Error("Network response was not ok for getAllUsers");
+
+          const normalUsers = await usersResponse.json();
+
+          const peerHelpersResponse = await fetch(
+            "http://localhost:8000/getAllPeerHelpers"
+          );
+          if (!peerHelpersResponse.ok)
+            throw new Error(
+              "Network response was not ok for getAllPeerHelpers"
+            );
+
+          const peerHelpers = await peerHelpersResponse.json();
+
+          // Combine the two lists
+          setUserData([...normalUsers, ...peerHelpers]);
         }
       } catch (error) {
-        console.error("Error fetching data:", error.message);
-        setErrorMessage("Error fetching data. Please try again later.");
+        console.error("Failed to fetch user data:", error);
+        setErrorMessage(error.message);
       }
     };
+
     fetchUsers();
-  }, [loggedInUserId]);
+  }, [loggedInUserId, userRole]);
 
   return (
     <div style={{ textAlign: "center" }}>
