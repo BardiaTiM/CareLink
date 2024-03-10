@@ -40,7 +40,6 @@ export function RecomPage() {
                         <img src={`https://via.placeholder.com/150?text=${mainRecommendation.username}`} alt="Person" />
                         <div className="info">
                             <p>Name: {mainRecommendation.username}</p>
-                            <p>Description: {mainRecommendation.description}</p>
                         </div>
                         <div className="badges">
                         <img src={VerifiedHelper} alt="Badge 4" />
@@ -53,7 +52,7 @@ export function RecomPage() {
             )}
             {showModal && (
                 <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={toggleModal} recommendation={mainRecommendation} />
+                    <RecomModal onClose={toggleModal} description={mainRecommendation.description} />
                 </div>
             )}
             {!showMore && recommendations.length > 0 && (
