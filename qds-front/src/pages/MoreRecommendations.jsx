@@ -17,13 +17,13 @@ import plant5 from '../style/images/plantPFPs/plant5.png';
 
 const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
-export function MoreRecommendations({ recommendations, onClose }) {
-    const [showModal, setShowModal] = useState(false);
-    const [selectedRecommendation, setSelectedRecommendation] = useState(null);
+export function MoreRecommendations({ recommendations, onClose, onSelectRecommendation }) {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRecommendation, setSelectedRecommendation] = useState(null);
 
-    const toggleModal = () => {
-        setShowModal(!showModal);
-    };
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
     const getRandomPlantPFP = () => {
         const randomIndex = Math.floor(Math.random() * plantPFPs.length);
@@ -40,7 +40,9 @@ export function MoreRecommendations({ recommendations, onClose }) {
             <h2>More Recommendations</h2>
             <div className="recommendation-cards">
                 {recommendations.map((recommendation, index) => (
-                    <div key={index} className="recommendation-card" onClick={() => handleCardClick(recommendation)}>
+                    <div key={recommendation.id || index}
+                        className="recommendation-card"
+                        onClick={() => onSelectRecommendation(recommendation)}>
 
                         <div className="person-info">
 
@@ -89,12 +91,15 @@ export function MoreRecommendations({ recommendations, onClose }) {
                     </div>
                 ))}
             </div>
-            {showModal && (
-                <div className="overlay" onClick={toggleModal}>
-                    {/* Pass the selected recommendation to RecomModal */}
-                    <RecomModal onClose={onClose} description={selectedRecommendation.description} />
-                </div>
-            )}
+      {showModal && (
+        <div className="overlay" onClick={toggleModal}>
+          {/* Pass the selected recommendation to RecomModal */}
+          <RecomModal
+            onClose={onClose}
+            description={selectedRecommendation.description}
+          />
         </div>
-    );
+      )}
+    </div>
+  );
 }

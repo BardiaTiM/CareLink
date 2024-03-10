@@ -22,19 +22,36 @@ import plant5 from '../style/images/plantPFPs/plant5.png';
 const plantPFPs = [plant1, plant2, plant3, plant4, plant5];
 
 export function RecomPage() {
-    const [showModal, setShowModal] = useState(false);
-    const [showMore, setShowMore] = useState(false);
-    const [recommendations, setRecommendations] = useState([]);
-    const [mainRecommendation, setMainRecommendation] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showMore, setShowMore] = useState(false);
+  const [recommendations, setRecommendations] = useState([]);
+  const [mainRecommendation, setMainRecommendation] = useState(null);
+  const [selectedRecommendation, setSelectedRecommendation] = useState(null);
 
-    const toggleModal = () => {
-        setShowModal(!showModal);
-    };
+  const toggleModal = (recommendation) => {
+    setSelectedRecommendation(recommendation);
+    setShowModal(!showModal);
+  };
 
-    const toggleMore = () => {
-        setShowMore(!showMore);
-    };
+  const toggleMore = () => {
+    setShowMore(!showMore);
+  };
 
+  const handleRecommendationSelect = (recommendation) => {
+    setSelectedRecommendation(recommendation);
+    setShowModal(true);
+  };
+
+  useEffect(() => {
+    // Retrieve data from local storage when component mounts
+    const storedRecommendations = localStorage.getItem("recommendations");
+    if (storedRecommendations) {
+      const parsedRecommendations = JSON.parse(storedRecommendations);
+      setMainRecommendation(parsedRecommendations[0]); // Display the first item as the main recommendation
+      setRecommendations(parsedRecommendations.slice(1)); // Set the rest of the recommendations for "More Recommendations"
+    }
+  }, []);
+  
     const getRandomPlantPFP = () => {
         const randomIndex = Math.floor(Math.random() * plantPFPs.length);
         return plantPFPs[randomIndex];
@@ -56,7 +73,7 @@ export function RecomPage() {
             <h1>Peer For You</h1>
       
             {mainRecommendation && (
-                <div className="recommendation-card" onClick={toggleModal}>
+                <div className="recommendation-card" onClick={() => toggleModal(mainRecommendation)}>
 
                     <div className="person-info">
 
@@ -95,19 +112,29 @@ export function RecomPage() {
                 </div>
             )}
 
-            {showModal && (
-                <div className="overlay" onClick={toggleModal}>
-                    <RecomModal onClose={toggleModal} description={mainRecommendation.description} />
-                </div>
-            )}
-
-            {!showMore && recommendations.length > 0 && (
-                <div className="view-more-container">
-                    <button onClick={toggleMore}>View More</button>
-                </div>
-            )}
-
-            {showMore && <MoreRecommendations recommendations={recommendations} onClose={toggleModal} />}
+      {showModal && selectedRecommendation && (
+        <div className="overlay" onClick={() => setShowModal(false)}>
+          <RecomModal
+            onClose={() => setShowModal(false)}
+            description={selectedRecommendation.description}
+            peerId={selectedRecommendation.peerID}
+          />
         </div>
-    );
+      )}
+
+      {!showMore && recommendations.length > 0 && (
+        <div className="view-more-container">
+          <button onClick={toggleMore}>View More Recommendations</button>
+        </div>
+      )}
+      {showMore && (
+        <MoreRecommendations
+          recommendations={recommendations}
+          onSelectRecommendation={handleRecommendationSelect}
+        />
+      )}
+
+      {/* Pass recommendations and toggleModal function to MoreRecommendations component */}
+    </div>
+  );
 }

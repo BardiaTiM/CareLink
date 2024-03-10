@@ -18,4 +18,12 @@ body {
 
 .landing-page {
     background: linear-gradient(to bottom, #1A936F 50%, #1A936F 50%, #157A5C);
-  }
+}
+
+#root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

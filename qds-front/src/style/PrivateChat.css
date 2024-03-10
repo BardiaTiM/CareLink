@@ -1,108 +1,107 @@
 .main-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-.message-list-container {
-  width: 30%; /* Adjust width as needed */
-  /* More styles for the message list container */
-}
-
-.chat-container {
-  width: 70%; /* Adjust width as needed */
-  /* Existing styles... */
-}
-
-.messages-container,
-.input-container {
+  flex-direction: row;
+  justify-content: space-evenly;
   width: 100%;
-  /* Other existing styles... */
+  height: auto;
 }
 
-.messages-container {
-  /* ... [existing styles] ... */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* Aligns your messages to the right */
-  padding: 20px; /* Add more padding around messages */
-  background-color: #F4F4F4;
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 500px; /* Fixed width */
+    height: 100vh; /* Full height */
+    overflow-y: auto; /* Scrollable list */
+    background-color: #042a2b; /* Dark background for the sidebar */
+    color: white;
 }
 
-.message-container {
-  max-width: 100%; /* Allows messages to take full width if needed */
-  display: flex;
-  width: 100%; /* Ensures the container takes full width */
-  margin-bottom: 10px;
+/* Sidebar styles */
+.messageList-container {
+  background-color: #042a2b; /* Dark background for the sidebar */
+  color: white;
+  width: 300px; /* Fixed width */
+  height: 100%; /* Fill remaining space */
+  max-height: 800px;
+  overflow: hidden;
+  overflow-y: scroll; /* Scrollable chat */
+}
+
+.messageList-container a:hover {
+  background-color: #042a2b; /* Hover effect */
 }
 
 .message-bubble {
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-radius: 20px;
-  word-wrap: break-word;
-  max-width: 75%; /* Widens the message bubble */
-  margin-bottom: 8px; /* Space between messages */
+  max-width: 60%; /* Max width for each bubble */
+  word-wrap: break-word; /* Wrap long words */
 }
 
 .from-user {
-  margin-left: auto;
-  margin-right: 10px;
-  background-color: #042A2B; /* Blue background */
-  color: white; /* White text for readability */
-  align-self: flex-end; /* Aligns your messages to the right */
+  background-color: #042a2b; /* Blue bubble for outgoing messages */
+  color: white;
 }
 
 .from-other {
-  margin-right: auto;
-  margin-left: 10px;
-  background-color: #e5e5ea; /* Light grey background */
-  color: black; /* Black text for readability */
-  align-self: flex-start; /* Aligns opponent's messages to the left */
+  background-color: #f2f2f7; /* Light bubble for incoming messages */
+  color: black;
 }
 
+/* Chat container styles */
 .chat-container {
+  flex-grow: 1; /* Take up remaining space */
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full height of the viewport */
-  margin-bottom: 60px; /* Space for fixed input container */
 }
 
 .messages-container {
-  justify-content: flex-end; /* Aligns user messages to the right */
-  margin-bottom: 4px; /* Adds space between messages */
+  flex-grow: 1;
+  margin: 10px;
+
+  border-left: 1px solid #f2f2f7; /* Light separator line */
+}
+
+.message-container {
+  display: flex;
+  justify-content: flex-end; /* Right align for outgoing messages */
+  margin-bottom: 10px;
+  padding: 5px 10px 0 10px;
+}
+
+.from-user-container {
+  justify-content: flex-end;
+}
+
+.from-other-container {
+  justify-content: flex-start;
+}
+
+.receiver-username {
+  color: #042a2b;
+  margin: 0px 10px 20px 0px;
 }
 
 .input-container {
   display: flex;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 10px;
-  background-color: #f5f5f5; /* Light gray background */
-  border-top: 1px solid #ddd;
+  width: 100%;
 }
 
-.message-input {
-  flex: 0 0 80%; /* 80% of the space */
-  margin-right: 10px;
-  padding: 10px;
-  border: 1px solid #ddd; /* Light border */
-  border-radius: 4px;
+hr {
+  margin: 10px 0 10px 0;
+  border: 0;
+  border-top: 1px solid #f2f2f7; /* Light separator line */
 }
 
 .send-button {
-  flex: 0 0 20%; /* Remaining 20% of the space */
-  padding: 10px;
-  background-color: #042A2B; /* Button color */
+  width: 20%;
+  background-color: #042a2b; /* Blue send button */
   color: white;
   border: none;
-  border-radius: 20px;
+  padding: 10px;
   cursor: pointer;
-}
-
-.send-button:hover {
-  background-color: #0056b3; /* Darker shade on hover */
 }
