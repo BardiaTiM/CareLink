@@ -87,13 +87,6 @@ export function RecomPage() {
                 <img src={HelpedTenPeople} alt="Badge 2" />
                 <img src={HelpedTwentyFivePeople} alt="Badge 3" />
               </div>
-              <div className="badges">
-                <h3>Badge(s)</h3>
-                <img src={VerifiedHelper} alt="Badge 4" />
-                <img src={firstTimeHelper} alt="Badge 1" />
-                <img src={HelpedTenPeople} alt="Badge 2" />
-                <img src={HelpedTwentyFivePeople} alt="Badge 3" />
-              </div>
 
               <br />
 
