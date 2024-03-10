@@ -1,0 +1,47 @@
+/* ...other styles... */
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    grid-auto-rows: minmax(100px, auto); /* This ensures minimum height but allows for vertical expansion */
+    gap: 1rem;
+    padding: 1rem;
+    align-items: start; /* Align items to the start of the cross axis */
+    flex-direction: column; /* Ensures vertical alignment */
+    max-width: 1000px;
+}
+
+.faq-item {
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #fff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; /* Ensures vertical alignment */
+
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.faq-answer {
+    margin-top: 0.5rem;
+    display: none; /* Keep hidden by default */
+}
+
+.faq-item.active .faq-answer {
+    display: block; /* Only show for the active item */
+    width: auto; /* Ensure the width doesn't affect other grid items */
+}
+
+.faq-toggle {
+    font-size: 1.5rem;
+    padding: 0 0.5rem;
+    user-select: none; /* Prevents the text from being selectable */
+}
+

@@ -52,8 +52,9 @@ export function RecomPage() {
 
     return (
         <div className="RecomPage">
+      
             <h1>Peer For You</h1>
-
+      
             {mainRecommendation && (
                 <div className="recommendation-card" onClick={toggleModal}>
 
