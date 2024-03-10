@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { RecomModal } from './RecomModal';
 import { MoreRecommendations } from './MoreRecommendations';
+
 import '../style/recomePage.css';
+import '../style/Recommendations.css';
+
 import firstTimeHelper from '../style/images/badges/First-time-helper.png';
 import HelpedTenPeople from '../style/images/badges/Helped-10-people.png';
 import HelpedTwentyFivePeople from '../style/images/badges/Helped-25-people.png';

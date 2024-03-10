@@ -76,10 +76,14 @@ export function Main() {
 
 
             {currentStep === 1 && (
-                <h1 className={animationClass}>Feeling Overwhelmed? Let's Balance Life Together.</h1>
+                <h1 className={animationClass} style={{ color: 'black' }}>
+                    Feeling Overwhelmed? Let's Balance Life Together.
+                </h1>
             )}
             {currentStep === 2 && (
-                <h1 className={animationClass}>Looking for Support? Connect with Peers and Counselors Here.</h1>
+                <h1 className={animationClass} style={{ color: 'black' }}>
+                    Looking for Support? Connect with Peers and Counselors Here.
+                </h1>
             )}
             {currentStep === 3 && (
                 <div>
