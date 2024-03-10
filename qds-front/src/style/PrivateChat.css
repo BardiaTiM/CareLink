@@ -10,12 +10,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 300px; /* Fixed width */
+    width: 500px; /* Fixed width */
     height: 100vh; /* Full height */
     overflow-y: auto; /* Scrollable list */
     background-color: #042a2b; /* Dark background for the sidebar */
     color: white;
-    
 }
 
 /* Sidebar styles */
