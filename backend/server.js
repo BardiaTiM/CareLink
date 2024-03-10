@@ -275,6 +275,7 @@ app.post('/peerlogin', async function (req, res) {
             .from('peer_helpers')
             .select('*')
             .eq('email', email)
+            .eq('status', 'ACTIVE') // Add condition to check for "ACTIVE" status
             .single();
 
         // Check if the user exists and the password matches
@@ -304,6 +305,7 @@ app.post('/peerlogin', async function (req, res) {
         res.status(500).json({ error: 'An error occurred while logging in' });
     }
 });
+
 
 app.get('/peer_helpers/inreview', async function (req, res) {
     try {
