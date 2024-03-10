@@ -250,9 +250,10 @@ app.post('/login', async function (req, res) {
             const passwordMatch = await bcrypt.compare(password, data.password);
             if (passwordMatch) {
                 // Passwords match, user is authenticated
-                const username = data.id;
+                const userId = data.id;
                 const role = data.role;
-                res.status(200).json({ message: 'Login successful', userID: username, role: role });
+                const name = data.username;
+                res.status(200).json({ message: 'Login successful', userID: userId , role: role, username: name });
 
             } else {
                 // Passwords do not match
