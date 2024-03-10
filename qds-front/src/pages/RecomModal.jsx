@@ -59,8 +59,6 @@ export function RecomModal({ onClose, description, peerId, imageUrl }) {
       // Process the response (here, simply logging it to the console)
       const result = await response.text();
       console.log(result); // Log the result for debugging or further processing
-      // Navigate to the chat page with both user IDs in the path
-      navigate("/chat/" + loggedInUserId + "/" + chatUserId);
     } catch (error) {
       console.log(loggedInUserId, chatUserId);
       // Log any errors encountered during the fetch operation
