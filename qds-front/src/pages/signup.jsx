@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../style/Signup.css';
 
 export function SignUp() {
     const [username, setUsername] = useState('');
@@ -61,7 +62,7 @@ export function SignUp() {
             <form onSubmit={handleSubmit} className="signup-form">
                 <div>
                     <label htmlFor="role">Select Role</label>
-                    <select id="role" value={role} onChange={handleRoleChange} required>
+                    <select className='role-dropbox' id="role" value={role} onChange={handleRoleChange} required>
                         <option value="user">User</option>
                         <option value="peer">Peer</option>
                     </select>
