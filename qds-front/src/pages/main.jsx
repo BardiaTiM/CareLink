@@ -102,7 +102,7 @@ export function Main() {
                                     <textarea
                                         value={paragraph}
                                         onChange={handleInputChange}
-                                        placeholder="Describe any challenges or issues you're facing at BCIT"
+                                        placeholder="Describe any challenges or issues you're facing"
                                         rows={10}
                                         cols={50}
                                     />

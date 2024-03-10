@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './Authentication/AuthContext';
 import { Navbar } from './components/navbar';
 import { LandingPage } from './pages/index';
-import { Login } from './pages/login';
 import { PrivateRoute } from './routing/PrivateRoute';
 import { SignUp } from './pages/signup';
 import { CouncilorLogin } from './pages/councilorLogin';
@@ -15,7 +14,7 @@ import Chat from './pages/chat';
 import PrivateChat from './pages/privateChat';
 import { NotFound } from './pages/404';
 import { RecomPage } from './pages/RecomPage';
-
+import {FAQ } from './pages/faq';
 
 function App() {
     return (
@@ -33,6 +32,7 @@ function App() {
                     <Route path="/councilorLogin" element={<CouncilorLogin />} />
                     <Route path="/inReview" element={<PrivateRoute><InReview /></PrivateRoute>} />
                     <Route path="/recomPage" element={<PrivateRoute><RecomPage /></PrivateRoute>} />
+                    <Route path="/faq" element ={<FAQ />} />
                     {/* Add the route for the Problem component */}
                     <Route path="*" element={<NotFound />} />
 
