@@ -1,14 +1,14 @@
 h1 {
-    color: white;
-    font-size: 50px;
+  color: white;
+  font-size: 50px;
 }
 
 .header-title {
-    color: white;
+  color: white;
 }
 
 .container {
-    text-align: center;
+  text-align: center;
 }
 
 /* form {
@@ -18,51 +18,68 @@ h1 {
     width: 300px;
 } */
 
+.role-dropbox {
+  width: 100%; /* Adjust the width as needed */
+  padding: 8px 12px; /* Padding for better ergonomics */
+  border: 1px solid #ccc; /* Border styling */
+  border-radius: 4px; /* Rounded corners */
+  background-color: white; /* Background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-size: 16px; /* Text size */
+  color: #333; /* Text color */
+}
+
+.role-dropbox option {
+  padding: 10px; /* Padding inside options */
+  background-color: #f7f7f7; /* Slight grey background for options */
+  color: #333; /* Text color for options */
+}
+
 input {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ffffff;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
 }
 
 button {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    background-color: #1A936F;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #1a936f;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 button:hover {
-    background-color: #042A2B;
+  background-color: #042a2b;
 }
 
 .signup-button {
-    background-color: #ffffff;
-    color: #1A936F;
-    border: 1px solid #1A936F;
+  background-color: #ffffff;
+  color: #1a936f;
+  border: 1px solid #1a936f;
 }
 
 .signup-button:hover {
-    background-color: #042A2B;
-    color: #ffffff;
-    border: 1px solid #1A936F;
+  background-color: #042a2b;
+  color: #ffffff;
+  border: 1px solid #1a936f;
 }
 
 .signup-form div {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .signup-form label {
-    align-self: flex-start;
-    margin-bottom: 5px;
+  align-self: flex-start;
+  margin-bottom: 5px;
 }

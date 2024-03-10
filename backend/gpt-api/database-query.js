@@ -4,10 +4,14 @@ const { createClient } = require('@supabase/supabase-js');
 require('dotenv').config();
 
 //Database Constants
-const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabaseUrl = 'https://iijnzlujdpmeotainyxm.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
+/**
+ * Function to retrieve active peer helpers from the Supabase database.
+ * @returns {Promise<{data: Array<{id: string, description: string, username: string}>} | {error: Error}>} - Object containing either data or error.
+ */
 async function getActivePeerHelpers() {
     try {
         // Query the Supabase database for active peer helpers
@@ -34,6 +38,4 @@ async function getActivePeerHelpers() {
     }
 }
 
-
 module.exports.getActivePeerHelpers = getActivePeerHelpers;
-
