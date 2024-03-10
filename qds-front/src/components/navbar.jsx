@@ -13,6 +13,10 @@ export function Navbar() {
         return sessionStorage.getItem('userRole') === 'COUNCILOR';
     }
 
+    const UserRole = () => {
+        return sessionStorage.getItem('userRole') === 'USER';
+    }
+
     const handleLogout = () => {
         logout();
         navigate('/'); // redirect to landing page
@@ -38,7 +42,7 @@ export function Navbar() {
             </Link>
             <ul className="navbar-nav">
                 <li className="nav-item non-highlight"><Link to="/FAQ">FAQ</Link></li>
-                {isAuthenticated && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
+                {isAuthenticated && UserRole() &&  <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
                 {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
                 {isAuthenticated && CouncilorRole() && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
             </ul>

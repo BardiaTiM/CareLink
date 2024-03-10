@@ -12,7 +12,7 @@ export const PrivateRoute = ({ children, requiredRole }) => {
     if (!isAuthenticated) {
         return <Navigate to="/" />;
     } else if (isAuthenticated && !hasRequiredRole) {
-        return <Navigate to="/unauthorized" />; // Consider adding an Unauthorized component or another suitable redirect
+        return <Navigate to="/*" />; // Consider adding an Unauthorized component or another suitable redirect
     }
 
     // If the user is authenticated and has the required role (or no specific role is required), render the children
