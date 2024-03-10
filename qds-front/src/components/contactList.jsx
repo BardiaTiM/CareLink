@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../style/ContactList.css";
 
 // Functional component for displaying a list of contacts
@@ -7,10 +7,18 @@ export function ContactList() {
   // State variables for user data and error message
   const [userData, setUserData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   // Retrieving user ID and role from session storage
   const loggedInUserId = sessionStorage.getItem("userId");
   const userRole = sessionStorage.getItem("userRole");
+
+  const navigate = useNavigate();
+
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId); // Set the clicked user ID
+    navigate(`/chat/${loggedInUserId}/${userId}`);
+  };
 
   // Effect hook to fetch user data based on user role
   useEffect(() => {
@@ -89,22 +97,27 @@ export function ContactList() {
       container.scrollTop = 0;
     }
   }, [userData]); // Trigger effect when user data changes
-  
-  // 
+
   return (
-    <div className="contact-container">
+    <div
+      className="contact-container"
+    >
       {errorMessage && <p>{errorMessage}</p>}
       <h2>Contact</h2>
       <div>
-      {/*Display the list of users*/}
-        {userData.map((user, index) => (
-          <div className="contact-user-profile" key={user.id || index}>
-            <Link
-              to={`/chat/${loggedInUserId}/${user.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              {user.username}
-            </Link>
+        {userData.map((user) => (
+          <div
+            className="contact-user-profile"
+            key={user.id}
+            onClick={() => handleUserClick(user.id)}
+            style={{
+              backgroundColor:
+                user.id === selectedUserId ? "#042A2B" : "transparent", // Highlight the selected user
+              color: user.id === selectedUserId ? "white" : "inherit", // Change text color for contrast if needed
+              cursor: "pointer",
+            }}
+          >
+            {user.username}
           </div>
         ))}
       </div>
