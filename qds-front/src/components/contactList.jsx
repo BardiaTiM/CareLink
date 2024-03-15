@@ -80,7 +80,7 @@ export function ContactList() {
   return (
     <div className="contact-container">
       {errorMessage && <p>{errorMessage}</p>}
-      <h2>Contact</h2>
+      <h2>Contact(s)</h2>
       <div>
         {userData.map((user, index) => (
           <p key={user.id || index}>
