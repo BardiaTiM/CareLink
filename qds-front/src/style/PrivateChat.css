@@ -40,13 +40,13 @@
 }
 
 .from-user {
-  background-color: #042a2b; /* Blue bubble for outgoing messages */
+  background-color: #F28F3B; /* Blue bubble for outgoing messages */
   color: white;
 }
 
 .from-other {
-  background-color: #f2f2f7; /* Light bubble for incoming messages */
-  color: black;
+  background-color: #1A936F; /* Light bubble for incoming messages */
+  color: white;
 }
 
 /* Chat container styles */
