@@ -38,7 +38,7 @@ export function LandingPage() {
                 <div className="header-container header-image-container" style={{ backgroundImage: `url(${headerBackgroundImage})` }}>
                     <div className="header-image-columns">
                         {/* Left column */}
-                        <div className="header-image-column">
+                        <div className="header-image-column left-column">
                             <div className="header-motto-container">
                                 <h1>
                                     Find Support Anonymously
