@@ -53,6 +53,12 @@ export function LandingPage() {
                                     <br></br>
                                     <br></br>
                                 </h3>
+
+                                <div className="get-start-button left-column">
+                                    <Link className="get-started-button" onClick={scrollToTop}>
+                                        Get Started
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                         {/* Right column */}
