@@ -7,7 +7,7 @@ import logoImageWhite from '../style/images/CareLink v1 - white.png';
 import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
 
 export function Navbar() {
-    const { isAuthenticated,logout } = useAuth();
+    const { isAuthenticated, logout } = useAuth();
     const navigate = useNavigate();
     const userRole = sessionStorage.getItem('userRole');
 
@@ -27,7 +27,7 @@ export function Navbar() {
     // Determine the redirection path based on the user's role
     const getLogoLink = () => {
         if (!isAuthenticated) return "/";
-        switch(userRole) {
+        switch (userRole) {
             case 'USER':
                 return "/main";
             case 'PEER':
@@ -50,10 +50,10 @@ export function Navbar() {
             </Link>
             <ul className="navbar-nav">
                 <li className="nav-item non-highlight"><Link to="/FAQ">FAQ</Link></li>
-                {isAuthenticated && userRole === 'USER' &&  <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>}
-                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
+                {/* {isAuthenticated && userRole === 'USER' && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>} */}
                 {isAuthenticated && userRole === 'COUNCILOR' && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
                 {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/chat">Chat</Link></li>)}
+                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
             </ul>
         </nav>
     );
