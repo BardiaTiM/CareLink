@@ -50,6 +50,21 @@
     font-size: 50px;
 }
 
+@media only screen and (max-width: 768px) {
+    .header-motto-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .header-motto-container h1 {
+        font-size: 35px;
+    }
+
+    .header-motto-container h3 {
+        font-size: 20px;
+    }
+}
+
 .header-text-container {
     position: relative;
     width: 20vw;
@@ -148,6 +163,10 @@
     flex: 1;
 }
 
+.get-start-button {
+    display: none;
+}
+
 @media screen and (max-width: 900px) {
     .four-column-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -178,10 +197,15 @@
 }
 
 @media only screen and (max-width: 768px) {
-    .header-image-column.left-column {
+    .get-start-button {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .left-column {
         display: none;
-      }
-      
+    }
+
     .header-image-columns {
         position: relative;
         display: flex;
