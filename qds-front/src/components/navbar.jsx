@@ -5,6 +5,9 @@ import "../style/Navbar.css";
 import '../style/Logo.css';
 import logoImageWhite from '../style/images/CareLink v1 - white.png';
 import logoImageOrange from '../style/images/CareLink v1 - white + orange.png';
+import chatIcon from '../style/images/icons/chat.png';
+import faqIcon from '../style/images/icons/faq.png';
+import logoutIcon from '../style/images/icons/logout.png';
 
 export function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -49,11 +52,30 @@ export function Navbar() {
                 <img src={logoImageWhite} alt="CareLink Logo" className="logo-image" />
             </Link>
             <ul className="navbar-nav">
-                <li className="nav-item non-highlight"><Link to="/FAQ">FAQ</Link></li>
-                {/* {isAuthenticated && userRole === 'USER' && <li className="nav-item non-highlight"><Link to="/main">Main</Link></li>} */}
-                {isAuthenticated && userRole === 'COUNCILOR' && (<li className="nav-item non-highlight"><Link to="/inReview">Review Peers</Link></li>)}
-                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/chat">Chat</Link></li>)}
-                {isAuthenticated && (<li className="nav-item non-highlight"><Link to="/" onClick={handleLogout}>Logout</Link></li>)}
+                <li className="nav-item non-highlight">
+                    <Link to="/FAQ">
+                        <span className="desktop-view">FAQ</span>
+                        <img src={faqIcon} alt="FAQ" className="mobile-view" />
+                    </Link>
+                </li>
+                {isAuthenticated && (
+                    <>
+                        {userRole === 'PEER' && (
+                            <li className="nav-item non-highlight">
+                                <Link to="/chat">
+                                    <span className="desktop-view">Chat</span>
+                                    <img src={chatIcon} alt="Chat" className="mobile-view" />
+                                </Link>
+                            </li>
+                        )}
+                        <li className="nav-item non-highlight">
+                            <Link to="/" onClick={handleLogout}>
+                                <span className="desktop-view">Logout</span>
+                                <img src={logoutIcon} alt="Logout" className="mobile-view" />
+                            </Link>
+                        </li>
+                    </>
+                )}
             </ul>
         </nav>
     );

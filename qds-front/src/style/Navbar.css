@@ -4,7 +4,7 @@ body {
 }
 
 .navbar {
-    background-color: rgba(26, 147, 111, 1); 
+    background-color: rgba(26, 147, 111, 1);
     overflow: hidden;
     height: 64px;
     line-height: 64px;
@@ -102,4 +102,19 @@ ul li.highlight a:hover::after {
     color: white;
     font-size: 30px;
     font-weight: 600;
+}
+
+.mobile-view {
+    display: none;
+}
+
+/* Display icons only in mobile view */
+@media only screen and (max-width: 768px) {
+    .desktop-view {
+        display: none;
+    }
+
+    .mobile-view {
+        display: inline;
+    }
 }
