@@ -85,3 +85,10 @@
 .RecomPage h1 {
     color: #000000;
 }
+
+@media only screen and (max-width: 768px) {
+    .person-info {
+        display: flex;
+        flex-direction: column;
+    }
+}
