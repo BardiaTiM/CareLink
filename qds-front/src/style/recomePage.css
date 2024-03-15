@@ -86,7 +86,26 @@
     color: #000000;
 }
 
+button {
+    margin-top: 20px;
+}
+
 @media only screen and (max-width: 768px) {
+    .modal-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 80vw;
+    }
+
+    .modal-content img {
+        max-width: 40%;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
     .person-info {
         display: flex;
         flex-direction: column;
