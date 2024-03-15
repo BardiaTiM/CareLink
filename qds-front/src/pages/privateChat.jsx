@@ -9,6 +9,7 @@ function PrivateChat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [receiverUserName, setReceiverUserName] = useState("");
+  const [showContacts, setShowContacts] = useState(false);
 
   // Function to fetch message history
   const fetchMessageHistory = async () => {
@@ -124,16 +125,14 @@ function PrivateChat() {
     return messages.map((msg, index) => (
       <div
         key={index}
-        className={`message-container ${
-          msg.from === loggedInUserId
-            ? "from-user-container"
-            : "from-other-container"
-        }`}
+        className={`message-container ${msg.from === loggedInUserId
+          ? "from-user-container"
+          : "from-other-container"
+          }`}
       >
         <div
-          className={`message-bubble ${
-            msg.from === loggedInUserId ? "from-user" : "from-other"
-          }`}
+          className={`message-bubble ${msg.from === loggedInUserId ? "from-user" : "from-other"
+            }`}
         >
           {msg.message_text}
         </div>
@@ -141,9 +140,25 @@ function PrivateChat() {
     ));
   };
 
+  const toggleContacts = () => {
+    setShowContacts((prevShowContacts) => !prevShowContacts); // Toggle showContacts state
+  };
+
   return (
+
     <div className="main-container">
-      <ContactList className="contact-list" />
+
+      <div className="contact-list-container">
+
+        {/* Render ContactList only if showContacts is true */}
+        {showContacts && <ContactList className="contact-list" />}
+        {/* Button to toggle contacts */}
+        <button className="view-contacts-button" onClick={toggleContacts}>
+          {showContacts ? "Hide Contacts" : "View Contacts"}
+        </button>
+
+      </div>
+
       <div className="chat-container">
         <div className="messages-container">
           <h1 className="receiver-username">
@@ -152,18 +167,19 @@ function PrivateChat() {
           <hr />
           {renderMessages()}
           <div className="input-container">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            className="message-input"
-          />
-          <button onClick={handleSendMessage} className="send-button">
-            Send
-          </button>
-        </div>
+            <input
+              type="text"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              className="message-input"
+            />
+            <button onClick={handleSendMessage} className="send-button">
+              Send
+            </button>
+          </div>
         </div>
       </div>
+
     </div>
   );
 }
